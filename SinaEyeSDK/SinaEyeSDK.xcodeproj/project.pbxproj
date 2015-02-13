@@ -1,0 +1,278 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CF0D88781A7F6B100089BC2A /* SinaEyeSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CF0D88771A7F6B100089BC2A /* SinaEyeSDK.h */; };
+		CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0D88791A7F6B100089BC2A /* SinaEyeSDK.m */; };
+		CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0D88951A8494500089BC2A /* FeedsViewController.m */; };
+		CF1F41631A8DCE2D00BCD554 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CF0D88721A7F6B100089BC2A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				CF0D88781A7F6B100089BC2A /* SinaEyeSDK.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CF0D88741A7F6B100089BC2A /* libSinaEyeSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSinaEyeSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF0D88771A7F6B100089BC2A /* SinaEyeSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SinaEyeSDK.h; sourceTree = "<group>"; };
+		CF0D88791A7F6B100089BC2A /* SinaEyeSDK.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinaEyeSDK.m; sourceTree = "<group>"; };
+		CF0D88851A7F6B100089BC2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF0D88941A8494500089BC2A /* FeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedsViewController.h; sourceTree = "<group>"; };
+		CF0D88951A8494500089BC2A /* FeedsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedsViewController.m; sourceTree = "<group>"; };
+		CF1F41611A8DCE2D00BCD554 /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
+		CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CF0D88711A7F6B100089BC2A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CF0D886B1A7F6B100089BC2A = {
+			isa = PBXGroup;
+			children = (
+				CF0D88761A7F6B100089BC2A /* SinaEyeSDK */,
+				CF0D88831A7F6B100089BC2A /* SinaEyeSDKTests */,
+				CF0D88751A7F6B100089BC2A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CF0D88751A7F6B100089BC2A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CF0D88741A7F6B100089BC2A /* libSinaEyeSDK.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CF0D88761A7F6B100089BC2A /* SinaEyeSDK */ = {
+			isa = PBXGroup;
+			children = (
+				CF0D88771A7F6B100089BC2A /* SinaEyeSDK.h */,
+				CF0D88791A7F6B100089BC2A /* SinaEyeSDK.m */,
+				CF0D88941A8494500089BC2A /* FeedsViewController.h */,
+				CF0D88951A8494500089BC2A /* FeedsViewController.m */,
+				CF1F41611A8DCE2D00BCD554 /* BrowserViewController.h */,
+				CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */,
+			);
+			path = SinaEyeSDK;
+			sourceTree = "<group>";
+		};
+		CF0D88831A7F6B100089BC2A /* SinaEyeSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				CF0D88841A7F6B100089BC2A /* Supporting Files */,
+			);
+			path = SinaEyeSDKTests;
+			sourceTree = "<group>";
+		};
+		CF0D88841A7F6B100089BC2A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CF0D88851A7F6B100089BC2A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CF0D88731A7F6B100089BC2A /* SinaEyeSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF0D88881A7F6B100089BC2A /* Build configuration list for PBXNativeTarget "SinaEyeSDK" */;
+			buildPhases = (
+				CF0D88701A7F6B100089BC2A /* Sources */,
+				CF0D88711A7F6B100089BC2A /* Frameworks */,
+				CF0D88721A7F6B100089BC2A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SinaEyeSDK;
+			productName = SinaEyeSDK;
+			productReference = CF0D88741A7F6B100089BC2A /* libSinaEyeSDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CF0D886C1A7F6B100089BC2A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = esina;
+				TargetAttributes = {
+					CF0D88731A7F6B100089BC2A = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
+			};
+			buildConfigurationList = CF0D886F1A7F6B100089BC2A /* Build configuration list for PBXProject "SinaEyeSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CF0D886B1A7F6B100089BC2A;
+			productRefGroup = CF0D88751A7F6B100089BC2A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CF0D88731A7F6B100089BC2A /* SinaEyeSDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CF0D88701A7F6B100089BC2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */,
+				CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */,
+				CF1F41631A8DCE2D00BCD554 /* BrowserViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		CF0D88861A7F6B100089BC2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CF0D88871A7F6B100089BC2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CF0D88891A7F6B100089BC2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CF0D888A1A7F6B100089BC2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CF0D886F1A7F6B100089BC2A /* Build configuration list for PBXProject "SinaEyeSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF0D88861A7F6B100089BC2A /* Debug */,
+				CF0D88871A7F6B100089BC2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF0D88881A7F6B100089BC2A /* Build configuration list for PBXNativeTarget "SinaEyeSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF0D88891A7F6B100089BC2A /* Debug */,
+				CF0D888A1A7F6B100089BC2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CF0D886C1A7F6B100089BC2A /* Project object */;
+}

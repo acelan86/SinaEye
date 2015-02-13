@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ch">
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-touch-fullscreen" content="YES" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta http-equiv="Expires" content="-1" />
+    <meta http-equiv="pragram" content="no-cache" />
+    <!-- iscroll4.js -->
+    <script src="./iScroll.js"></script>
+    <script src="./zepto.js"></script>
+    <style>
+        html, body{
+            padding:0;
+            margin:0;
+            background-color: #efefef;
+            font-family: 'XinGothic-SinaWeibo','Microsoft YaHei',helvetica,arial,sans-serif;
+        }
+        dl,dt,dd,ul,li,h3,h4,p{
+            margin:0;
+            padding:0;
+        }
+        li{
+            list-style: none;
+        }
+        .feed-list{
+            position:absolute;
+            width:100%;
+            top:0px;
+            bottom:0px;
+        }
+        .list{
+            background-color: #fff;
+        }
+        .list a{
+            display:block;
+        }
+        .list a:link,
+        .list a:visited,
+        .list a:hover{
+            text-decoration: none;
+        }
+        .scroller{
+            padding:0;
+            position:absolute;
+            width:100%;
+            -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+        }
+        .pull-indecator{
+            height: 50px;
+            line-height: 50px;
+            color:#aaa;
+            text-align: center;
+        }
+
+        /* card */
+        .card{
+            overflow:hidden;
+            clear: both;
+            border-bottom: 1px solid #ececec;
+        }
+        .card-dt{
+            float:left;
+        }
+        .card-img{
+            width:80px;
+            height:60px;
+            border:none;
+            margin:10px;
+        }
+        .card-dd{
+            overflow:hidden;
+            margin:10px;
+        }
+        .card-title{
+            color: #2f2f2f;
+            line-height: 20px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .card-summary{
+            color: #8b8b8b;
+            font-size: 12px;
+            font-weight: normal;
+            overflow: hidden;
+            line-height: 22px;
+        }
+        .card-op{
+            overflow:hidden;
+        }
+        .card-op-left,
+        .card-op-right{
+            font-size: 10px;
+            height: 20px;
+            line-height: 26px;
+            float:left;
+        }
+        .card-op-right{
+            float:right;
+        }
+        .card-pics{
+            overflow:hidden;
+            padding:8px 0px;
+        }
+        .card-pics li{
+            float: left;
+            width: 33%;
+            text-align: center;
+        }
+        .card-pics li img{
+            width: 94px;
+            height: 70px;
+        }
+        .card-pics-full li{
+            width:100%;
+        }
+        .card-pics-full li img{
+            width: 300px;
+            height: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div id="FeedList" class="feed-list">
+        <div class="scroller">
+            <div id="PullDown" class="pull-indecator"></div>
+            <ul class="list"></ul>
+            <div id="PullUp" class="pull-indecator"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('touchmove', function (e) { 
+            e.preventDefault();
+        }, false);
+        document.addEventListener('DOMContentLoaded', function () {
+            var PULL_OFFSET = 40; //拉动临界值
+
+            //同时只能有上拉或者下拉状态
+            var PULL_TYPE = {
+                DOWN : 'down',
+                UP   : 'up'
+            };
+
+            //操作阶段
+            var PHASE = {
+                INIT            : 0, //初始阶段，显示"下拉刷新"
+                PULLING         : 1, //下拉过程，显示"下拉刷新"
+                CAN_RELEASE     : 2, //到达临界，可以释放，显示"释放刷新"
+                LOADING         : 3  //释放，加载过程， 显示"正在加载"
+            };
+
+            var type;
+            var phase = PHASE.INIT;
+
+            var pullDown = document.querySelector("#PullDown");
+            var pullDownOffset = pullDown.offsetHeight;
+
+            var pullUp = document.querySelector("#PullUp");
+            var pullUpOffset = pullUp.offsetHeight;
+
+            var TPL = {
+                //title + summary + 1pic
+                "tid1" : function (data) {
+                    return [
+                        '<dl class="card">',
+                            '<dt class="card-dt">',
+                                '<img class="card-img" src="' + data.imgs[0].src + '" alt="' + data.title + '">',
+                            '</dt>',
+                            '<dd class="card-dd">',
+                                '<h3 class="card-title">' + data.title + '</h3>',
+                                '<h4 class="card-summary">' + data.summary + '</h4>',
+                                '<p class="card-op">',
+                                    '<span class="card-op-left">赞助</span>',
+                                    '<span class="card-op-right"></span>',
+                                '</p>',
+                            '</dd>',
+                        '</dl>'
+                    ].join('');
+                },
+                //title + 3pic
+                "tid2": function (data) {
+                    var pics = data.imgs.map(function (image) {
+                        return '<li>' +
+                                    '<span>' +
+                                        '<img alt="' + data.title + '" src="' + image.src + '"/>' +
+                                    '</span>' +
+                                '</li>';
+                    });
+
+                    return [
+                        '<dl class="card">',
+                            '<dd class="card-dd">',
+                                '<h3 class="card-title">' + data.title + '</h3>',
+                                '<ul class="card-pics">',
+                                    pics.join(''),
+                                '</ul>',
+                                '<p class="card-op">',
+                                    '<span class="card-op-left">xxx</span>',
+                                    '<span class="card-op-right">56</span>',
+                                '</p>',
+                            '</dd>',
+                        '</dl>'
+                    ].join('');
+                },
+                "tid3": function (data) {
+                    var pics = data.imgs.map(function (image) {
+                        return '<li>' +
+                                    '<span>' +
+                                        '<img alt="' + data.title + '" src="' + image.src + '"/>' +
+                                    '</span>' +
+                                '</li>';
+                    });
+                    return [
+                        '<dl class="card">',
+                            '<dd class="card-dd">',
+                                '<h3 class="card-title">' + data.title + '</h3>',
+                                '<ul class="card-pics card-pics-full">',
+                                    pics.join(''),
+                                '</ul>',
+                                '<p class="card-op">',
+                                    '<span class="card-op-left">xxx</span>',
+                                    '<span class="card-op-right">56</span>',
+                                '</p>',
+                            '</dd>',
+                        '</dl>'
+                    ].join('');
+                }
+            };
+
+            //获取数据
+            function getFeeds(callback) {
+                $.getJSON("./feeds.json", {
+                    _ts: (+new Date()).toString(36)
+                }, function (feeds) {
+                    var htmls = feeds.data.map(function (feed) {
+                        return TPL["tid" + feed.templateid] &&
+                                    '<a href="' + feed.link + '" target="_blank">' + TPL["tid" + feed.templateid](feed) + '</a>';
+                    });
+                    callback(htmls.join(''));
+                });
+            }
+
+            getFeeds(function (fragment) {
+                $(".list").append(fragment);
+                var list = new iScroll("FeedList", {
+                    topOffset: pullDownOffset,
+                    useTransition: true,
+                    onRefresh: function () {
+                        phase = PHASE.INIT;
+                        this.maxScrollY = this.maxScrollY + pullUpOffset;
+                        if (type === PULL_TYPE.DOWN) {
+                            pullDown.innerHTML = "";
+                        } else {
+                            pullUp.innerHTML = "";
+                        }
+                    },
+                    onScrollMove: function () {
+                        //init > pulling && pull down
+                        if (phase === PHASE.INIT && this.y > this.minScrollY) {
+                            type = PULL_TYPE.DOWN;
+                            phase = PHASE.PULLING;
+                            pullDown.innerHTML = '⬇︎ 下拉刷新...';
+                            this.minScrollY = -pullDownOffset;
+                        }
+                        //init > pulling && pull up
+                        if (phase === PHASE.INIT && this.y < this.maxScrollY) {
+                            type = PULL_TYPE.UP;
+                            phase = PHASE.PULLING;
+                            pullUp.innerHTML = '⬇︎ 加载更多...';
+                            this.maxScrollY = this.maxScrollY;
+                        }
+                        //while pull down, pulling > canrelease
+                        if (type === PULL_TYPE.DOWN && phase === PHASE.PULLING && this.y > PULL_OFFSET) {
+                            phase = PHASE.CAN_RELEASE;
+                            pullDown.innerHTML = "⬆︎ 释放刷新...";
+                            this.minScrollY = 0;
+                        }
+                        //while pull up, pulling > canrelease
+                        if (type === PULL_TYPE.UP && phase === PHASE.PULLING && this.y < (this.maxScrollY - pullUpOffset - PULL_OFFSET)) {
+                            phase = PHASE.CAN_RELEASE;
+                            pullUp.innerHTML = "⬆︎ 释放刷新...";
+                            this.maxScrollY = this.maxScrollY - pullUpOffset;
+                        }
+                    },
+                    onScrollEnd: function () {
+                        var me = this;
+                        //can_release > loading
+                        if (phase === PHASE.CAN_RELEASE) {
+                            phase = PHASE.LOADING;
+                            if (type === PULL_TYPE.DOWN) {
+                                pullDown.innerHTML = "♺ 加载中...";
+                                getFeeds(function (fragment) {
+                                    //insertBefore
+                                    //
+                                    $(".list").children().length <= 0 ? 
+                                        $(fragment).appendTo(".list") :
+                                        $(fragment).insertBefore($('.list').children().first());
+                                    me.refresh();
+                                });
+                            } else {
+                                pullUp.innerHTML = "♺ 加载中...";
+                                getFeeds(function (fragment) {
+                                    //append
+                                    $(fragment).appendTo($('.list'));
+                                    me.refresh();
+                                });
+                            }
+                        } else if (phase === PHASE.PULLING){
+                            me.refresh();
+                        }
+                    }
+                });
+            });
+        }, false);
+    </script>
+</body>
+</html>
