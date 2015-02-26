@@ -9,14 +9,8 @@
 #import "BrowserViewController.h"
 
 @interface BrowserViewController ()
-
-@property (nonatomic, strong) UIWebView *webview;
-@property (nonatomic, strong) UIToolbar *toolbar;
-@property (nonatomic, strong) UIBarButtonItem *closeButton;
-@property (nonatomic, strong) UIBarButtonItem *backButton;
-@property (nonatomic, strong) UIBarButtonItem *forwardButton;
-@property (nonatomic, strong) UIBarButtonItem *refreshButton;
-
+@property (nonatomic, strong) NSURL *url;
+@property (nonatomic) NSInteger webviewLoadCount;
 @end
 
 @implementation BrowserViewController
@@ -38,12 +32,25 @@
     _refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(h_refresh)];
     UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
+    _safariButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(h_openWithSafari)];
+    
+    
+    
     NSMutableArray *items = [[NSMutableArray alloc] init];
-    [items addObjectsFromArray:[NSArray arrayWithObjects:_backButton, flexItem, _forwardButton, flexItem, _refreshButton, flexItem, _closeButton, nil]];
+    [items addObjectsFromArray:[NSArray arrayWithObjects:_backButton, flexItem, _forwardButton, flexItem, _safariButton, flexItem, _refreshButton, flexItem, _closeButton, nil]];
     
     [_toolbar setItems:items];
-    
     [self.view addSubview:_toolbar];
+    
+    /* 创建进度指示器 */
+    _spinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
+    _spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    _spinner.hidesWhenStopped = YES;
+    [self.spinner sizeToFit];
+    [self.view addSubview:_spinner];
+
+    
+    _webview.delegate = self;
     
 }
 
@@ -57,7 +64,16 @@
     
     [self.view addConstraint:toolbarVConstraint];
     [self.view addConstraint:toolbarWConstraint];
+    
+    //创建进度指示器约束
+    _spinner.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *spinnerVConstraint = [NSLayoutConstraint constraintWithItem:_spinner attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
+    NSLayoutConstraint *spinnerHConstraint = [NSLayoutConstraint constraintWithItem:_spinner attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
+    
+    [self.view addConstraint:spinnerHConstraint];
+    [self.view addConstraint:spinnerVConstraint];
     // Do any additional setup after loading the view.
+    _webviewLoadCount = 0;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,20 +81,99 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)h_close {
+    [self dismissActionSheet];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)h_back {
+    [self dismissActionSheet];
     [_webview goBack];
+    [self refreshButtonStatus];
 }
 - (void)h_forward {
+    [self dismissActionSheet];
     [_webview goForward];
+    [self refreshButtonStatus];
 }
 - (void)h_refresh {
+    [self dismissActionSheet];
     [_webview reload];
 }
 
+- (void)refreshButtonStatus {
+    _backButton.enabled = self.webview.canGoBack;
+    _forwardButton.enabled = self.webview.canGoForward;
+}
+
+- (void) h_openWithSafari {
+    NSLog(@"open with safari");
+    if (_actionSheet) {
+        [self dismissActionSheet];
+    }else {
+        /* 创建actionsheet，open in safari， cancel两个按钮 */
+        _actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                              delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              destructiveButtonTitle:nil
+                                              otherButtonTitles:@"Open in Safari", nil];
+        if ([UIActionSheet instancesRespondToSelector:@selector(showFromBarButtonItem:animated:)]) {
+            [_actionSheet showFromBarButtonItem:_safariButton animated:YES];
+        } else {
+            [_actionSheet showInView:self.view];
+        }
+    }
+}
+
+- (void)dismissActionSheet
+{
+    [_actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+    _actionSheet = nil;
+    
+}
+
+/* 用safari打开链接，使用actionSheet的delegate, h文件中声明实现actionsheet的delegate */
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    _actionSheet = nil;
+    switch (buttonIndex) {
+        //@open with safari
+        case 0:
+            [[UIApplication sharedApplication] openURL:_url];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+/** uiwebview delegate */
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    NSLog(@"webview start load");
+    
+    _refreshButton.enabled = YES;
+    _safariButton.enabled = YES;
+    if (![_spinner isAnimating]) {
+        [_spinner startAnimating];
+    }
+    _webviewLoadCount++;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    NSLog(@"webview finish load");
+    _webviewLoadCount--;
+    if (self.webviewLoadCount > 0) return;
+    
+    _refreshButton.enabled = YES;
+    _safariButton.enabled = YES;
+    [self refreshButtonStatus];
+    if ([self.spinner isAnimating]) {
+        [self.spinner stopAnimating];
+    }
+}
+
+
+
 - (void)loadPage:(NSURL *)url {
     NSLog(@"loadpage: %@", url);
+    _url = url;
     NSURLRequest *req = [[NSURLRequest alloc] initWithURL:url];
     [_webview loadRequest:req];
 }

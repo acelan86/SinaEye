@@ -24,9 +24,6 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view.backgroundColor = [UIColor whiteColor];
     
-//    _button = [[UIView alloc] initWithFrame:(CGRectMake(100, 100, 100, 50))];
-//    _button.backgroundColor = [UIColor yellowColor];
-//    [self.view addSubview:_button];
     
     _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, [[UIScreen mainScreen] applicationFrame].origin.y, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height - 44)];
     _webview.backgroundColor = [UIColor whiteColor];
