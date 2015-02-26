@@ -8,6 +8,7 @@
 
 #import "FeedsViewController.h"
 #import "BrowserViewController.h"
+#import "SinaEyeSDK.h"
 
 static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
 
@@ -36,10 +37,11 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
     [self.view addSubview:_toolbar];
     
     _closebutton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(h_close)];
+    UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     NSMutableArray *items = [[NSMutableArray alloc] init];
     
-    [items addObjectsFromArray:[NSArray arrayWithObjects:_closebutton, nil]];
+    [items addObjectsFromArray:[NSArray arrayWithObjects:flexItem, _closebutton, nil]];
     
     [_toolbar setItems:items];
     
@@ -48,16 +50,14 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(p_click)];
-//    [_button addGestureRecognizer:tapRecognizer];
-//    _button.userInteractionEnabled = YES;
-    NSURL *url = [[NSURL alloc] initWithString:feedURL];
+    NSString *strURL = [feedURL stringByAppendingFormat:@"?uuid=%@&platform=%@", @"uuid-is-uuid", @"ios"];
+
+    NSLog(@"open url: %@", strURL);
+    
+    NSURL *url = [[NSURL alloc] initWithString:strURL];
     NSURLRequest *req = [[NSURLRequest alloc] initWithURL:url];
     [_webview loadRequest:req];
 
-//    _webview.translatesAutoresizingMaskIntoConstraints = NO;
-//    NSLayoutConstraint *webviewWConstraint = [NSLayoutConstraint constraintWithItem:_webview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0f constant:0.0f];
-//    
     _toolbar.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutConstraint *toolbarVConstraint = [NSLayoutConstraint constraintWithItem:_toolbar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0.0f];
     
@@ -65,7 +65,6 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
     
     [self.view addConstraint:toolbarVConstraint];
     [self.view addConstraint:toolbarWConstraint];
-//    [self.view addConstraint:webviewWConstraint];
 }
 
 -(void) h_close {

@@ -147,6 +147,7 @@
 /** uiwebview delegate */
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"webview start load");
+    _url = self.webview.request.URL;
     
     _refreshButton.enabled = YES;
     _safariButton.enabled = YES;
@@ -173,7 +174,6 @@
 
 - (void)loadPage:(NSURL *)url {
     NSLog(@"loadpage: %@", url);
-    _url = url;
     NSURLRequest *req = [[NSURLRequest alloc] initWithURL:url];
     [_webview loadRequest:req];
 }
