@@ -1,13 +1,11 @@
 //
-//  SinaEyeSDK.m
+//  SinaEyeInfoProvider.m
 //  SinaEyeSDK
 //
-//  Created by 晓斌 蓝 on 15/2/2.
+//  Created by 晓斌 蓝 on 15/2/27.
 //  Copyright (c) 2015年 esina. All rights reserved.
 //
 
-#import "SinaEyeSDK.h"
-#import "FeedsViewController.h"
 #import <sys/types.h>
 #import <sys/socket.h>
 #import <sys/sysctl.h>
@@ -16,16 +14,58 @@
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
-@implementation SinaEyeSDK
+//import for str2md5
+#import <CommonCrypto/CommonDigest.h>
 
-+ (SinaEyeSDK *)shareInstance {
-    static SinaEyeSDK *sdk = nil;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+#import <AdSupport/AdSupport.h>
+#endif
+
+#import "SinaEyeInfoProvider.h"
+
+
+@interface SinaEyeInfoProvider ()
+
+@property (nonatomic, strong) NSString *deviceType;
+@property (nonatomic, strong) NSString *osVersion;
+@property (nonatomic, strong) NSString *macAddress;
+@property (nonatomic, strong) NSString *resolution;
+@property (nonatomic, strong) NSDictionary *infoDict;
+@property (nonatomic, strong) NSString *userAgent;
+@property (nonatomic, strong) NSString *uuid;
+@property (nonatomic, strong) SinaEyeIdentity *identity;
+
+@end
+
+@implementation SinaEyeInfoProvider
+
+//
+- (NSString *) stringToMD5:(NSString *) aString {
+    if(aString == nil || [aString length] == 0)
+        return nil;
+    
+    const char *value = [aString UTF8String];
+    
+    unsigned char outputBuffer[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(value,  strlen(value), outputBuffer);
+    
+    NSMutableString *outputString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for(NSInteger count = 0; count < CC_MD5_DIGEST_LENGTH; count++){
+        [outputString appendFormat:@"%02x",outputBuffer[count]];
+    }
+    
+    return outputString;
+    return aString;
+}
+
++ (SinaEyeInfoProvider *)shareInstance {
+    static SinaEyeInfoProvider *info = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSLog(@"Get the singlton sax eye sdk.");
-        sdk = [[SinaEyeSDK alloc] init];
+        info = [[SinaEyeInfoProvider alloc] init];
     });
-    return sdk;
+    return info;
 }
 
 - (NSString *) deviceType {
@@ -43,7 +83,7 @@
     return _osVersion;
 }
 
--(NSString *)macAddress {
+-(NSString *) macAddress {
     
     if (_macAddress == nil) {
         int                 mib[6];
@@ -93,21 +133,21 @@
     
 }
 
-//-(NSString *)md5MacAddress {
-//    return [SAXNSStringUtil stringToMd5:[self macAddress]];
-//}
+-(NSString *)md5MacAddress {
+    return [self stringToMD5:[self macAddress]];
+}
 
-//-(SAXIdentity *) identifier {
-//    if(_identity == nil) {
-//        if ([self p_deviceHasASIdentifierManager]) {
-//            _identity = [[SAXIdentity alloc] initWithType:@"IDFA" andValue:[self p_identifierFromASIdentifierManager]];
-//        }
-//        if(_identity == nil) {
-//            _identity = [[SAXIdentity alloc] initWithType:@"MAC" andValue:[self md5MacAddress]];
-//        }
-//    }
-//    return _identity;
-//}
+-(SinaEyeIdentity *) identifier {
+    if(_identity == nil) {
+        if ([self p_deviceHasASIdentifierManager]) {
+            _identity = [[SinaEyeIdentity alloc] initWithType:@"IDFA" andValue:[self p_identifierFromASIdentifierManager]];
+        }
+        if(_identity == nil) {
+            _identity = [[SinaEyeIdentity alloc] initWithType:@"MAC" andValue:[self md5MacAddress]];
+        }
+    }
+    return _identity;
+}
 
 -(CGSize) screenSize {
     return [[UIScreen mainScreen] bounds].size;
@@ -128,8 +168,7 @@
 }
 
 -(NSString *) bundleIdentifier {
-    //return [[NSString alloc] initWithFormat:@"%@",[[self p_infoDictionary] objectForKey:@"CFBundleIdentifier"]];
-    return @"bundle identifier";
+    return [[NSString alloc] initWithFormat:@"%@",[[self p_infoDictionary] objectForKey:@"CFBundleIdentifier"]];
 }
 
 //-(BOOL) isConnectionRequired {
@@ -151,7 +190,7 @@
 //    }
 //}
 
-//-(NSInteger)networkType {
+- (NSInteger) networkType {
 //    NSInteger ret = 0; //unknown
 //    switch ([self p_networkType]) {
 //        case NotReachable:
@@ -168,7 +207,8 @@
 //            break;
 //    }
 //    return ret;
-//}
+    return 0;
+}
 
 //-(BOOL) isWIFI {
 //    if ([self p_networkType] == ReachableViaWiFi) {
@@ -179,8 +219,7 @@
 //}
 
 -(NSString *)appVersion {
-    //return [[self p_infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    return @"appversion";
+    return [[self p_infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
 -(NSString *)carrierName {
@@ -240,40 +279,39 @@
     return platform;
 }
 
-//- (BOOL)p_advertisingTrackingEnabled
-//{
-//    BOOL enabled = YES;
-//    
-//    if ([self p_deviceHasASIdentifierManager]) {
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
-//        enabled = [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
-//#endif
-//    }
-//    
-//    return enabled;
-//}
-//
-//- (BOOL)p_deviceHasASIdentifierManager
-//{
-//    return !!NSClassFromString(@"ASIdentifierManager");
-//}
+- (BOOL)p_advertisingTrackingEnabled
+{
+    BOOL enabled = YES;
+    
+    if ([self p_deviceHasASIdentifierManager]) {
+        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+            enabled = [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
+        #endif
+    }
+    
+    return enabled;
+}
 
-//- (NSString *)p_identifierFromASIdentifierManager
-//{
-//    NSString *identifier = nil;
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
-//    identifier = [[ASIdentifierManager sharedManager].advertisingIdentifier UUIDString];
-//#endif
-//    return identifier;
-//}
-//
-//-(NSDictionary *) p_infoDictionary {
-//    if (_infoDict == nil) {
-//        _infoDict = [[NSBundle mainBundle] infoDictionary];
-//        //        SAXLogDebug(@"Info dictionary: %@", _infoDict);
-//    }
-//    return _infoDict;
-//}
+- (BOOL)p_deviceHasASIdentifierManager
+{
+    return !!NSClassFromString(@"ASIdentifierManager");
+}
+
+- (NSString *)p_identifierFromASIdentifierManager
+{
+    NSString *identifier = nil;
+    #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+        identifier = [[ASIdentifierManager sharedManager].advertisingIdentifier UUIDString];
+    #endif
+    return identifier;
+}
+
+- (NSDictionary *) p_infoDictionary {
+    if (_infoDict == nil) {
+        _infoDict = [[NSBundle mainBundle] infoDictionary];
+    }
+    return _infoDict;
+}
 //
 //
 //-(NetworkStatus)p_networkType:(NSString *)hostname {
@@ -286,28 +324,40 @@
 //    return [reachability currentReachabilityStatus];
 //}
 
-- (NSMutableURLRequest *)buildRequestWithURL:(NSURL *)URL
-{
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    [request setHTTPShouldHandleCookies:YES];
-    [request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
-    return request;
-}
+//- (NSMutableURLRequest *)buildRequestWithURL:(NSURL *)URL
+//{
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+//    [request setHTTPShouldHandleCookies:YES];
+//    [request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
+//    return request;
+//}
 
 - (NSString *)userAgent
 {
-//    if (!_userAgent) {
-//        _userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-//    }
-//    
-//    return _userAgent;
-    return @"useragent";
-}
-
-- (void) showFeeds: (UIViewController *) viewController {
-    FeedsViewController *feedsViewController = [[FeedsViewController alloc] init];
-    //切换view controller 为feedsViewController
-    [viewController presentViewController:feedsViewController animated:YES completion:nil];
+        if (!_userAgent) {
+            _userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+        }
+    
+        return _userAgent;
 }
 
 @end
+
+
+/* SinaEyeIdentity 实现 */
+@implementation SinaEyeIdentity
+
+-(SinaEyeIdentity *)initWithType:(NSString *)type andValue:(NSString *)value {
+    self = [super init];
+    if (self) {
+        _type = type;
+        _value = value;
+    }
+    return self;
+}
+
+-(NSString *)description {
+    return [NSString stringWithFormat:@"type=%@, value=%@", _type, _value ];
+}
+@end
+

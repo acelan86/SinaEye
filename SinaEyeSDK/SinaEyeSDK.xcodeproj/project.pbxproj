@@ -11,6 +11,11 @@
 		CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0D88791A7F6B100089BC2A /* SinaEyeSDK.m */; };
 		CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0D88951A8494500089BC2A /* FeedsViewController.m */; };
 		CF1F41631A8DCE2D00BCD554 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */; };
+		CF5701D31AA057010037D08D /* SinaEyeInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5701D21AA057010037D08D /* SinaEyeInfoProvider.m */; };
+		CF5701D51AA05EA90037D08D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D41AA05EA90037D08D /* SystemConfiguration.framework */; };
+		CF5701D71AA05EB20037D08D /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D61AA05EB20037D08D /* CoreTelephony.framework */; };
+		CF5701D91AA05F0E0037D08D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D81AA05F0E0037D08D /* CFNetwork.framework */; };
+		CF5701E51AA068F70037D08D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701E41AA068F70037D08D /* AdSupport.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +40,12 @@
 		CF0D88951A8494500089BC2A /* FeedsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedsViewController.m; sourceTree = "<group>"; };
 		CF1F41611A8DCE2D00BCD554 /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
 		CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
+		CF5701D11AA057010037D08D /* SinaEyeInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaEyeInfoProvider.h; sourceTree = "<group>"; };
+		CF5701D21AA057010037D08D /* SinaEyeInfoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaEyeInfoProvider.m; sourceTree = "<group>"; };
+		CF5701D41AA05EA90037D08D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		CF5701D61AA05EB20037D08D /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		CF5701D81AA05F0E0037D08D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		CF5701E41AA068F70037D08D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +53,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF5701E51AA068F70037D08D /* AdSupport.framework in Frameworks */,
+				CF5701D91AA05F0E0037D08D /* CFNetwork.framework in Frameworks */,
+				CF5701D71AA05EB20037D08D /* CoreTelephony.framework in Frameworks */,
+				CF5701D51AA05EA90037D08D /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +66,10 @@
 		CF0D886B1A7F6B100089BC2A = {
 			isa = PBXGroup;
 			children = (
+				CF5701E41AA068F70037D08D /* AdSupport.framework */,
+				CF5701D81AA05F0E0037D08D /* CFNetwork.framework */,
+				CF5701D61AA05EB20037D08D /* CoreTelephony.framework */,
+				CF5701D41AA05EA90037D08D /* SystemConfiguration.framework */,
 				CF0D88761A7F6B100089BC2A /* SinaEyeSDK */,
 				CF0D88831A7F6B100089BC2A /* SinaEyeSDKTests */,
 				CF0D88751A7F6B100089BC2A /* Products */,
@@ -74,6 +93,8 @@
 				CF0D88951A8494500089BC2A /* FeedsViewController.m */,
 				CF1F41611A8DCE2D00BCD554 /* BrowserViewController.h */,
 				CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */,
+				CF5701D11AA057010037D08D /* SinaEyeInfoProvider.h */,
+				CF5701D21AA057010037D08D /* SinaEyeInfoProvider.m */,
 			);
 			path = SinaEyeSDK;
 			sourceTree = "<group>";
@@ -151,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */,
+				CF5701D31AA057010037D08D /* SinaEyeInfoProvider.m in Sources */,
 				CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */,
 				CF1F41631A8DCE2D00BCD554 /* BrowserViewController.m in Sources */,
 			);
@@ -236,6 +258,11 @@
 		CF0D88891A7F6B100089BC2A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -245,6 +272,11 @@
 		CF0D888A1A7F6B100089BC2A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

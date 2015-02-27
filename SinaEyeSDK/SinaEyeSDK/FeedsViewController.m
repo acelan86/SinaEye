@@ -9,6 +9,7 @@
 #import "FeedsViewController.h"
 #import "BrowserViewController.h"
 #import "SinaEyeSDK.h"
+#import "SinaEyeInfoProvider.h"
 
 static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
 
@@ -50,7 +51,23 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSString *strURL = [feedURL stringByAppendingFormat:@"?uuid=%@&platform=%@", @"uuid-is-uuid", @"ios"];
+    SinaEyeInfoProvider *info = [SinaEyeInfoProvider shareInstance];
+    NSString *strURL = [feedURL stringByAppendingFormat:@"?udid=%@&platform=%@&carrier=%ld&os_version=%@&brand=%@&bundleid=%@&devicemodel=%@",
+                        //设备id
+                        [[info identifier].value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                        //平台
+                        [@"ios" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                        //网络
+                        [info networkType],
+                        //操作系统版本 @"ios7"
+                        [[info osVersion] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                        //品牌
+                        [@"Apple" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                        //bundle id
+                        [[info bundleIdentifier] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                        //设备型号 @"iphone 6p"
+                        [[info deviceType] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                    ];
 
     NSLog(@"open url: %@", strURL);
     

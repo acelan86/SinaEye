@@ -14,9 +14,13 @@
 		CF0D88531A7F6A300089BC2A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF0D88521A7F6A300089BC2A /* Images.xcassets */; };
 		CF0D88561A7F6A300089BC2A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0D88541A7F6A300089BC2A /* LaunchScreen.xib */; };
 		CF0D88621A7F6A300089BC2A /* SinaEyeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0D88611A7F6A300089BC2A /* SinaEyeTests.m */; };
-		CF0D888F1A7F6C140089BC2A /* libSinaEyeSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0D888E1A7F6C140089BC2A /* libSinaEyeSDK.a */; };
 		CF0D889A1A84C1C50089BC2A /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0D88981A84C1C50089BC2A /* MyViewController.m */; };
 		CF0D889B1A84C1C50089BC2A /* MyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0D88991A84C1C50089BC2A /* MyViewController.xib */; };
+		CF5701DB1AA05F360037D08D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701DA1AA05F360037D08D /* CFNetwork.framework */; };
+		CF5701DD1AA05F3E0037D08D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701DC1AA05F3E0037D08D /* SystemConfiguration.framework */; };
+		CF5701DF1AA05F470037D08D /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701DE1AA05F470037D08D /* CoreTelephony.framework */; };
+		CF5701E31AA068EF0037D08D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701E21AA068EF0037D08D /* AdSupport.framework */; };
+		CF5701F31AA072EE0037D08D /* libSinaEyeSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701F21AA072EE0037D08D /* libSinaEyeSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,11 +47,15 @@
 		CF0D885B1A7F6A300089BC2A /* SinaEyeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SinaEyeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF0D88601A7F6A300089BC2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF0D88611A7F6A300089BC2A /* SinaEyeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinaEyeTests.m; sourceTree = "<group>"; };
-		CF0D888E1A7F6C140089BC2A /* libSinaEyeSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSinaEyeSDK.a; path = "../SinaEyeSDK/build/Debug-iphoneos/libSinaEyeSDK.a"; sourceTree = "<group>"; };
 		CF0D88901A7F6E100089BC2A /* SinaEyeSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SinaEyeSDK.h; path = ../../SinaEyeSDK/SinaEyeSDK/SinaEyeSDK.h; sourceTree = "<group>"; };
 		CF0D88971A84C1C50089BC2A /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
 		CF0D88981A84C1C50089BC2A /* MyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyViewController.m; sourceTree = "<group>"; };
 		CF0D88991A84C1C50089BC2A /* MyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyViewController.xib; sourceTree = "<group>"; };
+		CF5701DA1AA05F360037D08D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		CF5701DC1AA05F3E0037D08D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		CF5701DE1AA05F470037D08D /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		CF5701E21AA068EF0037D08D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		CF5701F21AA072EE0037D08D /* libSinaEyeSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSinaEyeSDK.a; path = "../SinaEyeSDK/build/Debug-iphoneos/libSinaEyeSDK.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +63,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF0D888F1A7F6C140089BC2A /* libSinaEyeSDK.a in Frameworks */,
+				CF5701F31AA072EE0037D08D /* libSinaEyeSDK.a in Frameworks */,
+				CF5701E31AA068EF0037D08D /* AdSupport.framework in Frameworks */,
+				CF5701DF1AA05F470037D08D /* CoreTelephony.framework in Frameworks */,
+				CF5701DD1AA05F3E0037D08D /* SystemConfiguration.framework in Frameworks */,
+				CF5701DB1AA05F360037D08D /* CFNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,7 +84,11 @@
 		CF0D88391A7F6A300089BC2A = {
 			isa = PBXGroup;
 			children = (
-				CF0D888E1A7F6C140089BC2A /* libSinaEyeSDK.a */,
+				CF5701F21AA072EE0037D08D /* libSinaEyeSDK.a */,
+				CF5701E21AA068EF0037D08D /* AdSupport.framework */,
+				CF5701DE1AA05F470037D08D /* CoreTelephony.framework */,
+				CF5701DC1AA05F3E0037D08D /* SystemConfiguration.framework */,
+				CF5701DA1AA05F360037D08D /* CFNetwork.framework */,
 				CF0D88441A7F6A300089BC2A /* SinaEye */,
 				CF0D885E1A7F6A300089BC2A /* SinaEyeTests */,
 				CF0D88431A7F6A300089BC2A /* Products */,
@@ -352,6 +368,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -366,6 +383,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)SDK/build/Debug-iphoneos",
+					"$(SDKROOT)/usr/lib/system",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -380,6 +399,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)SDK/build/Debug-iphoneos",
+					"$(SDKROOT)/usr/lib/system",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
