@@ -21,6 +21,8 @@
 #import <AdSupport/AdSupport.h>
 #endif
 
+#import "SinaEyeReachability.h"
+
 #import "SinaEyeInfoProvider.h"
 
 
@@ -171,52 +173,33 @@
     return [[NSString alloc] initWithFormat:@"%@",[[self p_infoDictionary] objectForKey:@"CFBundleIdentifier"]];
 }
 
-//-(BOOL) isConnectionRequired {
-////    Reachability *reachability = [Reachability reachabilityWithHostName:INTERNET_CONNECTION_HOST_NAME];
-////    SAXLogDebug(@"isConnectionRequired network type: %d, hostname:%@",[reachability isConnectionRequired],INTERNET_CONNECTION_HOST_NAME);
-////    return [reachability connectionRequired];
-//
-//    NSURL *url = [NSURL URLWithString:INTERNET_CONNECTION_HOST_NAME];
-//    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10];
-//    NSHTTPURLResponse *response;
-//    [NSURLConnection sendSynchronousRequest:request returningResponse: &response error: nil];
-////NSLog(@"Testing connection required. url:%@", INTERNET_CONNECTION_HOST_NAME);
-//[NSThread sleepForTimeInterval:10.0];
-//    if (response == nil) {
-//        return NO;
-//    }
-//    else{
-//        return YES;
-//    }
-//}
-
 - (NSInteger) networkType {
-//    NSInteger ret = 0; //unknown
-//    switch ([self p_networkType]) {
-//        case NotReachable:
-//            ret = -1;
-//            break;
-//        case ReachableViaWiFi:
-//            ret = 1;
-//            break;
-//        case ReachableViaWWAN:
-//            ret = 3;
-//            break;
-//        default:
-//            ret = 0;
-//            break;
-//    }
-//    return ret;
+    NSInteger ret = 0; //unknown
+    switch ([self p_networkType]) {
+        case NotReachable:
+            ret = -1;
+            break;
+        case ReachableViaWiFi:
+            ret = 1;
+            break;
+        case ReachableViaWWAN:
+            ret = 3;
+            break;
+        default:
+            ret = 0;
+            break;
+    }
+    return ret;
     return 0;
 }
 
-//-(BOOL) isWIFI {
-//    if ([self p_networkType] == ReachableViaWiFi) {
-//        return YES;
-//    }else {
-//        return NO;
-//    }
-//}
+-(BOOL) isWIFI {
+    if ([self p_networkType] == ReachableViaWiFi) {
+        return YES;
+    }else {
+        return NO;
+    }
+}
 
 -(NSString *)appVersion {
     return [[self p_infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -312,25 +295,25 @@
     }
     return _infoDict;
 }
-//
-//
-//-(NetworkStatus)p_networkType:(NSString *)hostname {
-//    SAXReachability *reachability = [SAXReachability reachabilityWithHostName:hostname];
-//    return [reachability currentReachabilityStatus];
-//}
-//
-//-(NetworkStatus)p_networkType {
-//    SAXReachability *reachability = [SAXReachability reachabilityForInternetConnection];
-//    return [reachability currentReachabilityStatus];
-//}
 
-//- (NSMutableURLRequest *)buildRequestWithURL:(NSURL *)URL
-//{
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-//    [request setHTTPShouldHandleCookies:YES];
-//    [request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
-//    return request;
-//}
+
+- (NetworkStatus)p_networkType:(NSString *)hostname {
+    SinaEyeReachability *reachability = [SinaEyeReachability reachabilityWithHostName:hostname];
+    return [reachability currentReachabilityStatus];
+}
+
+- (NetworkStatus)p_networkType {
+    SinaEyeReachability *reachability = [SinaEyeReachability reachabilityForInternetConnection];
+    return [reachability currentReachabilityStatus];
+}
+
+- (NSMutableURLRequest *)buildRequestWithURL:(NSURL *)URL
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    [request setHTTPShouldHandleCookies:YES];
+    [request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
+    return request;
+}
 
 - (NSString *)userAgent
 {

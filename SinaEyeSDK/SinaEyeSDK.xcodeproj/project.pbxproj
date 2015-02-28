@@ -16,6 +16,7 @@
 		CF5701D71AA05EB20037D08D /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D61AA05EB20037D08D /* CoreTelephony.framework */; };
 		CF5701D91AA05F0E0037D08D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D81AA05F0E0037D08D /* CFNetwork.framework */; };
 		CF5701E51AA068F70037D08D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701E41AA068F70037D08D /* AdSupport.framework */; };
+		CF5701F61AA1642E0037D08D /* SinaEyeReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +47,8 @@
 		CF5701D61AA05EB20037D08D /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		CF5701D81AA05F0E0037D08D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		CF5701E41AA068F70037D08D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		CF5701F41AA1642D0037D08D /* SinaEyeReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaEyeReachability.h; sourceTree = "<group>"; };
+		CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaEyeReachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +98,8 @@
 				CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */,
 				CF5701D11AA057010037D08D /* SinaEyeInfoProvider.h */,
 				CF5701D21AA057010037D08D /* SinaEyeInfoProvider.m */,
+				CF5701F41AA1642D0037D08D /* SinaEyeReachability.h */,
+				CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */,
 			);
 			path = SinaEyeSDK;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 				CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */,
 				CF5701D31AA057010037D08D /* SinaEyeInfoProvider.m in Sources */,
 				CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */,
+				CF5701F61AA1642E0037D08D /* SinaEyeReachability.m in Sources */,
 				CF1F41631A8DCE2D00BCD554 /* BrowserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
