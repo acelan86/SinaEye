@@ -52,7 +52,9 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     SinaEyeInfoProvider *info = [SinaEyeInfoProvider shareInstance];
-    NSString *strURL = [feedURL stringByAppendingFormat:@"?udid=%@&platform=%@&carrier=%ld&os_version=%@&brand=%@&bundleid=%@&devicemodel=%@",
+    NSString *strURL = [feedURL stringByAppendingFormat:@"?appid=%@&udid=%@&platform=%@&carrier=%ld&os_version=%@&brand=%@&bundleid=%@&devicemodel=%@",
+                        //appid
+                        _appid,
                         //设备id
                         [[info identifier].value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                         //平台

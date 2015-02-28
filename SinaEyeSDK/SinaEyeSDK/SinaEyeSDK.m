@@ -9,22 +9,23 @@
 #import "SinaEyeSDK.h"
 #import "FeedsViewController.h"
 
+@interface SinaEyeSDK ()
+@property (nonatomic, strong) FeedsViewController *feedsViewController;
+@end
+
 @implementation SinaEyeSDK
 
-+ (SinaEyeSDK *)shareInstance {
-    static SinaEyeSDK *sdk = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSLog(@"Get the singlton sax eye sdk.");
-        sdk = [[SinaEyeSDK alloc] init];
-    });
-    return sdk;
+- (SinaEyeSDK *) initFeedsADWithAppid:(NSString *)appid {
+    self = [super init];
+    if (self) {
+        self.feedsViewController = [[FeedsViewController alloc] init];
+        self.feedsViewController.appid = appid;
+    }
+    return self;
 }
-
 - (void) showFeeds: (UIViewController *) viewController {
-    FeedsViewController *feedsViewController = [[FeedsViewController alloc] init];
     //切换view controller 为feedsViewController
-    [viewController presentViewController:feedsViewController animated:YES completion:nil];
+    [viewController presentViewController:self.feedsViewController animated:YES completion:nil];
 }
 
 @end

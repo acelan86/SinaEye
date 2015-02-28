@@ -12,7 +12,7 @@
 
 @interface SinaEyeSDK : NSObject
 
-+ (SinaEyeSDK *)shareInstance;
+- (SinaEyeSDK *) initFeedsADWithAppid:(NSString *)appid;
 
 - (void)showFeeds:(UIViewController *)view;
 

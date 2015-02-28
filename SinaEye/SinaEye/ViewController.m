@@ -11,6 +11,7 @@
 #import "MyViewController.h"
 
 @interface ViewController ()
+@property (nonatomic, strong) SinaEyeSDK *feedSDK;
 @end
 
 @implementation ViewController
@@ -18,12 +19,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _feedSDK = [[SinaEyeSDK alloc] initFeedsADWithAppid:@"my-appid-is-acelan-test"];
     // Do any additional setup after loading the view, typically from a nib.
 }
 - (IBAction)clickButton:(id)sender {
 //    MyViewController *view = [[MyViewController alloc] init];
 //    [self presentViewController:view animated:YES completion:nil];
-    [[SinaEyeSDK shareInstance] showFeeds:self];
+    [_feedSDK showFeeds:self];
 }
 
 -(void)viewDidAppear:(BOOL)animated {

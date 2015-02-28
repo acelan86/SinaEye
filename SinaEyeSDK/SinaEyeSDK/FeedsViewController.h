@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface FeedsViewController : UIViewController <UIWebViewDelegate>
-
+@property (nonatomic, strong) NSString *appid;
 @end
