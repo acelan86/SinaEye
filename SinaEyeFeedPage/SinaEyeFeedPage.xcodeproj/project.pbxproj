@@ -1,0 +1,78 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		CF5702051AA169590037D08D /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		CF5702061AA169860037D08D /* feeds.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = feeds.json; sourceTree = "<group>"; };
+		CF5702071AA169CE0037D08D /* iScroll.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = iScroll.js; sourceTree = "<group>"; };
+		CF5702081AA16BC40037D08D /* zepto.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = zepto.js; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		CF5701FE1AA168890037D08D = {
+			isa = PBXGroup;
+			children = (
+				CF5702071AA169CE0037D08D /* iScroll.js */,
+				CF5702061AA169860037D08D /* feeds.json */,
+				CF5702081AA16BC40037D08D /* zepto.js */,
+				CF5702051AA169590037D08D /* index.html */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		CF5701FF1AA168890037D08D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+			};
+			buildConfigurationList = CF5702021AA168890037D08D /* Build configuration list for PBXProject "SinaEyeFeedPage" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CF5701FE1AA168890037D08D;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		CF5702031AA168890037D08D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		CF5702041AA168890037D08D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CF5702021AA168890037D08D /* Build configuration list for PBXProject "SinaEyeFeedPage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF5702031AA168890037D08D /* Debug */,
+				CF5702041AA168890037D08D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CF5701FF1AA168890037D08D /* Project object */;
+}

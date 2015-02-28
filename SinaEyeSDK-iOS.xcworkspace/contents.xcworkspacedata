@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SinaEyeFeedPage/SinaEyeFeedPage.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SinaEyeSDK/SinaEyeSDK.xcodeproj">
    </FileRef>
    <FileRef
