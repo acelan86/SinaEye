@@ -18,6 +18,7 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
 @property (nonatomic, strong) UIWebView *webview;
 @property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) UIBarButtonItem *closebutton;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
 @end
 
 @implementation FeedsViewController
@@ -46,6 +47,13 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
     
     [_toolbar setItems:items];
     
+    /* 创建进度指示器 */
+    _spinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
+    _spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    _spinner.hidesWhenStopped = YES;
+    [self.spinner sizeToFit];
+    [self.view addSubview:_spinner];
+    
 }
 
 - (void)viewDidLoad {
@@ -58,7 +66,7 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
                         //设备id
                         [[info identifier].value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                         //平台
-                        [@"ios" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                        [@"IOS" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                         //网络
                         [info networkType],
                         //操作系统版本 @"ios7"
@@ -84,6 +92,14 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
     
     [self.view addConstraint:toolbarVConstraint];
     [self.view addConstraint:toolbarWConstraint];
+    
+    //创建进度指示器约束
+    _spinner.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *spinnerVConstraint = [NSLayoutConstraint constraintWithItem:_spinner attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
+    NSLayoutConstraint *spinnerHConstraint = [NSLayoutConstraint constraintWithItem:_spinner attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
+    
+    [self.view addConstraint:spinnerHConstraint];
+    [self.view addConstraint:spinnerVConstraint];
 }
 
 -(void) h_close {
@@ -109,6 +125,20 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
 }
 
 #pragma mark UIWebviewDelegate
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    NSLog(@"feeds start load");
+    if (![_spinner isAnimating]) {
+        [_spinner startAnimating];
+    }
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    NSLog(@"feeds finish load");
+    if ([self.spinner isAnimating]) {
+        [self.spinner stopAnimating];
+    }
+}
 
 -(BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSURL *url = [request URL];
