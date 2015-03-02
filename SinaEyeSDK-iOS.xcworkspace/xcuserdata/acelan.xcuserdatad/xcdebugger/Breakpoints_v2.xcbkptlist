@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SinaEyeSDK/SinaEyeSDK/SinaEyeSDK.m"
-            timestampString = "446796088.10978"
+            timestampString = "446982287.349147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "-showFeeds:"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "-showFeeds"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SinaEyeSDK/SinaEyeSDK/FeedsViewController.m"
-            timestampString = "446796855.044192"
+            timestampString = "446974447.303702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "-webView:shouldStartLoadWithRequest:navigationType:"
             landmarkType = "5">
          </BreakpointContent>
@@ -73,29 +73,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SinaEye/SinaEye/ViewController.m"
-            timestampString = "446796088.10978"
+            filePath = "SinaEyeSDK/SinaEyeSDK/SinaEyeSDK.m"
+            timestampString = "446982287.349147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "-clickButton:"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "-initFeedsADWithViewController:apprid:appkey:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SinaEyeSDK/SinaEyeSDK/SinaEyeSDK.h"
-            timestampString = "446717843.238614"
+            timestampString = "446979465.911883"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "15"
-            endingLineNumber = "15"
-            landmarkName = "-initFeedsADWithAppid:"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "-initFeedsADWithViewController:apprid:appkey:"
             landmarkType = "4">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,13 +105,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SinaEyeSDK/SinaEyeSDK/SinaEyeSDK.m"
-            timestampString = "446796050.129559"
+            filePath = "SinaEyeSDK/SinaEyeSDK/FeedsViewController.m"
+            timestampString = "446978673.815318"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "-initFeedsADWithAppid:"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
+            landmarkName = "-locationManager:didUpdateLocations:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

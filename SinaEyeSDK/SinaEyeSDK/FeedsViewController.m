@@ -11,17 +11,43 @@
 #import "SinaEyeSDK.h"
 #import "SinaEyeInfoProvider.h"
 
+#import <CoreLocation/CoreLocation.h>
+#import <CoreLocation/CLLocationManagerDelegate.h>
+
 static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
 
-@interface FeedsViewController ()
+@interface FeedsViewController () <CLLocationManagerDelegate>
+
 @property (nonatomic, strong) UIView *button;
 @property (nonatomic, strong) UIWebView *webview;
 @property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) UIBarButtonItem *closebutton;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 @end
 
 @implementation FeedsViewController
+
+//    1. 懒加载初始化：
+- (CLLocationManager *)locationManager{
+    if(!_locationManager){
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        // 设置定位精度
+        // kCLLocationAccuracyNearestTenMeters:精度10米
+        // kCLLocationAccuracyHundredMeters:精度100 米
+        // kCLLocationAccuracyKilometer:精度1000 米
+        // kCLLocationAccuracyThreeKilometers:精度3000米
+        // kCLLocationAccuracyBest:设备使用电池供电时候最高的精度
+        // kCLLocationAccuracyBestForNavigation:导航情况下最高精度，一般要有外接电源时才能使用
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        // distanceFilter是距离过滤器，为了减少对定位装置的轮询次数，位置的改变不会每次都去通知委托，而是在移动了足够的距离时才通知委托程序
+        // 它的单位是米，这里设置为至少移动1000再通知委托处理更新;
+        _locationManager.distanceFilter = 50.0f; // 如果设为kCLDistanceFilterNone，则每秒更新一次;
+    }
+    return _locationManager;
+}
+
 
 - (void)loadView {
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -58,11 +84,28 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    //    2. 调用请求：
+    if ([[[UIDevice currentDevice] systemVersion] doubleValue] > 8.0) {
+        //设置定位权限 仅ios8有意义
+        [self.locationManager requestWhenInUseAuthorization];// 前台定位
+        //  [locationManager requestAlwaysAuthorization];// 前后台同时定位
+    }
+    if ([CLLocationManager locationServicesEnabled]) {
+        [self.locationManager startUpdatingLocation];
+        NSLog(@"%f, %f", _locationManager.location.coordinate.latitude, _locationManager.location.coordinate.longitude);
+    } else {
+        NSLog(@"定位功能未开启");
+    }
+    
     // Do any additional setup after loading the view.
     SinaEyeInfoProvider *info = [SinaEyeInfoProvider shareInstance];
-    NSString *strURL = [feedURL stringByAppendingFormat:@"?appid=%@&udid=%@&platform=%@&carrier=%ld&os_version=%@&brand=%@&bundleid=%@&devicemodel=%@",
-                        //appid
-                        _appid,
+    NSString *strURL = [feedURL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&platform=%@&carrier=%ld&os_version=%@&brand=%@&bundleid=%@&devicemodel=%@",
+                        //appkey
+                        _appkey,
+                        //apprid
+                        _apprid,
                         //设备id
                         [[info identifier].value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                         //平台
@@ -100,6 +143,10 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
     
     [self.view addConstraint:spinnerHConstraint];
     [self.view addConstraint:spinnerVConstraint];
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+    [_locationManager stopUpdatingLocation];
 }
 
 -(void) h_close {
@@ -176,6 +223,28 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
 //    // for other url
 //    SAXLogInfo(@"Normal process.");
     return YES;
+}
+
+#pragma mark - CLLocationManagerDelegate
+// 3.代理方法
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    //NSLog(@"%ld",locations.count);
+    //NSString *str = [[NSString alloc] initWithFormat:@"lat:%f, lon:%f", manager.location.coordinate.latitude, manager.location.coordinate.longitude];
+    //[[[UIAlertView alloc] initWithTitle:@"ALERT" message:str delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"YES", nil] show];
+    NSLog(@"%f, %f", manager.location.coordinate.latitude, manager.location.coordinate.longitude);
+}
+
+// 定位失误时触发
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    NSLog(@"error:%@",error);
+}
+
+- (void)locationManagerDidResumeLocationUpdates:(CLLocationManager *)manager {
+    NSLog(@"resume location update");
+}
+
+- (void)locationManagerDidPauseLocationUpdates:(CLLocationManager *)manager {
+    NSLog(@"pause location update");
 }
 
 /*

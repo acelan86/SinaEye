@@ -233,7 +233,7 @@
 
             //获取数据
             function getFeeds(callback) {
-                alert(window.location.search);
+                console.log(window.location.search);
                 $.getJSON("./feeds.json" + window.location.search, {
                     _ts: (+new Date()).toString(36)
                 }, function (feeds) {

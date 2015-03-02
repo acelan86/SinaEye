@@ -21,6 +21,9 @@
 		CF5701DF1AA05F470037D08D /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701DE1AA05F470037D08D /* CoreTelephony.framework */; };
 		CF5701E31AA068EF0037D08D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701E21AA068EF0037D08D /* AdSupport.framework */; };
 		CF5701F31AA072EE0037D08D /* libSinaEyeSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701F21AA072EE0037D08D /* libSinaEyeSDK.a */; };
+		CF57020A1AA411AB0037D08D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5702091AA411AB0037D08D /* CoreLocation.framework */; };
+		CF57027E1AA464CD0037D08D /* SinaEyeResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF57027D1AA464CD0037D08D /* SinaEyeResource.bundle */; };
+		CF5702801AA46B8D0037D08D /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = CF57027F1AA46B8D0037D08D /* background.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +39,7 @@
 /* Begin PBXFileReference section */
 		CF0D88421A7F6A300089BC2A /* SinaEye.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SinaEye.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF0D88461A7F6A300089BC2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CF0D88471A7F6A300089BC2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CF0D88471A7F6A300089BC2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../SinaEye/main.m; sourceTree = "<group>"; };
 		CF0D88491A7F6A300089BC2A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CF0D884A1A7F6A300089BC2A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CF0D884C1A7F6A300089BC2A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -56,6 +59,9 @@
 		CF5701DE1AA05F470037D08D /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		CF5701E21AA068EF0037D08D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		CF5701F21AA072EE0037D08D /* libSinaEyeSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSinaEyeSDK.a; path = "../SinaEyeSDK/build/Debug-iphoneos/libSinaEyeSDK.a"; sourceTree = "<group>"; };
+		CF5702091AA411AB0037D08D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CF57027D1AA464CD0037D08D /* SinaEyeResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SinaEyeResource.bundle; sourceTree = "<group>"; };
+		CF57027F1AA46B8D0037D08D /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF57020A1AA411AB0037D08D /* CoreLocation.framework in Frameworks */,
 				CF5701F31AA072EE0037D08D /* libSinaEyeSDK.a in Frameworks */,
 				CF5701E31AA068EF0037D08D /* AdSupport.framework in Frameworks */,
 				CF5701DF1AA05F470037D08D /* CoreTelephony.framework in Frameworks */,
@@ -84,6 +91,7 @@
 		CF0D88391A7F6A300089BC2A = {
 			isa = PBXGroup;
 			children = (
+				CF5702091AA411AB0037D08D /* CoreLocation.framework */,
 				CF5701F21AA072EE0037D08D /* libSinaEyeSDK.a */,
 				CF5701E21AA068EF0037D08D /* AdSupport.framework */,
 				CF5701DE1AA05F470037D08D /* CoreTelephony.framework */,
@@ -126,8 +134,9 @@
 		CF0D88451A7F6A300089BC2A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CF57027F1AA46B8D0037D08D /* background.png */,
+				CF57027D1AA464CD0037D08D /* SinaEyeResource.bundle */,
 				CF0D88461A7F6A300089BC2A /* Info.plist */,
-				CF0D88471A7F6A300089BC2A /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -144,6 +153,7 @@
 		CF0D885F1A7F6A300089BC2A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CF0D88471A7F6A300089BC2A /* main.m */,
 				CF0D88601A7F6A300089BC2A /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -231,6 +241,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF57027E1AA464CD0037D08D /* SinaEyeResource.bundle in Resources */,
+				CF5702801AA46B8D0037D08D /* background.png in Resources */,
 				CF0D88511A7F6A300089BC2A /* Main.storyboard in Resources */,
 				CF0D88561A7F6A300089BC2A /* LaunchScreen.xib in Resources */,
 				CF0D889B1A84C1C50089BC2A /* MyViewController.xib in Resources */,

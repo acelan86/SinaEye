@@ -19,14 +19,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _feedSDK = [[SinaEyeSDK alloc] initFeedsADWithAppid:@"my-appid-is-acelan-test"];
+    _feedSDK = [[SinaEyeSDK alloc] initFeedsADWithViewController:self apprid:@"my-apprid-is-acelan-test" appkey:@"my-appkey-is-acelan-test"];
     // Do any additional setup after loading the view, typically from a nib.
+    //约束sdk的按钮
+    _feedSDK.feedsButton.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *iconVConstraint = [NSLayoutConstraint constraintWithItem:_feedSDK.feedsButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:-60.0f];
+    NSLayoutConstraint *iconHConstraint = [NSLayoutConstraint constraintWithItem:_feedSDK.feedsButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1.0f constant:-10.0f];
+    NSLayoutConstraint *iconWidthConstraint = [NSLayoutConstraint constraintWithItem:_feedSDK.feedsButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:32.0f];
+    NSLayoutConstraint *iconHeightConstraint = [NSLayoutConstraint constraintWithItem:_feedSDK.feedsButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:32.0f];
+    
+    
+    [self.view addConstraint:iconVConstraint];
+    [self.view addConstraint:iconHConstraint];
+    [self.view addConstraint:iconWidthConstraint];
+    [self.view addConstraint:iconHeightConstraint];
 }
-- (IBAction)clickButton:(id)sender {
-//    MyViewController *view = [[MyViewController alloc] init];
-//    [self presentViewController:view animated:YES completion:nil];
-    [_feedSDK showFeeds:self];
-}
+//- (IBAction)clickButton:(id)sender {
+////    MyViewController *view = [[MyViewController alloc] init];
+////    [self presentViewController:view animated:YES completion:nil];
+//    [_feedSDK showFeeds];
+//}
 
 -(void)viewDidAppear:(BOOL)animated {
 }

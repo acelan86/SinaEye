@@ -16,20 +16,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J9s-34-G5g">
-                                <rect key="frame" x="278" y="285" width="45" height="30"/>
-                                <state key="normal" title="大眼睛">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="clickButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Ztv-Ws-8bH"/>
-                                </connections>
-                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="D6R-af-ug1">
+                                <rect key="frame" x="0.0" y="0.0" width="499" height="530"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="J9s-34-G5g" secondAttribute="centerY" id="SQT-Ky-y3w"/>
-                            <constraint firstAttribute="centerX" secondItem="J9s-34-G5g" secondAttribute="centerX" id="UZ1-vw-AbP"/>
+                            <constraint firstAttribute="width" secondItem="D6R-af-ug1" secondAttribute="width" id="FO5-np-d7X"/>
+                            <constraint firstAttribute="height" secondItem="D6R-af-ug1" secondAttribute="height" id="rV6-mv-Icj"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -37,4 +31,7 @@
             </objects>
         </scene>
     </scenes>
+    <resources>
+        <image name="background.png" width="1242" height="2208"/>
+    </resources>
 </document>

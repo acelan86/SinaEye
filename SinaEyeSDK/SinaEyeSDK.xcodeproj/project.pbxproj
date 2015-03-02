@@ -17,6 +17,7 @@
 		CF5701D91AA05F0E0037D08D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D81AA05F0E0037D08D /* CFNetwork.framework */; };
 		CF5701E51AA068F70037D08D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701E41AA068F70037D08D /* AdSupport.framework */; };
 		CF5701F61AA1642E0037D08D /* SinaEyeReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */; };
+		CF5702711AA443BC0037D08D /* SinaEyeButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5702701AA443BC0037D08D /* SinaEyeButtonView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +50,9 @@
 		CF5701E41AA068F70037D08D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		CF5701F41AA1642D0037D08D /* SinaEyeReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaEyeReachability.h; sourceTree = "<group>"; };
 		CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaEyeReachability.m; sourceTree = "<group>"; };
+		CF57026F1AA443BC0037D08D /* SinaEyeButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaEyeButtonView.h; sourceTree = "<group>"; };
+		CF5702701AA443BC0037D08D /* SinaEyeButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaEyeButtonView.m; sourceTree = "<group>"; };
+		CF5702761AA459600037D08D /* ICON_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ICON_03.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,8 @@
 				CF5701D21AA057010037D08D /* SinaEyeInfoProvider.m */,
 				CF5701F41AA1642D0037D08D /* SinaEyeReachability.h */,
 				CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */,
+				CF57026F1AA443BC0037D08D /* SinaEyeButtonView.h */,
+				CF5702701AA443BC0037D08D /* SinaEyeButtonView.m */,
 			);
 			path = SinaEyeSDK;
 			sourceTree = "<group>";
@@ -115,6 +121,7 @@
 		CF0D88841A7F6B100089BC2A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CF5702761AA459600037D08D /* ICON_03.png */,
 				CF0D88851A7F6B100089BC2A /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -179,6 +186,7 @@
 				CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */,
 				CF5701D31AA057010037D08D /* SinaEyeInfoProvider.m in Sources */,
 				CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */,
+				CF5702711AA443BC0037D08D /* SinaEyeButtonView.m in Sources */,
 				CF5701F61AA1642E0037D08D /* SinaEyeReachability.m in Sources */,
 				CF1F41631A8DCE2D00BCD554 /* BrowserViewController.m in Sources */,
 			);

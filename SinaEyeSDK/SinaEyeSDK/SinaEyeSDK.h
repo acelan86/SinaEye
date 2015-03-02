@@ -12,8 +12,10 @@
 
 @interface SinaEyeSDK : NSObject
 
-- (SinaEyeSDK *) initFeedsADWithAppid:(NSString *)appid;
+@property (nonatomic, strong) UIButton *feedsButton;
 
-- (void)showFeeds:(UIViewController *)view;
+- (SinaEyeSDK *) initFeedsADWithViewController:(UIViewController *)mainViewController apprid:(NSString *)apprid appkey:(NSString *)appkey;
+
+- (void)showFeeds;
 
 @end
