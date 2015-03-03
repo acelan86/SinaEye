@@ -101,7 +101,7 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
     
     // Do any additional setup after loading the view.
     SinaEyeInfoProvider *info = [SinaEyeInfoProvider shareInstance];
-    NSString *strURL = [feedURL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&platform=%@&carrier=%ld&os_version=%@&brand=%@&bundleid=%@&devicemodel=%@",
+    NSString *strURL = [feedURL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&plat=%@&carrier=%ld&os_version=%@&brand=%@&bundleid=%@&devicemodel=%@",
                         //appkey
                         _appkey,
                         //apprid
@@ -228,9 +228,6 @@ static NSString *feedURL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/Si
 #pragma mark - CLLocationManagerDelegate
 // 3.代理方法
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
-    //NSLog(@"%ld",locations.count);
-    //NSString *str = [[NSString alloc] initWithFormat:@"lat:%f, lon:%f", manager.location.coordinate.latitude, manager.location.coordinate.longitude];
-    //[[[UIAlertView alloc] initWithTitle:@"ALERT" message:str delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"YES", nil] show];
     NSLog(@"%f, %f", manager.location.coordinate.latitude, manager.location.coordinate.longitude);
 }
 
