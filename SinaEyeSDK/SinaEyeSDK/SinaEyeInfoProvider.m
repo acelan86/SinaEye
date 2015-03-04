@@ -14,6 +14,10 @@
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
+//for location
+#import <CoreLocation/CoreLocation.h>
+#import <CoreLocation/CLLocationManagerDelegate.h>
+
 //import for str2md5
 #import <CommonCrypto/CommonDigest.h>
 
@@ -26,7 +30,7 @@
 #import "SinaEyeInfoProvider.h"
 
 
-@interface SinaEyeInfoProvider ()
+@interface SinaEyeInfoProvider () <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSString *deviceType;
 @property (nonatomic, strong) NSString *osVersion;
@@ -36,10 +40,51 @@
 @property (nonatomic, strong) NSString *userAgent;
 @property (nonatomic, strong) NSString *uuid;
 @property (nonatomic, strong) SinaEyeIdentity *identity;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
 @implementation SinaEyeInfoProvider
+
+//    1. 懒加载初始化：
+- (CLLocationManager *) locationManager {
+    if(!_locationManager){
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        // 设置定位精度
+        // kCLLocationAccuracyNearestTenMeters:精度10米
+        // kCLLocationAccuracyHundredMeters:精度100 米
+        // kCLLocationAccuracyKilometer:精度1000 米
+        // kCLLocationAccuracyThreeKilometers:精度3000米
+        // kCLLocationAccuracyBest:设备使用电池供电时候最高的精度
+        // kCLLocationAccuracyBestForNavigation:导航情况下最高精度，一般要有外接电源时才能使用
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        // distanceFilter是距离过滤器，为了减少对定位装置的轮询次数，位置的改变不会每次都去通知委托，而是在移动了足够的距离时才通知委托程序
+        // 它的单位是米，这里设置为至少移动1000m再通知委托处理更新;
+        _locationManager.distanceFilter = 1000.0f; // 如果设为kCLDistanceFilterNone，则每秒更新一次;
+    }
+    return _locationManager;
+}
+
+
+- (void) startUpdateLocation {
+    //    2. 调用请求：
+    if ([[[UIDevice currentDevice] systemVersion] doubleValue] > 8.0) {
+        //设置定位权限 仅ios8有意义
+        [self.locationManager requestWhenInUseAuthorization];// 前台定位
+        //  [locationManager requestAlwaysAuthorization];// 前后台同时定位
+    }
+    if ([CLLocationManager locationServicesEnabled]) {
+        [self.locationManager startUpdatingLocation];
+        NSLog(@"%f, %f", _locationManager.location.coordinate.latitude, _locationManager.location.coordinate.longitude);
+    } else {
+        NSLog(@"定位功能未开启");
+    }
+}
+
+- (NSString *)geoLocation {
+    return [NSString stringWithFormat:@"%f,%f", _locationManager.location.coordinate.latitude, _locationManager.location.coordinate.longitude];
+}
 
 //
 - (NSString *) stringToMD5:(NSString *) aString {
@@ -66,6 +111,7 @@
     dispatch_once(&onceToken, ^{
         NSLog(@"Get the singlton sax eye sdk.");
         info = [[SinaEyeInfoProvider alloc] init];
+        [info startUpdateLocation];
     });
     return info;
 }
@@ -317,12 +363,33 @@
 
 - (NSString *)userAgent
 {
-        if (!_userAgent) {
-            _userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-        }
+    if (!_userAgent) {
+        _userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    }
     
-        return _userAgent;
+    return _userAgent;
 }
+            
+            
+#pragma mark - CLLocationManagerDelegate
+// 3.代理方法
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    NSLog(@"%f, %f", manager.location.coordinate.latitude, manager.location.coordinate.longitude);
+}
+            
+// 定位失误时触发
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    NSLog(@"error:%@",error);
+}
+            
+- (void)locationManagerDidResumeLocationUpdates:(CLLocationManager *)manager {
+    NSLog(@"resume location update");
+}
+
+- (void)locationManagerDidPauseLocationUpdates:(CLLocationManager *)manager {
+    NSLog(@"pause location update");
+}
+
 
 @end
 

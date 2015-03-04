@@ -13,6 +13,9 @@
 
 @interface SinaEyeInfoProvider : NSObject
 
+//Geo location (经度,纬度)
+- (NSString *)geoLocation;
+
 //设备类型
 - (NSString *) deviceType;
 

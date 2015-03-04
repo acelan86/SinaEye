@@ -9,7 +9,6 @@
 #import "BrowserViewController.h"
 
 @interface BrowserViewController ()
-@property (nonatomic, strong) NSURL *url;
 @property (nonatomic) NSInteger webviewLoadCount;
 @end
 
@@ -19,14 +18,13 @@
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _webview = [[UIWebView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+    _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height - 44 + 20)];
     
     [self.view addSubview:_webview];
     
     _toolbar = [[UIToolbar alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     _toolbar.backgroundColor = [UIColor whiteColor];
     
-    _closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(h_close)];
     _backButton = [[UIBarButtonItem alloc] initWithImage:[self backButtonImage] style:UIBarButtonItemStylePlain target:self action:@selector(h_back)];
     _forwardButton = [[UIBarButtonItem alloc] initWithImage:[self forwardButtonImage] style:UIBarButtonItemStylePlain target:self action:@selector(h_forward)];
     _refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(h_refresh)];
@@ -37,7 +35,7 @@
     
     
     NSMutableArray *items = [[NSMutableArray alloc] init];
-    [items addObjectsFromArray:[NSArray arrayWithObjects:_backButton, flexItem, _forwardButton, flexItem, _safariButton, flexItem, _refreshButton, flexItem, _closeButton, nil]];
+    [items addObjectsFromArray:[NSArray arrayWithObjects:_backButton, flexItem, _forwardButton, flexItem, _safariButton, flexItem, _refreshButton, nil]];
     
     [_toolbar setItems:items];
     [self.view addSubview:_toolbar];
@@ -48,7 +46,6 @@
     _spinner.hidesWhenStopped = YES;
     [self.spinner sizeToFit];
     [self.view addSubview:_spinner];
-
     
     _webview.delegate = self;
     
@@ -74,16 +71,17 @@
     [self.view addConstraint:spinnerVConstraint];
     // Do any additional setup after loading the view.
     _webviewLoadCount = 0;
+    
+    if (self.url) {
+        [self loadPage:self.url];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)h_close {
-    [self dismissActionSheet];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
+
 - (void)h_back {
     [self dismissActionSheet];
     [_webview goBack];

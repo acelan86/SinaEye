@@ -9,11 +9,14 @@
 #import "SinaEyeSDK.h"
 #import "FeedsViewController.h"
 
+static NSString *SDK_VERSION = @"1.0.0";
+
 @interface SinaEyeSDK ()
 @property (nonatomic, weak) UIViewController *mainViewController;
 @property (nonatomic, strong) FeedsViewController *feedsViewController;
 @property (nonatomic, strong) NSBundle *bundle;
 @property (nonatomic, strong) NSTimer *messageTimer;
+@property (nonatomic, strong) UINavigationController *navigator;
 @end
 
 @implementation SinaEyeSDK
@@ -25,6 +28,7 @@
         self.feedsViewController = [[FeedsViewController alloc] init];
         self.feedsViewController.apprid = apprid;
         self.feedsViewController.appkey = appkey;
+        self.feedsViewController.sdkVersion = SDK_VERSION;
         
         self.feedsButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
         _bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"SinaEyeResource" ofType:@"bundle"]];
@@ -37,6 +41,9 @@
         //设置定时器，进行新消息提醒
         _messageTimer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(showIconHasNewMessage) userInfo:nil repeats:YES];
         [_messageTimer fire];
+        
+        //创建导航控制器
+        _navigator = [[UINavigationController alloc] initWithRootViewController:self.feedsViewController];
     }
     return self;
 }
@@ -52,7 +59,7 @@
 - (void) showFeeds {
     [self showIconNormal];
     //切换view controller 为feedsViewController
-    [self.mainViewController presentViewController:self.feedsViewController animated:YES completion:nil];
+    [self.mainViewController presentViewController:_navigator animated:YES completion:nil];
 }
 
 @end

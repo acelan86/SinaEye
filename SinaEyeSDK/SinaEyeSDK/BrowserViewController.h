@@ -23,6 +23,7 @@
 
 
 @property (nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, strong) NSURL *url;
 
 - (void)loadPage:(NSURL *) url;
 

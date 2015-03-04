@@ -11,4 +11,5 @@
 @interface FeedsViewController : UIViewController <UIWebViewDelegate>
 @property (nonatomic, strong) NSString *apprid;
 @property (nonatomic, strong) NSString *appkey;
+@property (nonatomic, strong) NSString *sdkVersion;
 @end

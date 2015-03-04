@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-
 @interface SinaEyeSDK : NSObject
 
 @property (nonatomic, strong) UIButton *feedsButton;
