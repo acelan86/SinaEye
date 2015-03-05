@@ -8,21 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BrowserViewControllerDelegate <NSObject>
+@optional
+- (void)webViewDidStartLoad:(UIWebView *)webView;
+- (void)webViewDidFinishLoad:(UIWebView *)webView;
+- (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
+
+@end
+
 @interface BrowserViewController : UIViewController <UIActionSheetDelegate, UIWebViewDelegate>
 
-@property (nonatomic, strong) UIWebView *webview;
-@property (nonatomic, strong) UIToolbar *toolbar;
-@property (nonatomic, strong) UIBarButtonItem *closeButton;
-@property (nonatomic, strong) UIBarButtonItem *backButton;
-@property (nonatomic, strong) UIBarButtonItem *forwardButton;
-@property (nonatomic, strong) UIBarButtonItem *refreshButton;
-@property (nonatomic, strong) UIBarButtonItem *safariButton;
-
-@property (nonatomic,strong) UIBarButtonItem *spinnerItem;
-@property (nonatomic,strong) UIActivityIndicatorView *spinner;
-
-
-@property (nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, assign) id<BrowserViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSURL *url;
 
 - (void)loadPage:(NSURL *) url;

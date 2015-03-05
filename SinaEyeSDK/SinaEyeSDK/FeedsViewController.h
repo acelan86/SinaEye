@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FeedsViewController : UIViewController <UIWebViewDelegate>
-@property (nonatomic, strong) NSString *apprid;
-@property (nonatomic, strong) NSString *appkey;
-@property (nonatomic, strong) NSString *sdkVersion;
+@protocol FeedsViewControllerDelegate <NSObject>
+
+- (NSString *)appendInfoParams:(NSString *)url;
+
+@end
+
+@interface FeedsViewController : UINavigationController
+
+@property (nonatomic, assign) id<FeedsViewControllerDelegate>fvcdelegate;
+
+- (FeedsViewController *)initWithDelegate:(id<FeedsViewControllerDelegate>)delegate;
+
 @end

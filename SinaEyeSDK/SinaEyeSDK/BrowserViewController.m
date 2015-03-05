@@ -9,7 +9,22 @@
 #import "BrowserViewController.h"
 
 @interface BrowserViewController ()
+
+@property (nonatomic, strong) UIWebView *webview;
+@property (nonatomic, strong) UIToolbar *toolbar;
+@property (nonatomic, strong) UIBarButtonItem *closeButton;
+@property (nonatomic, strong) UIBarButtonItem *backButton;
+@property (nonatomic, strong) UIBarButtonItem *forwardButton;
+@property (nonatomic, strong) UIBarButtonItem *refreshButton;
+@property (nonatomic, strong) UIBarButtonItem *safariButton;
+
+@property (nonatomic,strong) UIBarButtonItem *spinnerItem;
+@property (nonatomic,strong) UIActivityIndicatorView *spinner;
+
+
+@property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic) NSInteger webviewLoadCount;
+
 @end
 
 @implementation BrowserViewController
@@ -47,13 +62,7 @@
     [self.spinner sizeToFit];
     [self.view addSubview:_spinner];
     
-    _webview.delegate = self;
-    
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
+    //指定toolbar的约束
     _toolbar.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutConstraint *toolbarVConstraint = [NSLayoutConstraint constraintWithItem:_toolbar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0.0f];
     
@@ -69,8 +78,18 @@
     
     [self.view addConstraint:spinnerHConstraint];
     [self.view addConstraint:spinnerVConstraint];
+    
+    _webview.delegate = self;
+    
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
     // Do any additional setup after loading the view.
     _webviewLoadCount = 0;
+    
+    NSLog(@"browser is load: %@", self.url);
     
     if (self.url) {
         [self loadPage:self.url];
@@ -142,7 +161,9 @@
     }
 }
 
-/** uiwebview delegate */
+#pragma mark uiwebview delegate
+
+/* 请求失败 */
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"webview start load");
     _url = self.webview.request.URL;
@@ -153,8 +174,13 @@
         [_spinner startAnimating];
     }
     _webviewLoadCount++;
+    
+    if ([_delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
+        [_delegate webViewDidStartLoad:webView];
+    }
 }
 
+/* 请求成功 */
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webview finish load");
     _webviewLoadCount--;
@@ -166,6 +192,18 @@
     if ([self.spinner isAnimating]) {
         [self.spinner stopAnimating];
     }
+    
+    if ([_delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
+        [_delegate webViewDidFinishLoad:webView];
+    }
+}
+
+/* 拦截请求并做特殊处理 */
+-(BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if ([_delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+        return [_delegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+    }
+    return YES;
 }
 
 
@@ -239,6 +277,10 @@
     
     
     return forwardButtonImage;
+}
+
+- (void)dealloc {
+    NSLog(@"browser is dealloc");
 }
 
 /*
