@@ -29,14 +29,21 @@
 
 @implementation BrowserViewController
 
+- (BrowserViewController *)initWithToolbar {
+    BrowserViewController *bvc = [[BrowserViewController alloc] init];
+    bvc.hasToolbar = YES;
+    return bvc;
+}
+
 - (void)loadView {
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height - 44 + 20)];
+    _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height - (self.hasToolbar == YES ? 44 : 0) + 20)];
     
     [self.view addSubview:_webview];
     
+    //创建toolbar
     _toolbar = [[UIToolbar alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     _toolbar.backgroundColor = [UIColor whiteColor];
     
@@ -55,13 +62,6 @@
     [_toolbar setItems:items];
     [self.view addSubview:_toolbar];
     
-    /* 创建进度指示器 */
-    _spinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
-    _spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    _spinner.hidesWhenStopped = YES;
-    [self.spinner sizeToFit];
-    [self.view addSubview:_spinner];
-    
     //指定toolbar的约束
     _toolbar.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutConstraint *toolbarVConstraint = [NSLayoutConstraint constraintWithItem:_toolbar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0.0f];
@@ -70,6 +70,18 @@
     
     [self.view addConstraint:toolbarVConstraint];
     [self.view addConstraint:toolbarWConstraint];
+    //end 创建toolbar
+    
+    if (self.hasToolbar != YES) {
+        _toolbar.hidden = YES;
+    }
+    
+    /* 创建进度指示器 */
+    _spinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
+    _spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    _spinner.hidesWhenStopped = YES;
+    [self.spinner sizeToFit];
+    [self.view addSubview:_spinner];
     
     //创建进度指示器约束
     _spinner.translatesAutoresizingMaskIntoConstraints = NO;

@@ -62,6 +62,7 @@
             overflow:hidden;
             clear: both;
             border-bottom: 1px solid #ececec;
+            position:relative;
         }
         .card-dt{
             float:left;
@@ -71,6 +72,7 @@
             height:60px;
             border:none;
             margin:10px;
+            margin-top:14px;
         }
         .card-dd{
             overflow:hidden;
@@ -78,23 +80,24 @@
         }
         .card-title{
             color: #2f2f2f;
-            line-height: 20px;
-            font-size: 15px;
+            line-height: 30px;
+            font-size: 17px;
             font-weight: 600;
         }
         .card-summary{
             color: #8b8b8b;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: normal;
             overflow: hidden;
             line-height: 22px;
         }
         .card-op{
             overflow:hidden;
+            position:relative;
         }
         .card-op-left,
         .card-op-right{
-            font-size: 10px;
+            font-size: 12px;
             height: 20px;
             line-height: 26px;
             float:left;
@@ -122,6 +125,36 @@
             width: 300px;
             height: 250px;
         }
+        .like-button,
+        .unlike-button{
+            background: url(share_ico.png) no-repeat 0px -15px;
+            padding-left: 16px;
+            background-size: 12px auto;
+            color:#999;
+        }
+        .like-button{
+            margin-right:10px;
+        }
+        .unlike-button{
+            background-position: 0px 0px;
+        }
+        .info-box{
+            line-height:30px;
+            font-size:14px;
+            background-color: #000;
+            opacity:0;
+            color:#fff;
+            position:absolute;
+            bottom:0px;
+            width:100%;
+            display:none;
+            text-align: center;
+            z-index: 10;
+            opacity: .7;
+        }
+        .show{
+            display:block;
+        }
     </style>
 </head>
 <body>
@@ -132,10 +165,12 @@
             <div id="PullUp" class="pull-indecator"></div>
         </div>
     </div>
+    <div id="InfoBox" class="info-box"></div>
     <script>
         document.addEventListener('touchmove', function (e) { 
             e.preventDefault();
         }, false);
+
         document.addEventListener('DOMContentLoaded', function () {
             var PULL_OFFSET = 40; //拉动临界值
 
@@ -162,31 +197,39 @@
             var pullUp = document.querySelector("#PullUp");
             var pullUpOffset = pullUp.offsetHeight;
 
+            var infoBox = $("#InfoBox");
+
             var TPL = {
                 //title + summary + 1pic
-                "tid1" : function (data) {
+                "tid2" : function (data) {
                     return [
                         '<dl class="card">',
                             '<dt class="card-dt">',
-                                '<img class="card-img" src="' + data.imgs[0].src + '" alt="' + data.title + '">',
+                                data.link ? '<a class="card-link" href="' + data.link + '" target="_blank">' : '',
+                                    '<img class="card-img" src="' + data.imgs[0].url + '" alt="' + data.title + '">',
+                                data.link ? '</a>' : '',
                             '</dt>',
                             '<dd class="card-dd">',
-                                '<h3 class="card-title">' + data.title + '</h3>',
-                                '<h4 class="card-summary">' + data.summary + '</h4>',
+                                data.link ? '<a class="card-link" href="' + data.link + '" target="_blank">' : '',
+                                    '<h3 class="card-title">' + data.title + '</h3>',
+                                    '<p class="card-summary">' + data.summary + '</p>',
+                                data.link ? '</a>' : '',
                                 '<p class="card-op">',
-                                    '<span class="card-op-left">赞助</span>',
-                                    '<span class="card-op-right"></span>',
+                                    '<span class="card-op-left"></span>',
+                                    '<span class="card-op-right">',
+                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '">喜欢</span>' + '<span class="unlike-button" data-link="' + data.link + '">拒绝</span>') : ''),
+                                    '</span>',
                                 '</p>',
                             '</dd>',
                         '</dl>'
                     ].join('');
                 },
                 //title + 3pic
-                "tid2": function (data) {
+                "tid3": function (data) {
                     var pics = data.imgs.map(function (image) {
                         return '<li>' +
                                     '<span>' +
-                                        '<img alt="' + data.title + '" src="' + image.src + '"/>' +
+                                        '<img alt="' + data.title + '" src="' + image.url + '"/>' +
                                     '</span>' +
                                 '</li>';
                     });
@@ -194,36 +237,45 @@
                     return [
                         '<dl class="card">',
                             '<dd class="card-dd">',
-                                '<h3 class="card-title">' + data.title + '</h3>',
-                                '<ul class="card-pics">',
-                                    pics.join(''),
-                                '</ul>',
+                                data.link ? '<a class="card-link" href="' + data.link + '" target="_blank">' : '',
+                                    '<h3 class="card-title">' + data.title + '</h3>',
+                                    '<ul class="card-pics">',
+                                        pics.join(''),
+                                    '</ul>',
+                                data.link ? '</a>' : '',
                                 '<p class="card-op">',
-                                    '<span class="card-op-left">xxx</span>',
-                                    '<span class="card-op-right">56</span>',
+                                    '<span class="card-op-left"></span>',
+                                    '<span class="card-op-right">',
+                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '">喜欢</span>' + '<span class="unlike-button" data-link="' + data.link + '">拒绝</span>') : ''),
+                                    '</span>',
                                 '</p>',
                             '</dd>',
                         '</dl>'
                     ].join('');
                 },
-                "tid3": function (data) {
+                //title + summary
+                "tid1": function (data) {
                     var pics = data.imgs.map(function (image) {
                         return '<li>' +
                                     '<span>' +
-                                        '<img alt="' + data.title + '" src="' + image.src + '"/>' +
+                                        '<img alt="' + data.title + '" src="' + image.url + '"/>' +
                                     '</span>' +
                                 '</li>';
                     });
                     return [
                         '<dl class="card">',
                             '<dd class="card-dd">',
-                                '<h3 class="card-title">' + data.title + '</h3>',
-                                '<ul class="card-pics card-pics-full">',
-                                    pics.join(''),
-                                '</ul>',
+                                data.link ? '<a class="card-link" href="' + data.link + '" target="_blank">' : '',
+                                    '<h3 class="card-title">' + data.title + '</h3>',
+                                    '<ul class="card-pics card-pics-full">',
+                                        pics.join(''),
+                                    '</ul>',
+                                data.link ? '</a>' : '',
                                 '<p class="card-op">',
-                                    '<span class="card-op-left">xxx</span>',
-                                    '<span class="card-op-right">56</span>',
+                                    '<span class="card-op-left"></span>',
+                                    '<span class="card-op-right">',
+                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '">喜欢</span>' + '<span class="unlike-button" data-link="' + data.link + '">拒绝</span>') : ''),
+                                    '</span>',
                                 '</p>',
                             '</dd>',
                         '</dl>'
@@ -231,17 +283,76 @@
                 }
             };
 
+            var infoTimer;
+            function info(msg) {
+                infoBox.html(msg);
+                infoTimer && clearTimeout(infoTimer);
+                infoTimer = setTimeout(function () {
+                    infoBox.removeClass('show');
+                }, 2000);
+                infoBox.addClass('show');
+            }
+
+            //挂接喜欢跟拒绝事件
+            $('.list').on('click', '.unlike-button', function () {
+                sendUserAction(0, $(this).data('link').split('?')[1]);
+                infoBox.insertBefore($(this).closest('.card-dd'));
+                info("拒绝此类推荐");
+                return false;
+            });
+            $('.list').on('click', '.like-button', function () {
+                sendUserAction(1, $(this).data('link').split('?')[1]);
+                infoBox.insertBefore($(this).closest('.card-dd'));
+                info("喜欢此类推荐");
+                return false;
+            });
+
+            function log(url, useCache) {
+                var img = new Image(),
+                    key = '_sina_eye_log' + (+new Date()).toString(36);
+
+                window[key] = img;
+             
+                img.onload = img.onerror = img.onabort = function () {
+                    img.onload = img.onerror = img.onabort = null;
+             
+                    window[key] = null;
+                    img = null;
+                };
+         
+                img.src = url + (useCache ? '' : (url.indexOf('?') > 0 ? '&' : '?') + key);
+            }
+            //发送喜欢/拒绝信息
+            function sendUserAction(isLike, params) {
+                var url = "http://10.79.96.42:8010/user_action",
+                isLike = isLike ? 1 : 0;
+                log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike);
+            }
+
             //获取数据
             function getFeeds(callback) {
                 console.log(window.location.search);
-                $.getJSON("./feeds.json" + window.location.search, {
-                    _ts: (+new Date()).toString(36)
-                }, function (feeds) {
-                    var htmls = feeds.data.map(function (feed) {
-                        return TPL["tid" + feed.templateid] &&
-                                    '<a href="' + feed.link + '" target="_blank">' + TPL["tid" + feed.templateid](feed) + '</a>';
-                    });
-                    callback(htmls.join(''));
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "jsonp",
+                    url: "http://bigeye.sina.com.cn:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search,
+                    //url: "feeds.json" + window.location.search,
+                    data: {
+                        _ts: (+new Date()).toString(36)
+                    },
+                    success: function (feeds) {
+                        var htmls = [];
+
+                        if (0 === feeds.status && feeds.data.results && feeds.data.results.length > 0) {
+                            htmls = feeds.data.results.map(function (feed) {
+                                return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
+                            });
+                        } else {
+                            alert("没有新内容了，等等再刷看看～");
+                        }
+                        callback(htmls.join(''));
+                    }
                 });
             }
 

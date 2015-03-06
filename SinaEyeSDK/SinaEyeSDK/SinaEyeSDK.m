@@ -23,6 +23,7 @@ static NSString *SDK_VERSION = @"1.0.0";
 @implementation SinaEyeSDK
 
 - (SinaEyeSDK *) initFeedsADWithViewController:(UIViewController *)mainViewController apprid:(NSString *)apprid appkey:(NSString *)appkey {
+    NSLog(@"SDK init");
     self = [super init];
     if (self) {
         //配置项

@@ -36,7 +36,7 @@ static NSString *FEED_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/S
     //添加导航关闭按钮
     UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(h_close)];
     _feeds.navigationItem.leftBarButtonItem = closeButton;
-    _feeds.title = @"新浪推荐";
+    _feeds.title = @"新浪资讯";
     
     return navigation;
 }
@@ -45,12 +45,14 @@ static NSString *FEED_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/S
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSURL *url = [request URL];
     
+    NSLog(@"request: %@", [url path]);
+    
     //如果不是feed页面
     if ([[url path] rangeOfString:@"/SinaEyeFeedPage/index.html"].location == NSNotFound) {
     
         NSLog(@"index view : %@, %@", [url host], [url path] );
     
-        BrowserViewController *browser = [[BrowserViewController alloc] init];
+        BrowserViewController *browser = [[BrowserViewController alloc] initWithToolbar];
         
         browser.url = url;
     

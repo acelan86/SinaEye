@@ -19,6 +19,12 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="D6R-af-ug1">
                                 <rect key="frame" x="0.0" y="0.0" width="499" height="530"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuU-jh-bRm">
+                                <rect key="frame" x="236" y="381" width="22" height="22"/>
+                                <connections>
+                                    <action selector="changeView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7Gt-wn-Qcf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>

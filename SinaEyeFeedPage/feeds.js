@@ -1,4 +1,5 @@
-{
+("undefined" !== typeof jsonp1) && jsonp1({
+    "status": 0,
     "data": [
         {
             "templateid": 1,
@@ -95,4 +96,4 @@
             "isad": 0
         }
     ]
-}
+});

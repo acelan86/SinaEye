@@ -18,9 +18,12 @@
 
 @interface BrowserViewController : UIViewController <UIActionSheetDelegate, UIWebViewDelegate>
 
+@property (nonatomic) BOOL hasToolbar;//是否需要toolbar
+
 @property (nonatomic, assign) id<BrowserViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSURL *url;
 
 - (void)loadPage:(NSURL *) url;
+- (BrowserViewController *)initWithToolbar;
 
 @end

@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _feedSDK = [[SinaEyeSDK alloc] initFeedsADWithViewController:self apprid:@"my-apprid-is-acelan-test" appkey:@"my-appkey-is-acelan-test"];
+    _feedSDK = [[SinaEyeSDK alloc] initFeedsADWithViewController:self apprid:@"my-apprid-is-acelan-test" appkey:@"123123"];
     // Do any additional setup after loading the view, typically from a nib.
     //约束sdk的按钮
     _feedSDK.feedsButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -34,11 +34,10 @@
     [self.view addConstraint:iconWidthConstraint];
     [self.view addConstraint:iconHeightConstraint];
 }
-//- (IBAction)clickButton:(id)sender {
-////    MyViewController *view = [[MyViewController alloc] init];
-////    [self presentViewController:view animated:YES completion:nil];
-//    [_feedSDK showFeeds];
-//}
+- (IBAction)changeView:(id)sender {
+    MyViewController *view = [[MyViewController alloc] init];
+    [self presentViewController:view animated:YES completion:nil];
+}
 
 -(void)viewDidAppear:(BOOL)animated {
 }
