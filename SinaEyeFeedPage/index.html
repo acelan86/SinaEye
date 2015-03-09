@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ch">
 <head>
-    <title></title>
+    <title> 新浪资讯 </title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="apple-touch-fullscreen" content="YES" />
@@ -309,7 +309,7 @@
 
             function log(url, useCache) {
                 var img = new Image(),
-                    key = '_sina_eye_log' + (+new Date()).toString(36);
+                    key = '_sina_eye_log' + (+new Date()).toString(36) + "=1";
 
                 window[key] = img;
              
@@ -324,7 +324,7 @@
             }
             //发送喜欢/拒绝信息
             function sendUserAction(isLike, params) {
-                var url = "http://10.79.96.42:8010/user_action",
+                var url = "http://10.210.228.69:8010/user_action",
                 isLike = isLike ? 1 : 0;
                 log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike);
             }
@@ -336,7 +336,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "jsonp",
-                    url: "http://bigeye.sina.com.cn:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search,
+                    url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search,
                     //url: "feeds.json" + window.location.search,
                     data: {
                         _ts: (+new Date()).toString(36)
@@ -352,6 +352,9 @@
                             alert("没有新内容了，等等再刷看看～");
                         }
                         callback(htmls.join(''));
+                    },
+                    error: function () {
+                        alert("抱歉，服务器开小差了～");
                     }
                 });
             }

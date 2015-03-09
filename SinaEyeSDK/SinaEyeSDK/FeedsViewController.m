@@ -43,12 +43,13 @@ static NSString *FEED_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/S
 
 
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    
     NSURL *url = [request URL];
     
-    NSLog(@"request: %@", [url path]);
+    NSLog(@"request: %@", [url absoluteString]);
     
     //如果不是feed页面
-    if ([[url path] rangeOfString:@"/SinaEyeFeedPage/index.html"].location == NSNotFound) {
+    if (!([[url absoluteString] rangeOfString:@"/SinaEyeFeedPage/index.html"].location != NSNotFound || [[url absoluteString] rangeOfString:@"file://"].location != NSNotFound)) {
     
         NSLog(@"index view : %@, %@", [url host], [url path] );
     

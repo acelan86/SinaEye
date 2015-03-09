@@ -11,6 +11,7 @@
 		CF5702061AA169860037D08D /* feeds.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = feeds.json; sourceTree = "<group>"; };
 		CF5702071AA169CE0037D08D /* iScroll.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = iScroll.js; sourceTree = "<group>"; };
 		CF5702081AA16BC40037D08D /* zepto.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = zepto.js; sourceTree = "<group>"; };
+		CF9DD3CD1AAD6AE600D709AD /* 404.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = 404.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -18,6 +19,7 @@
 			isa = PBXGroup;
 			children = (
 				CF5702071AA169CE0037D08D /* iScroll.js */,
+				CF9DD3CD1AAD6AE600D709AD /* 404.html */,
 				CF5702061AA169860037D08D /* feeds.json */,
 				CF5702081AA16BC40037D08D /* zepto.js */,
 				CF5702051AA169590037D08D /* index.html */,

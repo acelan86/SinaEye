@@ -7,6 +7,7 @@
 //
 
 #import "BrowserViewController.h"
+#import "SinaEyeInfoProvider.h"
 
 @interface BrowserViewController ()
 
@@ -53,6 +54,9 @@
     UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     _safariButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(h_openWithSafari)];
+    
+    _backButton.enabled = NO;
+    _forwardButton.enabled = NO;
     
     
     
@@ -101,10 +105,20 @@
     // Do any additional setup after loading the view.
     _webviewLoadCount = 0;
     
-    NSLog(@"browser is load: %@", self.url);
     
     if (self.url) {
-        [self loadPage:self.url];
+        if ([[SinaEyeInfoProvider shareInstance] networkType] == -1) {
+            NSLog(@"no net connect!");
+            NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"SinaEyeResource" ofType:@"bundle"]];
+            NSURL *baseURL = [NSURL fileURLWithPath:[bundle bundlePath]];
+            NSString *path = [bundle pathForResource:@"404" ofType:@"html"];
+            NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+            NSLog(@"load 404:%@", html);
+            [_webview loadHTMLString:html baseURL:baseURL];
+        } else {
+            NSLog(@"load remote feedpage:%@", self.url);
+            [self loadPage:self.url];
+        }
     }
 }
 
