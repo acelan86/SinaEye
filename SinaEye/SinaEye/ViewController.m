@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "SinaEyeSDK.h"
-#import "MyViewController.h"
+#import "ScrollViewController.h"
 
 @interface ViewController ()
 @property (nonatomic, strong) SinaEyeSDK *feedSDK;
@@ -35,7 +35,7 @@
     [self.view addConstraint:iconHeightConstraint];
 }
 - (IBAction)changeView:(id)sender {
-    MyViewController *view = [[MyViewController alloc] init];
+    ScrollViewController *view = [[ScrollViewController alloc] init];
     [self presentViewController:view animated:YES completion:nil];
 }
 

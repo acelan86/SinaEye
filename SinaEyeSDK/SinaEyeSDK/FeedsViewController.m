@@ -36,7 +36,7 @@ static NSString *FEED_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/S
     //添加导航关闭按钮
     UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(h_close)];
     _feeds.navigationItem.leftBarButtonItem = closeButton;
-    _feeds.title = @"新浪资讯";
+    _feeds.title = @"新浪推荐";
     
     return navigation;
 }

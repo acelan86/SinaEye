@@ -24,6 +24,7 @@
 		CF57020A1AA411AB0037D08D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5702091AA411AB0037D08D /* CoreLocation.framework */; };
 		CF57027E1AA464CD0037D08D /* SinaEyeResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF57027D1AA464CD0037D08D /* SinaEyeResource.bundle */; };
 		CF5702801AA46B8D0037D08D /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = CF57027F1AA46B8D0037D08D /* background.png */; };
+		CF9DD4051AAEBFC500D709AD /* ScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9DD4041AAEBFC500D709AD /* ScrollViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,8 @@
 		CF5702091AA411AB0037D08D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CF57027D1AA464CD0037D08D /* SinaEyeResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SinaEyeResource.bundle; sourceTree = "<group>"; };
 		CF57027F1AA46B8D0037D08D /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		CF9DD4031AAEBFC500D709AD /* ScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewController.h; sourceTree = "<group>"; };
+		CF9DD4041AAEBFC500D709AD /* ScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +130,8 @@
 				CF0D88971A84C1C50089BC2A /* MyViewController.h */,
 				CF0D88981A84C1C50089BC2A /* MyViewController.m */,
 				CF0D88991A84C1C50089BC2A /* MyViewController.xib */,
+				CF9DD4031AAEBFC500D709AD /* ScrollViewController.h */,
+				CF9DD4041AAEBFC500D709AD /* ScrollViewController.m */,
 			);
 			path = SinaEye;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF9DD4051AAEBFC500D709AD /* ScrollViewController.m in Sources */,
 				CF0D884E1A7F6A300089BC2A /* ViewController.m in Sources */,
 				CF0D884B1A7F6A300089BC2A /* AppDelegate.m in Sources */,
 				CF0D889A1A84C1C50089BC2A /* MyViewController.m in Sources */,

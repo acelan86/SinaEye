@@ -94,9 +94,12 @@
         .card-op{
             overflow:hidden;
             position:relative;
+            margin:10px;
+            margin-top:-10px;
         }
         .card-op-left,
         .card-op-right{
+            color:#999;
             font-size: 12px;
             height: 20px;
             line-height: 26px;
@@ -127,16 +130,22 @@
         }
         .like-button,
         .unlike-button{
-            background: url(share_ico.png) no-repeat 0px -15px;
+            background: url(icon.png) no-repeat 0px 0px;
             padding-left: 16px;
             background-size: 12px auto;
             color:#999;
         }
+        .unlike-button{
+            background-position: 0px -24px;
+        }
+        .user-action-like .like-button{
+            background-position: 0px -12px;
+        }
+        .user-action-unlike .unlike-button{
+            background-position: 0px -36px;
+        }
         .like-button{
             margin-right:10px;
-        }
-        .unlike-button{
-            background-position: 0px 0px;
         }
         .info-box{
             line-height:30px;
@@ -214,12 +223,12 @@
                                     '<h3 class="card-title">' + data.title + '</h3>',
                                     '<p class="card-summary">' + data.summary + '</p>',
                                 data.link ? '</a>' : '',
-                                '<p class="card-op">',
-                                    '<span class="card-op-left"></span>',
-                                    '<span class="card-op-right">',
-                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '">喜欢</span>' + '<span class="unlike-button" data-link="' + data.link + '">拒绝</span>') : ''),
-                                    '</span>',
-                                '</p>',
+                            '</dd>',
+                            '<dd class="card-op">',
+                                '<span class="card-op-left">' + readableDate(data.ctime) + '</span>',
+                                '<span class="card-op-right">',
+                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                '</span>',
                             '</dd>',
                         '</dl>'
                     ].join('');
@@ -243,12 +252,12 @@
                                         pics.join(''),
                                     '</ul>',
                                 data.link ? '</a>' : '',
-                                '<p class="card-op">',
-                                    '<span class="card-op-left"></span>',
-                                    '<span class="card-op-right">',
-                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '">喜欢</span>' + '<span class="unlike-button" data-link="' + data.link + '">拒绝</span>') : ''),
-                                    '</span>',
-                                '</p>',
+                            '</dd>',
+                            '<dd class="card-op">',
+                                '<span class="card-op-left">' + readableDate(data.ctime) + '</span>',
+                                '<span class="card-op-right">',
+                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                '</span>',
                             '</dd>',
                         '</dl>'
                     ].join('');
@@ -271,12 +280,12 @@
                                         pics.join(''),
                                     '</ul>',
                                 data.link ? '</a>' : '',
-                                '<p class="card-op">',
-                                    '<span class="card-op-left"></span>',
-                                    '<span class="card-op-right">',
-                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '">喜欢</span>' + '<span class="unlike-button" data-link="' + data.link + '">拒绝</span>') : ''),
-                                    '</span>',
-                                '</p>',
+                            '</dd>',
+                            '<dd class="card-op">',
+                                '<span class="card-op-left">' + readableDate(data.ctime) + '</span>',
+                                '<span class="card-op-right">',
+                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                '</span>',
                             '</dd>',
                         '</dl>'
                     ].join('');
@@ -293,19 +302,92 @@
                 infoBox.addClass('show');
             }
 
+            function changeLikeState(isLike, $el) {
+                $el.removeClass("user-action-like");
+                $el.removeClass("user-action-unlike");
+                $el.addClass("user-action-" + (isLike ? "like" : "unlike"));
+            }
+
             //挂接喜欢跟拒绝事件
             $('.list').on('click', '.unlike-button', function () {
                 sendUserAction(0, $(this).data('link').split('?')[1]);
-                infoBox.insertBefore($(this).closest('.card-dd'));
+                infoBox.insertBefore($(this).closest(".card-op"));
+                changeLikeState(0, $(this).parent());
                 info("拒绝此类推荐");
                 return false;
             });
             $('.list').on('click', '.like-button', function () {
                 sendUserAction(1, $(this).data('link').split('?')[1]);
-                infoBox.insertBefore($(this).closest('.card-dd'));
+                infoBox.insertBefore($(this).closest('.card-op'));
+                changeLikeState(1, $(this).parent());
                 info("喜欢此类推荐");
                 return false;
             });
+
+            function padNumber(source, length) {
+                var pre = "",
+                    negative = (source < 0),
+                    string = String(Math.abs(source));
+             
+                if (string.length < length) {
+                    pre = (new Array(length - string.length + 1)).join('0');
+                }
+             
+                return (negative ?  "-" : "") + pre + string;
+            }
+
+            function formatDate(source, pattern) {
+                if ('string' !== typeof pattern) {
+                    return source.toString();
+                }
+             
+                function replacer(patternPart, result) {
+                    pattern = pattern.replace(patternPart, result);
+                }
+                 
+                var pad     = padNumber,
+                    year    = source.getFullYear(),
+                    month   = source.getMonth() + 1,
+                    date2   = source.getDate(),
+                    hours   = source.getHours(),
+                    minutes = source.getMinutes(),
+                    seconds = source.getSeconds();
+             
+                replacer(/yyyy/g, pad(year, 4));
+                replacer(/yy/g, pad(parseInt(year.toString().slice(2), 10), 2));
+                replacer(/MM/g, pad(month, 2));
+                replacer(/M/g, month);
+                replacer(/dd/g, pad(date2, 2));
+                replacer(/d/g, date2);
+             
+                replacer(/HH/g, pad(hours, 2));
+                replacer(/H/g, hours);
+                replacer(/hh/g, pad(hours % 12, 2));
+                replacer(/h/g, hours % 12);
+                replacer(/mm/g, pad(minutes, 2));
+                replacer(/m/g, minutes);
+                replacer(/ss/g, pad(seconds, 2));
+                replacer(/s/g, seconds);
+             
+                return pattern;
+            }
+
+            //可读格式日期
+            function readableDate(time) {
+                if (!time) {
+                    return '';
+                }
+                var now = new Date().getTime(),
+                    ctime = new Date();
+                ctime.setTime(time);
+                //小于一天，用时：分显示
+                if (now - time < 24 * 60 * 60 * 1000) {
+                    return formatDate(ctime, "HH:mm");
+                //大于一天，用日期显示
+                } else {
+                    return formatDate(ctime, "MM月dd日");
+                }
+            }
 
             function log(url, useCache) {
                 var img = new Image(),
@@ -331,13 +413,13 @@
 
             //获取数据
             function getFeeds(callback) {
-                console.log(window.location.search);
-
                 $.ajax({
                     type: "GET",
                     dataType: "jsonp",
                     url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search,
-                    //url: "feeds.json" + window.location.search,
+                    // dataType: "json",
+                    // url: "feeds.json" + window.location.search,
+                    timeout: 5 * 1000,
                     data: {
                         _ts: (+new Date()).toString(36)
                     },
@@ -349,7 +431,7 @@
                                 return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
                             });
                         } else {
-                            alert("没有新内容了，等等再刷看看～");
+                            alert((feeds.statusInfo && feeds.statusInfo.global) || "没有新内容了，等等再刷看看～");
                         }
                         callback(htmls.join(''));
                     },
