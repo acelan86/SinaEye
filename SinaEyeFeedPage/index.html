@@ -380,8 +380,11 @@
                 var now = new Date().getTime(),
                     ctime = new Date();
                 ctime.setTime(time);
+                //小于1分钟，显示刚刚
+                if (now - time < 60 * 1000) {
+                    return "刚刚";
                 //小于一天，用时：分显示
-                if (now - time < 24 * 60 * 60 * 1000) {
+                } else if (now - time < 24 * 60 * 60 * 1000) {
                     return formatDate(ctime, "HH:mm");
                 //大于一天，用日期显示
                 } else {
