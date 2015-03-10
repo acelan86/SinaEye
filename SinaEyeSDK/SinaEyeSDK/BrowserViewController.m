@@ -22,6 +22,8 @@
 @property (nonatomic,strong) UIBarButtonItem *spinnerItem;
 @property (nonatomic,strong) UIActivityIndicatorView *spinner;
 
+@property (nonatomic, strong) UIScrollView *hiddenScrollView;
+
 
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic) NSInteger webviewLoadCount;
@@ -57,7 +59,6 @@
     
     _backButton.enabled = NO;
     _forwardButton.enabled = NO;
-    
     
     
     NSMutableArray *items = [[NSMutableArray alloc] init];
@@ -96,6 +97,18 @@
     [self.view addConstraint:spinnerVConstraint];
     
     _webview.delegate = self;
+    
+    //[_webview.scrollView setScrollsToTop:NO];
+    
+//    //添加一个隐藏的scrollview，用来实现点击状态条滚动到顶部
+//    _hiddenScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 500)];
+//    _hiddenScrollView.backgroundColor = [UIColor grayColor];
+//    [_hiddenScrollView setContentOffset:CGPointMake(0, 1000)];
+//    [_hiddenScrollView setContentSize:CGSizeMake(200, 2400)];
+//    _hiddenScrollView.scrollsToTop = YES;
+//    [self.view addSubview:_hiddenScrollView];
+//    
+//    _hiddenScrollView.delegate = self;
     
 }
 
