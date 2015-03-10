@@ -17,6 +17,7 @@
 		CF5701D91AA05F0E0037D08D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D81AA05F0E0037D08D /* CFNetwork.framework */; };
 		CF5701E51AA068F70037D08D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701E41AA068F70037D08D /* AdSupport.framework */; };
 		CF5701F61AA1642E0037D08D /* SinaEyeReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */; };
+		CFCE2A6B1AAEED9600D58AF0 /* UIViewController+ScrollingNavbar.m in Sources */ = {isa = PBXBuildFile; fileRef = CFCE2A6A1AAEED9600D58AF0 /* UIViewController+ScrollingNavbar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,6 +51,8 @@
 		CF5701F41AA1642D0037D08D /* SinaEyeReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaEyeReachability.h; sourceTree = "<group>"; };
 		CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaEyeReachability.m; sourceTree = "<group>"; };
 		CF5702761AA459600037D08D /* ICON_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ICON_03.png; sourceTree = "<group>"; };
+		CFCE2A691AAEED8E00D58AF0 /* UIViewController+ScrollingNavbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ScrollingNavbar.h"; sourceTree = "<group>"; };
+		CFCE2A6A1AAEED9600D58AF0 /* UIViewController+ScrollingNavbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ScrollingNavbar.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,8 @@
 		CF0D88761A7F6B100089BC2A /* SinaEyeSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CFCE2A691AAEED8E00D58AF0 /* UIViewController+ScrollingNavbar.h */,
+				CFCE2A6A1AAEED9600D58AF0 /* UIViewController+ScrollingNavbar.m */,
 				CF0D88771A7F6B100089BC2A /* SinaEyeSDK.h */,
 				CF0D88791A7F6B100089BC2A /* SinaEyeSDK.m */,
 				CF0D88941A8494500089BC2A /* FeedsViewController.h */,
@@ -180,6 +185,7 @@
 			files = (
 				CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */,
 				CF5701D31AA057010037D08D /* SinaEyeInfoProvider.m in Sources */,
+				CFCE2A6B1AAEED9600D58AF0 /* UIViewController+ScrollingNavbar.m in Sources */,
 				CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */,
 				CF5701F61AA1642E0037D08D /* SinaEyeReachability.m in Sources */,
 				CF1F41631A8DCE2D00BCD554 /* BrowserViewController.m in Sources */,

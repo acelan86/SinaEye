@@ -418,10 +418,10 @@
             function getFeeds(callback) {
                 $.ajax({
                     type: "GET",
-                    dataType: "jsonp",
-                    url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search,
-                    // dataType: "json",
-                    // url: "feeds.json" + window.location.search,
+                    // dataType: "jsonp",
+                    // url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search,
+                    dataType: "json",
+                    url: "feeds.json" + window.location.search,
                     timeout: 5 * 1000,
                     data: {
                         _ts: (+new Date()).toString(36)
