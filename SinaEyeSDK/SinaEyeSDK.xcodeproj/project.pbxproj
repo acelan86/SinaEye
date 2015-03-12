@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		CF0D88781A7F6B100089BC2A /* SinaEyeSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CF0D88771A7F6B100089BC2A /* SinaEyeSDK.h */; };
 		CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0D88791A7F6B100089BC2A /* SinaEyeSDK.m */; };
-		CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0D88951A8494500089BC2A /* FeedsViewController.m */; };
 		CF1F41631A8DCE2D00BCD554 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */; };
 		CF5701D31AA057010037D08D /* SinaEyeInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5701D21AA057010037D08D /* SinaEyeInfoProvider.m */; };
 		CF5701D51AA05EA90037D08D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D41AA05EA90037D08D /* SystemConfiguration.framework */; };
@@ -17,6 +16,7 @@
 		CF5701D91AA05F0E0037D08D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701D81AA05F0E0037D08D /* CFNetwork.framework */; };
 		CF5701E51AA068F70037D08D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5701E41AA068F70037D08D /* AdSupport.framework */; };
 		CF5701F61AA1642E0037D08D /* SinaEyeReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */; };
+		CF5D7A481AB1D87E006174BD /* SinaAdFeeds.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5D7A471AB1D87E006174BD /* SinaAdFeeds.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,8 +37,6 @@
 		CF0D88771A7F6B100089BC2A /* SinaEyeSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SinaEyeSDK.h; sourceTree = "<group>"; };
 		CF0D88791A7F6B100089BC2A /* SinaEyeSDK.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinaEyeSDK.m; sourceTree = "<group>"; };
 		CF0D88851A7F6B100089BC2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CF0D88941A8494500089BC2A /* FeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedsViewController.h; sourceTree = "<group>"; };
-		CF0D88951A8494500089BC2A /* FeedsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedsViewController.m; sourceTree = "<group>"; };
 		CF1F41611A8DCE2D00BCD554 /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
 		CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
 		CF5701D11AA057010037D08D /* SinaEyeInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaEyeInfoProvider.h; sourceTree = "<group>"; };
@@ -50,6 +48,8 @@
 		CF5701F41AA1642D0037D08D /* SinaEyeReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaEyeReachability.h; sourceTree = "<group>"; };
 		CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaEyeReachability.m; sourceTree = "<group>"; };
 		CF5702761AA459600037D08D /* ICON_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ICON_03.png; sourceTree = "<group>"; };
+		CF5D7A461AB1D87E006174BD /* SinaAdFeeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaAdFeeds.h; sourceTree = "<group>"; };
+		CF5D7A471AB1D87E006174BD /* SinaAdFeeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaAdFeeds.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,14 +93,14 @@
 			children = (
 				CF0D88771A7F6B100089BC2A /* SinaEyeSDK.h */,
 				CF0D88791A7F6B100089BC2A /* SinaEyeSDK.m */,
-				CF0D88941A8494500089BC2A /* FeedsViewController.h */,
-				CF0D88951A8494500089BC2A /* FeedsViewController.m */,
 				CF1F41611A8DCE2D00BCD554 /* BrowserViewController.h */,
 				CF1F41621A8DCE2D00BCD554 /* BrowserViewController.m */,
 				CF5701D11AA057010037D08D /* SinaEyeInfoProvider.h */,
 				CF5701D21AA057010037D08D /* SinaEyeInfoProvider.m */,
 				CF5701F41AA1642D0037D08D /* SinaEyeReachability.h */,
 				CF5701F51AA1642E0037D08D /* SinaEyeReachability.m */,
+				CF5D7A461AB1D87E006174BD /* SinaAdFeeds.h */,
+				CF5D7A471AB1D87E006174BD /* SinaAdFeeds.m */,
 			);
 			path = SinaEyeSDK;
 			sourceTree = "<group>";
@@ -178,7 +178,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF0D88961A8494500089BC2A /* FeedsViewController.m in Sources */,
+				CF5D7A481AB1D87E006174BD /* SinaAdFeeds.m in Sources */,
 				CF5701D31AA057010037D08D /* SinaEyeInfoProvider.m in Sources */,
 				CF0D887A1A7F6B100089BC2A /* SinaEyeSDK.m in Sources */,
 				CF5701F61AA1642E0037D08D /* SinaEyeReachability.m in Sources */,

@@ -8,10 +8,10 @@
 
 #import "ViewController.h"
 #import "SinaEyeSDK.h"
-#import "ScrollViewController.h"
+#import "MyViewController.h"
 
-@interface ViewController ()
-@property (nonatomic, strong) SinaEyeSDK *feedSDK;
+@interface ViewController () <SinaAdFeedsDelegate>
+@property (nonatomic, strong) SinaEyeSDK *sdk;
 @end
 
 @implementation ViewController
@@ -19,14 +19,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _feedSDK = [[SinaEyeSDK alloc] initFeedsADWithViewController:self apprid:@"my-apprid-is-acelan-test" appkey:@"123123"];
+    //创建一个feed广告位
+    SinaAdFeeds *feedsAd = [[SinaEyeSDK shareInstance] createFeedsAdWithAppkey:@"123123" apprid:@"4"];
+    feedsAd.delegate = self;
+    [feedsAd renderIconInViewController:self];
     // Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)feedsIconDidRendered:(UIButton *)icon {
     //约束sdk的按钮
-    _feedSDK.feedsButton.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLayoutConstraint *iconVConstraint = [NSLayoutConstraint constraintWithItem:_feedSDK.feedsButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:60.0f];
-    NSLayoutConstraint *iconHConstraint = [NSLayoutConstraint constraintWithItem:_feedSDK.feedsButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1.0f constant:-10.0f];
-    NSLayoutConstraint *iconWidthConstraint = [NSLayoutConstraint constraintWithItem:_feedSDK.feedsButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:32.0f];
-    NSLayoutConstraint *iconHeightConstraint = [NSLayoutConstraint constraintWithItem:_feedSDK.feedsButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:32.0f];
+    icon.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *iconVConstraint = [NSLayoutConstraint constraintWithItem:icon attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:60.0f];
+    NSLayoutConstraint *iconHConstraint = [NSLayoutConstraint constraintWithItem:icon attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1.0f constant:-10.0f];
+    NSLayoutConstraint *iconWidthConstraint = [NSLayoutConstraint constraintWithItem:icon attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:32.0f];
+    NSLayoutConstraint *iconHeightConstraint = [NSLayoutConstraint constraintWithItem:icon attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:32.0f];
     
     
     [self.view addConstraint:iconVConstraint];
@@ -35,7 +41,7 @@
     [self.view addConstraint:iconHeightConstraint];
 }
 - (IBAction)changeView:(id)sender {
-    ScrollViewController *view = [[ScrollViewController alloc] init];
+    MyViewController *view = [[MyViewController alloc] init];
     [self presentViewController:view animated:YES completion:nil];
 }
 

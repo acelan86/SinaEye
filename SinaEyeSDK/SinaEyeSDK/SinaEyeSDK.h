@@ -8,16 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "SinaAdFeeds.h"
 
 @interface SinaEyeSDK : NSObject
 
-@property (nonatomic, strong) NSString *appkey;
-@property (nonatomic, strong) NSString *apprid;
-@property (nonatomic, strong) NSString *sdkVersion;
-@property (nonatomic, strong) UIButton *feedsButton;
++ (SinaEyeSDK *)shareInstance;
 
-- (SinaEyeSDK *) initFeedsADWithViewController:(UIViewController *)mainViewController apprid:(NSString *)apprid appkey:(NSString *)appkey;
-
-- (void)showFeeds;
-
+- (SinaAdFeeds *)createFeedsAdWithAppkey:(NSString *)appkey apprid:(NSString *)apprid;
 @end
