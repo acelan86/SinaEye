@@ -151,7 +151,6 @@
             line-height:40px;
             font-size:16px;
             background-color: #000;
-            opacity:0;
             color:#fff;
             position:absolute;
             bottom:0px;
@@ -164,6 +163,19 @@
         .show{
             display:block;
         }
+        .msg-box{
+            line-height:40px;
+            font-size:16px;
+            color: #8a6d3b;
+            background-color: #fcf8e3;
+            border-bottom:1px solid #faebcc;
+            position:fixed;
+            top:0px;
+            width:100%;
+            display:none;
+            text-align: center;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -175,6 +187,7 @@
         </div>
     </div>
     <div id="InfoBox" class="info-box"></div>
+    <div id="MsgBox" class="msg-box"></div>
     <script>
         document.addEventListener('touchmove', function (e) { 
             e.preventDefault();
@@ -207,6 +220,7 @@
             var pullUpOffset = pullUp.offsetHeight;
 
             var infoBox = $("#InfoBox");
+            var msgBox = $("#MsgBox");
 
             var TPL = {
                 //title + summary + 1pic
@@ -291,6 +305,16 @@
                     ].join('');
                 }
             };
+
+            var alertTimer;
+            function alert(msg) {
+                msgBox.html(msg);
+                alertTimer && clearTimeout(alertTimer);
+                alertTimer = setTimeout(function () {
+                    msgBox.hide();
+                }, 2000);
+                msgBox.show();
+            }
 
             var infoTimer;
             function info(msg) {
@@ -418,10 +442,10 @@
             function getFeeds(isClear, callback) {
                 $.ajax({
                     type: "GET",
-                    // dataType: "jsonp",
-                    // url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search + "&clear=" + (isClear ? "true" : "false"),
-                    dataType: "json",
-                    url: "feeds.json" + window.location.search,
+                    dataType: "jsonp",
+                    url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search + "&clear=" + (isClear ? "true" : "false"),
+                    //dataType: "json",
+                    //url: "feeds.json" + window.location.search,
                     timeout: 5 * 1000,
                     data: {
                         _ts: (+new Date()).toString(36)
@@ -433,10 +457,11 @@
                             htmls = feeds.data.results.map(function (feed) {
                                 return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
                             });
+                            callback(htmls.join(''));
                         } else {
+                            callback(htmls.join(''));
                             alert((feeds.statusInfo && feeds.statusInfo.global) || "没有新内容了，等等再刷看看～");
                         }
-                        callback(htmls.join(''));
                     },
                     error: function () {
                         alert("抱歉，服务器开小差了～");

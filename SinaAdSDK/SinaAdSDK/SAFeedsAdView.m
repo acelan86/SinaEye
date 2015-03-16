@@ -62,6 +62,8 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
 
 - (void)h_close {
     [_rootViewController dismissViewControllerAnimated:YES completion:nil];
+    //重新创建30s timer
+    _timer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(p_showIconHasMsg) userInfo:nil repeats:YES];
 }
 
 - (NSString *)p_feedsUrl {
@@ -75,7 +77,7 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
         locationString = [NSString stringWithFormat:@"%f,%f", _location.coordinate.latitude, _location.coordinate.longitude];
     }
     
-    NSString *str = [FEEDS_URL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&plat=%@&carrier=%d&os_version=%@&sdk_version=%@&brand=%@&bundleid=%@&devicemodel=%@&geo=%@",
+    NSString *str = [FEEDS_URL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&plat=%@&carrier=%li&os_version=%@&sdk_version=%@&brand=%@&bundleid=%@&devicemodel=%@&geo=%@",
                      //appkey
                      _appkey,
                      //apprid
@@ -85,7 +87,7 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
                      //平台
                      [@"IOS" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                      //网络
-                     [info networkType],
+                     (long)[info networkType],
                      //操作系统版本 @"ios7"
                      [[info osVersion] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                      //sdk版本
@@ -106,6 +108,12 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
 
 //创建并显示feedsView
 - (void)h_showFeedsView {
+    //停止timer，并设置icon为无新消息模式
+    [_timer invalidate];
+    _timer = nil;
+    [self p_showIconNormal];
+    
+    //创建并显示feeds
     SABrowserViewController *feedsView = [[SABrowserViewController alloc] init];
     feedsView.delegate = self;
     //添加url
