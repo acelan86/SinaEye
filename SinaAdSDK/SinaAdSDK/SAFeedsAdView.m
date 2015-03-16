@@ -64,6 +64,10 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
     [_rootViewController dismissViewControllerAnimated:YES completion:nil];
     //重新创建30s timer
     _timer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(p_showIconHasMsg) userInfo:nil repeats:YES];
+    
+    if ([self respondsToSelector:@selector(feedsPageDidDisappear)]) {
+        [_delegate feedsPageDidDisappear];
+    }
 }
 
 - (NSString *)p_feedsUrl {
@@ -128,6 +132,10 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
     feedsView.title = @"新浪推荐";
     
     [_rootViewController presentViewController:_navigation animated:YES completion:nil];
+    
+    if ([self respondsToSelector:@selector(feedsPageDidAppear)]) {
+        [_delegate feedsPageDidAppear];
+    }
     
 }
 

@@ -10,7 +10,9 @@
 #import <CoreLocation/CoreLocation.h>
 
 @protocol SAFeedsAdViewDelegate <NSObject>
-
+@optional
+- (void)feedsPageDidAppear; //当feeds面板打开
+- (void)feedsPageDidDisappear; //当feeds面板关闭
 @end
 
 @interface SAFeedsAdView : UIButton

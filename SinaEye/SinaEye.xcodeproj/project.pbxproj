@@ -65,6 +65,7 @@
 		CF8E693A1AB2D3300049488C /* libSinaAdSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSinaAdSDK.a; path = "../../../Library/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Debug-iphoneos/libSinaAdSDK.a"; sourceTree = "<group>"; };
 		CF9DD4031AAEBFC500D709AD /* ScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewController.h; sourceTree = "<group>"; };
 		CF9DD4041AAEBFC500D709AD /* ScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewController.m; sourceTree = "<group>"; };
+		CFDDD6C31AB6DD6C00BB4442 /* SAFeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAFeedsViewController.h; path = ../../SinaAdSDK/SinaAdSDK/SAFeedsViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +119,7 @@
 		CF0D88441A7F6A300089BC2A /* SinaEye */ = {
 			isa = PBXGroup;
 			children = (
+				CFDDD6C31AB6DD6C00BB4442 /* SAFeedsViewController.h */,
 				CF8E69391AB2D3170049488C /* SAFeedsAdView.h */,
 				CF0D88491A7F6A300089BC2A /* AppDelegate.h */,
 				CF0D884A1A7F6A300089BC2A /* AppDelegate.m */,

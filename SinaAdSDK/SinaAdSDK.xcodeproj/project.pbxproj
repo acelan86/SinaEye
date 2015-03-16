@@ -12,6 +12,7 @@
 		CF8E69301AB2AA420049488C /* SABrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E692F1AB2AA420049488C /* SABrowserViewController.m */; };
 		CF8E69331AB2ABC60049488C /* SAInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E69321AB2ABC60049488C /* SAInfoProvider.m */; };
 		CF8E69361AB2ABE80049488C /* SAReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E69351AB2ABE80049488C /* SAReachability.m */; };
+		CFDDD6C21AB6DCE700BB4442 /* SAFeedsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFDDD6C11AB6DCE700BB4442 /* SAFeedsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,8 @@
 		CF8E69321AB2ABC60049488C /* SAInfoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAInfoProvider.m; sourceTree = "<group>"; };
 		CF8E69341AB2ABE80049488C /* SAReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAReachability.h; sourceTree = "<group>"; };
 		CF8E69351AB2ABE80049488C /* SAReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAReachability.m; sourceTree = "<group>"; };
+		CFDDD6C01AB6DCE700BB4442 /* SAFeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAFeedsViewController.h; sourceTree = "<group>"; };
+		CFDDD6C11AB6DCE700BB4442 /* SAFeedsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAFeedsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,8 @@
 				CF8E69321AB2ABC60049488C /* SAInfoProvider.m */,
 				CF8E69341AB2ABE80049488C /* SAReachability.h */,
 				CF8E69351AB2ABE80049488C /* SAReachability.m */,
+				CFDDD6C01AB6DCE700BB4442 /* SAFeedsViewController.h */,
+				CFDDD6C11AB6DCE700BB4442 /* SAFeedsViewController.m */,
 			);
 			path = SinaAdSDK;
 			sourceTree = "<group>";
@@ -209,6 +214,7 @@
 				CF8E69301AB2AA420049488C /* SABrowserViewController.m in Sources */,
 				CF8E69361AB2ABE80049488C /* SAReachability.m in Sources */,
 				CF8E69331AB2ABC60049488C /* SAInfoProvider.m in Sources */,
+				CFDDD6C21AB6DCE700BB4442 /* SAFeedsViewController.m in Sources */,
 				CF8E692D1AB2A5B10049488C /* SAFeedsAdView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
