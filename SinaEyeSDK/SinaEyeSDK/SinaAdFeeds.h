@@ -13,10 +13,9 @@ static NSString *FEEDS_URL = @"http://localhost:8000/SinaEyeFeedPage/index.html"
 static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
 
 @protocol SinaAdFeedsDelegate <NSObject>
-
 @optional
+//当icon渲染完成后调用
 - (void)feedsIconDidRendered:(UIButton *)icon;
-
 @end
 
 @interface SinaAdFeeds : NSObject

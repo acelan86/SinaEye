@@ -1,0 +1,387 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CF8E691D1AB2A4E10049488C /* libSinaAdSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF8E69111AB2A4E10049488C /* libSinaAdSDK.a */; };
+		CF8E692D1AB2A5B10049488C /* SAFeedsAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E692C1AB2A5B10049488C /* SAFeedsAdView.m */; };
+		CF8E69301AB2AA420049488C /* SABrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E692F1AB2AA420049488C /* SABrowserViewController.m */; };
+		CF8E69331AB2ABC60049488C /* SAInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E69321AB2ABC60049488C /* SAInfoProvider.m */; };
+		CF8E69361AB2ABE80049488C /* SAReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E69351AB2ABE80049488C /* SAReachability.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CF8E691E1AB2A4E10049488C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF8E69091AB2A4E10049488C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF8E69101AB2A4E10049488C;
+			remoteInfo = SinaAdSDK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CF8E690F1AB2A4E10049488C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CF8E69111AB2A4E10049488C /* libSinaAdSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSinaAdSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF8E691C1AB2A4E10049488C /* SinaAdSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SinaAdSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF8E69221AB2A4E10049488C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF8E692B1AB2A5B10049488C /* SAFeedsAdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAFeedsAdView.h; sourceTree = "<group>"; };
+		CF8E692C1AB2A5B10049488C /* SAFeedsAdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAFeedsAdView.m; sourceTree = "<group>"; };
+		CF8E692E1AB2AA420049488C /* SABrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SABrowserViewController.h; sourceTree = "<group>"; };
+		CF8E692F1AB2AA420049488C /* SABrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SABrowserViewController.m; sourceTree = "<group>"; };
+		CF8E69311AB2ABC60049488C /* SAInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAInfoProvider.h; sourceTree = "<group>"; };
+		CF8E69321AB2ABC60049488C /* SAInfoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAInfoProvider.m; sourceTree = "<group>"; };
+		CF8E69341AB2ABE80049488C /* SAReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAReachability.h; sourceTree = "<group>"; };
+		CF8E69351AB2ABE80049488C /* SAReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAReachability.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CF8E690E1AB2A4E10049488C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8E69191AB2A4E10049488C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF8E691D1AB2A4E10049488C /* libSinaAdSDK.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CF8E69081AB2A4E10049488C = {
+			isa = PBXGroup;
+			children = (
+				CF8E69131AB2A4E10049488C /* SinaAdSDK */,
+				CF8E69201AB2A4E10049488C /* SinaAdSDKTests */,
+				CF8E69121AB2A4E10049488C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CF8E69121AB2A4E10049488C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CF8E69111AB2A4E10049488C /* libSinaAdSDK.a */,
+				CF8E691C1AB2A4E10049488C /* SinaAdSDKTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CF8E69131AB2A4E10049488C /* SinaAdSDK */ = {
+			isa = PBXGroup;
+			children = (
+				CF8E692B1AB2A5B10049488C /* SAFeedsAdView.h */,
+				CF8E692C1AB2A5B10049488C /* SAFeedsAdView.m */,
+				CF8E692E1AB2AA420049488C /* SABrowserViewController.h */,
+				CF8E692F1AB2AA420049488C /* SABrowserViewController.m */,
+				CF8E69311AB2ABC60049488C /* SAInfoProvider.h */,
+				CF8E69321AB2ABC60049488C /* SAInfoProvider.m */,
+				CF8E69341AB2ABE80049488C /* SAReachability.h */,
+				CF8E69351AB2ABE80049488C /* SAReachability.m */,
+			);
+			path = SinaAdSDK;
+			sourceTree = "<group>";
+		};
+		CF8E69201AB2A4E10049488C /* SinaAdSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				CF8E69211AB2A4E10049488C /* Supporting Files */,
+			);
+			path = SinaAdSDKTests;
+			sourceTree = "<group>";
+		};
+		CF8E69211AB2A4E10049488C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CF8E69221AB2A4E10049488C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CF8E69101AB2A4E10049488C /* SinaAdSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF8E69251AB2A4E10049488C /* Build configuration list for PBXNativeTarget "SinaAdSDK" */;
+			buildPhases = (
+				CF8E690D1AB2A4E10049488C /* Sources */,
+				CF8E690E1AB2A4E10049488C /* Frameworks */,
+				CF8E690F1AB2A4E10049488C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SinaAdSDK;
+			productName = SinaAdSDK;
+			productReference = CF8E69111AB2A4E10049488C /* libSinaAdSDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		CF8E691B1AB2A4E10049488C /* SinaAdSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF8E69281AB2A4E10049488C /* Build configuration list for PBXNativeTarget "SinaAdSDKTests" */;
+			buildPhases = (
+				CF8E69181AB2A4E10049488C /* Sources */,
+				CF8E69191AB2A4E10049488C /* Frameworks */,
+				CF8E691A1AB2A4E10049488C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF8E691F1AB2A4E10049488C /* PBXTargetDependency */,
+			);
+			name = SinaAdSDKTests;
+			productName = SinaAdSDKTests;
+			productReference = CF8E691C1AB2A4E10049488C /* SinaAdSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CF8E69091AB2A4E10049488C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = esina;
+				TargetAttributes = {
+					CF8E69101AB2A4E10049488C = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					CF8E691B1AB2A4E10049488C = {
+						CreatedOnToolsVersion = 6.2;
+					};
+				};
+			};
+			buildConfigurationList = CF8E690C1AB2A4E10049488C /* Build configuration list for PBXProject "SinaAdSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CF8E69081AB2A4E10049488C;
+			productRefGroup = CF8E69121AB2A4E10049488C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CF8E69101AB2A4E10049488C /* SinaAdSDK */,
+				CF8E691B1AB2A4E10049488C /* SinaAdSDKTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CF8E691A1AB2A4E10049488C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CF8E690D1AB2A4E10049488C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF8E69301AB2AA420049488C /* SABrowserViewController.m in Sources */,
+				CF8E69361AB2ABE80049488C /* SAReachability.m in Sources */,
+				CF8E69331AB2ABC60049488C /* SAInfoProvider.m in Sources */,
+				CF8E692D1AB2A5B10049488C /* SAFeedsAdView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8E69181AB2A4E10049488C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CF8E691F1AB2A4E10049488C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF8E69101AB2A4E10049488C /* SinaAdSDK */;
+			targetProxy = CF8E691E1AB2A4E10049488C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CF8E69231AB2A4E10049488C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CF8E69241AB2A4E10049488C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CF8E69261AB2A4E10049488C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CF8E69271AB2A4E10049488C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		CF8E69291AB2A4E10049488C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SinaAdSDKTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CF8E692A1AB2A4E10049488C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SinaAdSDKTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CF8E690C1AB2A4E10049488C /* Build configuration list for PBXProject "SinaAdSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF8E69231AB2A4E10049488C /* Debug */,
+				CF8E69241AB2A4E10049488C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF8E69251AB2A4E10049488C /* Build configuration list for PBXNativeTarget "SinaAdSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF8E69261AB2A4E10049488C /* Debug */,
+				CF8E69271AB2A4E10049488C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		CF8E69281AB2A4E10049488C /* Build configuration list for PBXNativeTarget "SinaAdSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF8E69291AB2A4E10049488C /* Debug */,
+				CF8E692A1AB2A4E10049488C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CF8E69091AB2A4E10049488C /* Project object */;
+}

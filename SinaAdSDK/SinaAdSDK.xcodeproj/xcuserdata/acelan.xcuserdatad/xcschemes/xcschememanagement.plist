@@ -4,20 +4,20 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>SinaEyeSDK.xcscheme</key>
+		<key>SinaAdSDK.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>CF0D88731A7F6B100089BC2A</key>
+		<key>CF8E69101AB2A4E10049488C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CF0D887E1A7F6B100089BC2A</key>
+		<key>CF8E691B1AB2A4E10049488C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

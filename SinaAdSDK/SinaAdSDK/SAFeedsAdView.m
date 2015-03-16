@@ -1,70 +1,81 @@
 //
-//  SinaAdFeeds.m
-//  SinaEyeSDK
+//  SAFeedsAdView.m
+//  SinaAdSDK
 //
-//  Created by 晓斌 蓝 on 15/3/12.
+//  Created by 晓斌 蓝 on 15/3/13.
 //  Copyright (c) 2015年 esina. All rights reserved.
 //
 
-#import "SinaAdFeeds.h"
-#import "BrowserViewController.h"
-#import "SinaEyeInfoProvider.h"
+#import "SAFeedsAdView.h"
+#import "SABrowserViewController.h"
+#import "SAInfoProvider.h"
 
-@interface SinaAdFeeds () <BrowserViewControllerDelegate>
+static NSString *FEEDS_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
+static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
+
+@interface SAFeedsAdView () <SABrowserViewControllerDelegate>
 @property (nonatomic, strong) NSString *appkey;
 @property (nonatomic, strong) NSString *apprid;
 
 @property (nonatomic, strong) UINavigationController *navigation;
 @property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, strong) UIButton *icon;
-@property (nonatomic, weak)   UIViewController *container;
 @property (nonatomic, strong) NSBundle *bundle;
+
+@property (nonatomic, strong) CLLocation *location;
+
 @end
 
-@implementation SinaAdFeeds
-- (SinaAdFeeds *)initWithAppkey:(NSString *)appkey apprid:(NSString *)apprid bundle:(NSBundle *)bundle {
-    self = [super init];
+@implementation SAFeedsAdView
+
+- (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController {
+    self = [super initWithFrame:CGRectMake(0, 0, 34, 34)];
     if (self) {
-        _appkey = appkey;
         _apprid = apprid;
-        _bundle = bundle;
+        _appkey = appkey;
+        _rootViewController = rootViewController;
+        _bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"SinaEyeResource" ofType:@"bundle"]];
+        //设置按钮展现和时间
+        [self p_showIconNormal];
+        [self addTarget:self action:@selector(h_showFeedsView) forControlEvents:UIControlEventTouchUpInside];
+        
+        //设置定时器，进行新消息提醒
+        _timer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(p_showIconHasMsg) userInfo:nil repeats:YES];
+        //先执行一次新消息提醒
+        [_timer fire];
     }
     return self;
 }
-- (void)renderIconInViewController:(UIViewController *)vc{
-    _container = vc;
-    
-    //创建信息流广告入口按钮
-    _icon = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 34, 34)];
-    [self p_showIconNormal];
-    [_container.view addSubview:_icon];
-    [_icon addTarget:self action:@selector(h_showFeedsView) forControlEvents:UIControlEventTouchUpInside];
-    
-    //设置定时器，进行新消息提醒
-    _timer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(p_showIconHasMsg) userInfo:nil repeats:YES];
-    //先执行一次新消息提醒
-    [_timer fire];
-    
-    [_delegate feedsIconDidRendered:_icon];
+
+- (void)setLocation:(CLLocation *)location {
+    _location = location;
 }
 
-#pragma mark prive method
 - (void)p_showIconHasMsg {
     NSString *highlightIconPath = [_bundle pathForResource:@"ICON_05" ofType:@"png"];
-    [_icon setImage:[UIImage imageWithContentsOfFile:highlightIconPath] forState:UIControlStateNormal];
+    [self setImage:[UIImage imageWithContentsOfFile:highlightIconPath] forState:UIControlStateNormal];
 }
 
 - (void)p_showIconNormal {
     NSString *normalIconPath = [_bundle pathForResource:@"ICON_03" ofType:@"png"];
-    [_icon setImage:[UIImage imageWithContentsOfFile:normalIconPath] forState:UIControlStateNormal];
-}
-- (void)h_close {
-    [_container dismissViewControllerAnimated:YES completion:nil];
+    [self setImage:[UIImage imageWithContentsOfFile:normalIconPath] forState:UIControlStateNormal];
 }
 
-- (NSString *)h_feedsUrl {
-    SinaEyeInfoProvider *info = [SinaEyeInfoProvider shareInstance];
-    NSString *str = [FEEDS_URL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&plat=%@&carrier=%ld&os_version=%@&sdk_version=%@&brand=%@&bundleid=%@&devicemodel=%@&geo=%@",
+- (void)h_close {
+    [_rootViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (NSString *)p_feedsUrl {
+    SAInfoProvider *info = [SAInfoProvider shareInstance];
+    
+    
+    NSString *locationString;
+    if (_location == nil) {
+        locationString = @"0.000,0.000";
+    } else {
+        locationString = [NSString stringWithFormat:@"%f,%f", _location.coordinate.latitude, _location.coordinate.longitude];
+    }
+    
+    NSString *str = [FEEDS_URL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&plat=%@&carrier=%d&os_version=%@&sdk_version=%@&brand=%@&bundleid=%@&devicemodel=%@&geo=%@",
                      //appkey
                      _appkey,
                      //apprid
@@ -86,7 +97,8 @@
                      //设备型号 @"iphone 6p"
                      [[info deviceType] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                      //地理位置
-                     [[info geoLocation] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                     [locationString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                     //[[info geoLocation] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
                      ];
     return str;
 }
@@ -94,10 +106,10 @@
 
 //创建并显示feedsView
 - (void)h_showFeedsView {
-    BrowserViewController *feedsView = [[BrowserViewController alloc] init];
+    SABrowserViewController *feedsView = [[SABrowserViewController alloc] init];
     feedsView.delegate = self;
     //添加url
-    feedsView.url = [[NSURL alloc] initWithString:[self h_feedsUrl]];
+    feedsView.url = [[NSURL alloc] initWithString:[self p_feedsUrl]];
     
     //初始化导航
     _navigation = [[UINavigationController alloc] initWithRootViewController:feedsView];
@@ -107,11 +119,11 @@
     feedsView.navigationItem.leftBarButtonItem = closeButton;
     feedsView.title = @"新浪推荐";
     
-    [_container presentViewController:_navigation animated:YES completion:nil];
+    [_rootViewController presentViewController:_navigation animated:YES completion:nil];
     
 }
 
-#pragma  mark browserViewController delegate
+#pragma  mark SABrowserViewControllerDelegate
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
     NSURL *url = [request URL];
@@ -123,7 +135,7 @@
         
         NSLog(@"index view : %@, %@", [url host], [url path] );
         
-        BrowserViewController *browser = [[BrowserViewController alloc] initWithToolbar];
+        SABrowserViewController *browser = [[SABrowserViewController alloc] initWithToolbar];
         browser.url = url;
         
         [_navigation pushViewController:browser animated:YES];
@@ -164,8 +176,12 @@
     return backButtonImage;
 }
 
-- (void)dealloc {
-    NSLog(@"feeds ad is dealloc");
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
 }
+*/
 
 @end
