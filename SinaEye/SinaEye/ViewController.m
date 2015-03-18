@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "MyViewController.h"
+#import "SAFeedsViewController.h"
 #import "SAFeedsAdView.h"
 
 @interface ViewController () <SAFeedsAdViewDelegate>
@@ -18,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"root";
     // Do any additional setup after loading the view, typically from a nib.
     
     //init
@@ -42,8 +43,8 @@
     [self.view addConstraint:iconHeightConstraint];
 }
 - (IBAction)changeView:(id)sender {
-    MyViewController *view = [[MyViewController alloc] init];
-    [self presentViewController:view animated:YES completion:nil];
+    SAFeedsViewController *view = [[SAFeedsViewController alloc] init];
+    [self.navigationController pushViewController:view animated:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
