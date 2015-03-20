@@ -13,8 +13,6 @@
 		CF8E69331AB2ABC60049488C /* SAInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E69321AB2ABC60049488C /* SAInfoProvider.m */; };
 		CF8E69361AB2ABE80049488C /* SAReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E69351AB2ABE80049488C /* SAReachability.m */; };
 		CFDDD6C21AB6DCE700BB4442 /* SAFeedsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFDDD6C11AB6DCE700BB4442 /* SAFeedsViewController.m */; };
-		CFF9388B1AB97691009DE759 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = CFF9388A1AB97691009DE759 /* JSONKit.m */; };
-		CFF9388D1AB976BC009DE759 /* TGJSBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = CFF9388C1AB976BC009DE759 /* TGJSBridge.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,11 +51,6 @@
 		CF8E69351AB2ABE80049488C /* SAReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAReachability.m; sourceTree = "<group>"; };
 		CFDDD6C01AB6DCE700BB4442 /* SAFeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAFeedsViewController.h; sourceTree = "<group>"; };
 		CFDDD6C11AB6DCE700BB4442 /* SAFeedsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAFeedsViewController.m; sourceTree = "<group>"; };
-		CFF938871AB9765D009DE759 /* TGJSBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TGJSBridge.h; sourceTree = "<group>"; };
-		CFF938881AB97668009DE759 /* TGJSBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TGJSBridge.m; sourceTree = "<group>"; };
-		CFF938891AB9768A009DE759 /* JSONKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
-		CFF9388A1AB97691009DE759 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
-		CFF9388C1AB976BC009DE759 /* TGJSBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = TGJSBridge.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,11 +93,6 @@
 		CF8E69131AB2A4E10049488C /* SinaAdSDK */ = {
 			isa = PBXGroup;
 			children = (
-				CFF9388C1AB976BC009DE759 /* TGJSBridge.js */,
-				CFF938871AB9765D009DE759 /* TGJSBridge.h */,
-				CFF938881AB97668009DE759 /* TGJSBridge.m */,
-				CFF938891AB9768A009DE759 /* JSONKit.h */,
-				CFF9388A1AB97691009DE759 /* JSONKit.m */,
 				CF8E692B1AB2A5B10049488C /* SAFeedsAdView.h */,
 				CF8E692C1AB2A5B10049488C /* SAFeedsAdView.m */,
 				CF8E692E1AB2AA420049488C /* SABrowserViewController.h */,
@@ -213,7 +201,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFF9388D1AB976BC009DE759 /* TGJSBridge.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +213,6 @@
 			files = (
 				CF8E69301AB2AA420049488C /* SABrowserViewController.m in Sources */,
 				CF8E69361AB2ABE80049488C /* SAReachability.m in Sources */,
-				CFF9388B1AB97691009DE759 /* JSONKit.m in Sources */,
 				CF8E69331AB2ABC60049488C /* SAInfoProvider.m in Sources */,
 				CFDDD6C21AB6DCE700BB4442 /* SAFeedsViewController.m in Sources */,
 				CF8E692D1AB2A5B10049488C /* SAFeedsAdView.m in Sources */,

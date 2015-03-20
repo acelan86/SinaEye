@@ -80,31 +80,42 @@
         }
         .card-title{
             color: #2f2f2f;
-            line-height: 26px;
-            font-size: 18px;
+            line-height: 21px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 6px;
+            overflow:hidden;
+            height:21px;
         }
         .card-summary{
             color: #8b8b8b;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: normal;
             overflow: hidden;
-            line-height: 22px;
+            line-height: 21px;
+            height:21px;
         }
         .card-op{
             overflow:hidden;
             position:relative;
-            margin:10px;
+            clear:both;
         }
         .card-op-left,
         .card-op-right{
             color:#999;
-            font-size:12px;
+            font-size:10px;
             float:left;
+            display:block;
         }
         .card-op-right{
             float:right;
+        }
+        .card-op-left{
+            line-height: 20px;
+        }
+        .ad-mark{
+            background-color: #f0f0f0;
+            padding:0px 4px;
+            display: inline-block;
         }
         .card-pics{
             overflow:hidden;
@@ -129,23 +140,24 @@
         .like-button,
         .unlike-button{
             background: url(icon.png) no-repeat 0px 0px;
-            width: 20px;
-            background-size: 20px auto;
+            width: 16px;
+            background-size: 16px auto;
             color: #999;
             display: inline-block;
-            height: 20px;
+            margin:2px;
+            height: 16px;
         }
         .unlike-button{
-            background-position: 0px -40px;
+            background-position: 0px -32px;
         }
         .user-action-like .like-button{
-            background-position: 0px -20px;
+            background-position: 0px -16px;
         }
         .user-action-unlike .unlike-button{
-            background-position: 0px -60px;
+            background-position: 0px -48px;
         }
         .like-button{
-            margin-right:15px;
+            margin-right:20px;
         }
         .info-box{
             line-height:40px;
@@ -222,27 +234,63 @@
             var infoBox = $("#InfoBox");
             var msgBox = $("#MsgBox");
 
+            function stringifyClickMonitor(urls) {
+                urls = urls || [];
+                var result = [];
+                urls.map(function (url) {
+                    result.push(encodeURIComponent(url));
+                });
+                return result.join('|');
+            }
+            function parseClickMonitor(stringUrls) {
+                stringUrls = (stringUrls || '').split('|');
+                var result = [];
+                stringUrls.map(function (url) {
+                    result.push(decodeURIComponent(url));
+                });
+                return result;
+            }
+
             var TPL = {
+                //title + summary
+                "tid1" : function (data) {
+                    return [
+                        '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                            '<dd class="card-dd">',
+                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    '<h3 class="card-title">' + data.title + '</h3>',
+                                    '<p class="card-summary">' + data.summary + '</p>',
+                                data.link ? '</a>' : '',
+                                '<div class="card-op">',
+                                    '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                    '<span class="card-op-right">',
+                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                    '</span>',
+                                '</div>',
+                            '</dd>',
+                        '</dl>'
+                    ].join('');
+                },
                 //title + summary + 1pic
                 "tid2" : function (data) {
                     return [
-                        '<dl class="card">',
+                        '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                             '<dt class="card-dt">',
-                                data.link ? '<a class="card-link" href="' + data.link + '" target="_blank">' : '',
+                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                     '<img class="card-img" src="' + data.imgs[0].url + '" alt="' + data.title + '">',
                                 data.link ? '</a>' : '',
                             '</dt>',
                             '<dd class="card-dd">',
-                                data.link ? '<a class="card-link" href="' + data.link + '" target="_blank">' : '',
+                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                     '<h3 class="card-title">' + data.title + '</h3>',
                                     '<p class="card-summary">' + data.summary + '</p>',
                                 data.link ? '</a>' : '',
-                            '</dd>',
-                            '<dd class="card-op">',
-                                '<span class="card-op-left">' + readableDate(data.ctime) + '</span>',
-                                '<span class="card-op-right">',
-                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
-                                '</span>',
+                                '<div class="card-op">',
+                                    '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                    '<span class="card-op-right">',
+                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                    '</span>',
+                                '</div>',
                             '</dd>',
                         '</dl>'
                     ].join('');
@@ -258,26 +306,26 @@
                     });
 
                     return [
-                        '<dl class="card">',
+                        '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                             '<dd class="card-dd">',
-                                data.link ? '<a class="card-link" href="' + data.link + '" target="_blank">' : '',
+                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                     '<h3 class="card-title">' + data.title + '</h3>',
                                     '<ul class="card-pics">',
                                         pics.join(''),
                                     '</ul>',
                                 data.link ? '</a>' : '',
-                            '</dd>',
-                            '<dd class="card-op">',
-                                '<span class="card-op-left">' + readableDate(data.ctime) + '</span>',
-                                '<span class="card-op-right">',
-                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
-                                '</span>',
+                                '<div class="card-op">',
+                                    '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                    '<span class="card-op-right">',
+                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                    '</span>',
+                                '</div>',
                             '</dd>',
                         '</dl>'
                     ].join('');
                 },
-                //title + summary
-                "tid1": function (data) {
+                //title + 1pic
+                "tid4": function (data) {
                     var pics = data.imgs.map(function (image) {
                         return '<li>' +
                                     '<span>' +
@@ -286,20 +334,20 @@
                                 '</li>';
                     });
                     return [
-                        '<dl class="card">',
+                        '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                             '<dd class="card-dd">',
-                                data.link ? '<a class="card-link" href="' + data.link + '" target="_blank">' : '',
+                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                     '<h3 class="card-title">' + data.title + '</h3>',
                                     '<ul class="card-pics card-pics-full">',
                                         pics.join(''),
                                     '</ul>',
                                 data.link ? '</a>' : '',
-                            '</dd>',
-                            '<dd class="card-op">',
-                                '<span class="card-op-left">' + readableDate(data.ctime) + '</span>',
-                                '<span class="card-op-right">',
-                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
-                                '</span>',
+                                '<div class="card-op">',
+                                    '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                    '<span class="card-op-right">',
+                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                    '</span>',
+                                '</div>',
                             '</dd>',
                         '</dl>'
                     ].join('');
@@ -335,17 +383,33 @@
             //挂接喜欢跟拒绝事件
             $('.list').on('click', '.unlike-button', function () {
                 sendUserAction(0, $(this).data('link').split('?')[1]);
-                infoBox.insertBefore($(this).closest(".card-op"));
+                infoBox.insertBefore($(this).closest(".card-dd"));
                 changeLikeState(0, $(this).parent());
                 info("拒绝此类推荐");
                 return false;
             });
             $('.list').on('click', '.like-button', function () {
                 sendUserAction(1, $(this).data('link').split('?')[1]);
-                infoBox.insertBefore($(this).closest('.card-op'));
+                infoBox.insertBefore($(this).closest('.card-dd'));
                 changeLikeState(1, $(this).parent());
                 info("喜欢此类推荐");
                 return false;
+            });
+
+            //绑定点击广告事件
+            $('.list').on('click', '.ad-card .card-link', function () {
+                //var thiz = this;
+                var urls = $(this).data('click');
+                urls && parseClickMonitor(urls).map(function (url) {
+                    alert('send:' + url);
+                    log(url);
+                });
+                // //延迟500ms打开链接，保证正常发送点击请求
+                // setTimeout(function () {
+                //     alert('open');
+                //     window.location.href = thiz.href;
+                // }, 500);
+                // return false;
             });
 
             function padNumber(source, length) {
@@ -448,13 +512,20 @@
                     //url: "feeds.json" + window.location.search,
                     timeout: 5 * 1000,
                     data: {
-                        _ts: (+new Date()).toString(36)
+                        _ts: +new Date()
                     },
                     success: function (feeds) {
                         var htmls = [];
 
                         if (0 === feeds.status && feeds.data.results && feeds.data.results.length > 0) {
                             htmls = feeds.data.results.map(function (feed) {
+                                //如果是广告，发送曝光请求
+                                if (feed.isad) {
+                                    feed.view = feed.view || [];
+                                    feed.view.map(function (url) {
+                                        log(url);
+                                    });
+                                }
                                 return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
                             });
                             callback(htmls.join(''));
