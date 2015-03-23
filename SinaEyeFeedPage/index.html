@@ -14,6 +14,7 @@
     <!-- iscroll4.js -->
     <script src="./iScroll.js"></script>
     <script src="./zepto.js"></script>
+    <script src="./RedirectToNative.js"></script>
     <style>
         html, body{
             padding:0;
@@ -110,7 +111,7 @@
             float:right;
         }
         .card-op-left{
-            line-height: 20px;
+            line-height: 18px;
         }
         .ad-mark{
             background-color: #f0f0f0;
@@ -200,415 +201,504 @@
     </div>
     <div id="InfoBox" class="info-box"></div>
     <div id="MsgBox" class="msg-box"></div>
+
     <script>
+        var uniqueId = 1;
+        function log(message, data) {
+            var log = document.getElementById('log')
+            var el = document.createElement('div')
+            el.className = 'logLine'
+            el.innerHTML = uniqueId++ + '. ' + message + ':<br/>' + JSON.stringify(data)
+            if (log.children.length) { log.insertBefore(el, log.children[0]) }
+            else { log.appendChild(el) }
+        }
+
+        function _UA() {
+            var ua = navigator.userAgent;
+            // ios
+            if (!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+                return 'ios';
+            } else if (!!ua.match(/Android/i)) {
+                return 'android';
+            } else {
+                return '';
+            }
+        }
+
+        //js bridge
+        function connectWebViewJavascriptBridge(callback) {
+            var bridgeTimer;
+            //暂时只支持ios进行bridge回调
+            if (_UA() === 'ios') {
+                bridgeTimer = setTimeout(function () {
+                    alert("请在sina ad sdk的环境下使用这个页面");
+                }, 2000);
+                if (window.WebViewJavascriptBridge) {
+                    bridgeTimer && clearTimeout(bridgeTimer);
+                    callback(WebViewJavascriptBridge)
+                } else {
+                    document.addEventListener('WebViewJavascriptBridgeReady', function() {
+                        bridgeTimer && clearTimeout(bridgeTimer);
+                        callback(WebViewJavascriptBridge)
+                    }, false)
+                }
+            } else {
+                callback({
+                    callHandler: function () {},
+                    init: function () {},
+                    registerHandler: function () {}
+                });
+            }
+        }
+
         document.addEventListener('touchmove', function (e) { 
             e.preventDefault();
         }, false);
 
         document.addEventListener('DOMContentLoaded', function () {
-            var PULL_OFFSET = 40; //拉动临界值
+            connectWebViewJavascriptBridge(function (bridge) {
+                var PULL_OFFSET = 40; //拉动临界值
 
-            //同时只能有上拉或者下拉状态
-            var PULL_TYPE = {
-                DOWN : 'down',
-                UP   : 'up'
-            };
-
-            //操作阶段
-            var PHASE = {
-                INIT            : 0, //初始阶段，显示"下拉刷新"
-                PULLING         : 1, //下拉过程，显示"下拉刷新"
-                CAN_RELEASE     : 2, //到达临界，可以释放，显示"释放刷新"
-                LOADING         : 3  //释放，加载过程， 显示"正在加载"
-            };
-
-            var type;
-            var phase = PHASE.INIT;
-
-            var pullDown = document.querySelector("#PullDown");
-            var pullDownOffset = pullDown.offsetHeight;
-
-            var pullUp = document.querySelector("#PullUp");
-            var pullUpOffset = pullUp.offsetHeight;
-
-            var infoBox = $("#InfoBox");
-            var msgBox = $("#MsgBox");
-
-            function stringifyClickMonitor(urls) {
-                urls = urls || [];
-                var result = [];
-                urls.map(function (url) {
-                    result.push(encodeURIComponent(url));
-                });
-                return result.join('|');
-            }
-            function parseClickMonitor(stringUrls) {
-                stringUrls = (stringUrls || '').split('|');
-                var result = [];
-                stringUrls.map(function (url) {
-                    result.push(decodeURIComponent(url));
-                });
-                return result;
-            }
-
-            var TPL = {
-                //title + summary
-                "tid1" : function (data) {
-                    return [
-                        '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
-                            '<dd class="card-dd">',
-                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
-                                    '<h3 class="card-title">' + data.title + '</h3>',
-                                    '<p class="card-summary">' + data.summary + '</p>',
-                                data.link ? '</a>' : '',
-                                '<div class="card-op">',
-                                    '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
-                                    '<span class="card-op-right">',
-                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
-                                    '</span>',
-                                '</div>',
-                            '</dd>',
-                        '</dl>'
-                    ].join('');
-                },
-                //title + summary + 1pic
-                "tid2" : function (data) {
-                    return [
-                        '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
-                            '<dt class="card-dt">',
-                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
-                                    '<img class="card-img" src="' + data.imgs[0].url + '" alt="' + data.title + '">',
-                                data.link ? '</a>' : '',
-                            '</dt>',
-                            '<dd class="card-dd">',
-                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
-                                    '<h3 class="card-title">' + data.title + '</h3>',
-                                    '<p class="card-summary">' + data.summary + '</p>',
-                                data.link ? '</a>' : '',
-                                '<div class="card-op">',
-                                    '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
-                                    '<span class="card-op-right">',
-                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
-                                    '</span>',
-                                '</div>',
-                            '</dd>',
-                        '</dl>'
-                    ].join('');
-                },
-                //title + 3pic
-                "tid3": function (data) {
-                    var pics = data.imgs.map(function (image) {
-                        return '<li>' +
-                                    '<span>' +
-                                        '<img alt="' + data.title + '" src="' + image.url + '"/>' +
-                                    '</span>' +
-                                '</li>';
-                    });
-
-                    return [
-                        '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
-                            '<dd class="card-dd">',
-                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
-                                    '<h3 class="card-title">' + data.title + '</h3>',
-                                    '<ul class="card-pics">',
-                                        pics.join(''),
-                                    '</ul>',
-                                data.link ? '</a>' : '',
-                                '<div class="card-op">',
-                                    '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
-                                    '<span class="card-op-right">',
-                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
-                                    '</span>',
-                                '</div>',
-                            '</dd>',
-                        '</dl>'
-                    ].join('');
-                },
-                //title + 1pic
-                "tid4": function (data) {
-                    var pics = data.imgs.map(function (image) {
-                        return '<li>' +
-                                    '<span>' +
-                                        '<img alt="' + data.title + '" src="' + image.url + '"/>' +
-                                    '</span>' +
-                                '</li>';
-                    });
-                    return [
-                        '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
-                            '<dd class="card-dd">',
-                                data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
-                                    '<h3 class="card-title">' + data.title + '</h3>',
-                                    '<ul class="card-pics card-pics-full">',
-                                        pics.join(''),
-                                    '</ul>',
-                                data.link ? '</a>' : '',
-                                '<div class="card-op">',
-                                    '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
-                                    '<span class="card-op-right">',
-                                        (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
-                                    '</span>',
-                                '</div>',
-                            '</dd>',
-                        '</dl>'
-                    ].join('');
-                }
-            };
-
-            var alertTimer;
-            function alert(msg) {
-                msgBox.html(msg);
-                alertTimer && clearTimeout(alertTimer);
-                alertTimer = setTimeout(function () {
-                    msgBox.hide();
-                }, 2000);
-                msgBox.show();
-            }
-
-            var infoTimer;
-            function info(msg) {
-                infoBox.html(msg);
-                infoTimer && clearTimeout(infoTimer);
-                infoTimer = setTimeout(function () {
-                    infoBox.removeClass('show');
-                }, 2000);
-                infoBox.addClass('show');
-            }
-
-            function changeLikeState(isLike, $el) {
-                $el.removeClass("user-action-like");
-                $el.removeClass("user-action-unlike");
-                $el.addClass("user-action-" + (isLike ? "like" : "unlike"));
-            }
-
-            //挂接喜欢跟拒绝事件
-            $('.list').on('click', '.unlike-button', function () {
-                sendUserAction(0, $(this).data('link').split('?')[1]);
-                infoBox.insertBefore($(this).closest(".card-dd"));
-                changeLikeState(0, $(this).parent());
-                info("拒绝此类推荐");
-                return false;
-            });
-            $('.list').on('click', '.like-button', function () {
-                sendUserAction(1, $(this).data('link').split('?')[1]);
-                infoBox.insertBefore($(this).closest('.card-dd'));
-                changeLikeState(1, $(this).parent());
-                info("喜欢此类推荐");
-                return false;
-            });
-
-            //绑定点击广告事件
-            $('.list').on('click', '.ad-card .card-link', function () {
-                //var thiz = this;
-                var urls = $(this).data('click');
-                urls && parseClickMonitor(urls).map(function (url) {
-                    alert('send:' + url);
-                    log(url);
-                });
-                // //延迟500ms打开链接，保证正常发送点击请求
-                // setTimeout(function () {
-                //     alert('open');
-                //     window.location.href = thiz.href;
-                // }, 500);
-                // return false;
-            });
-
-            function padNumber(source, length) {
-                var pre = "",
-                    negative = (source < 0),
-                    string = String(Math.abs(source));
-             
-                if (string.length < length) {
-                    pre = (new Array(length - string.length + 1)).join('0');
-                }
-             
-                return (negative ?  "-" : "") + pre + string;
-            }
-
-            function formatDate(source, pattern) {
-                if ('string' !== typeof pattern) {
-                    return source.toString();
-                }
-             
-                function replacer(patternPart, result) {
-                    pattern = pattern.replace(patternPart, result);
-                }
-                 
-                var pad     = padNumber,
-                    year    = source.getFullYear(),
-                    month   = source.getMonth() + 1,
-                    date2   = source.getDate(),
-                    hours   = source.getHours(),
-                    minutes = source.getMinutes(),
-                    seconds = source.getSeconds();
-             
-                replacer(/yyyy/g, pad(year, 4));
-                replacer(/yy/g, pad(parseInt(year.toString().slice(2), 10), 2));
-                replacer(/MM/g, pad(month, 2));
-                replacer(/M/g, month);
-                replacer(/dd/g, pad(date2, 2));
-                replacer(/d/g, date2);
-             
-                replacer(/HH/g, pad(hours, 2));
-                replacer(/H/g, hours);
-                replacer(/hh/g, pad(hours % 12, 2));
-                replacer(/h/g, hours % 12);
-                replacer(/mm/g, pad(minutes, 2));
-                replacer(/m/g, minutes);
-                replacer(/ss/g, pad(seconds, 2));
-                replacer(/s/g, seconds);
-             
-                return pattern;
-            }
-
-            //可读格式日期
-            function readableDate(time) {
-                if (!time) {
-                    return '';
-                }
-                var now = new Date().getTime(),
-                    ctime = new Date();
-                ctime.setTime(time);
-                //小于1分钟，显示刚刚
-                if (now - time < 60 * 1000) {
-                    return "刚刚";
-                //小于一天，用时：分显示
-                } else if (now - time < 24 * 60 * 60 * 1000) {
-                    return formatDate(ctime, "HH:mm");
-                //大于一天，用日期显示
-                } else {
-                    return formatDate(ctime, "MM月dd日");
-                }
-            }
-
-            function log(url, useCache) {
-                var img = new Image(),
-                    key = '_sina_eye_log' + (+new Date()).toString(36) + "=1";
-
-                window[key] = img;
-             
-                img.onload = img.onerror = img.onabort = function () {
-                    img.onload = img.onerror = img.onabort = null;
-             
-                    window[key] = null;
-                    img = null;
+                //同时只能有上拉或者下拉状态
+                var PULL_TYPE = {
+                    DOWN : 'down',
+                    UP   : 'up'
                 };
-         
-                img.src = url + (useCache ? '' : (url.indexOf('?') > 0 ? '&' : '?') + key);
-            }
-            //发送喜欢/拒绝信息
-            function sendUserAction(isLike, params) {
-                var url = "http://10.210.228.69:8010/user_action",
-                isLike = isLike ? 1 : 0;
-                log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike);
-            }
 
-            //获取数据
-            function getFeeds(isClear, callback) {
-                $.ajax({
-                    type: "GET",
-                    dataType: "jsonp",
-                    url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search + "&clear=" + (isClear ? "true" : "false"),
-                    //dataType: "json",
-                    //url: "feeds.json" + window.location.search,
-                    timeout: 5 * 1000,
-                    data: {
-                        _ts: +new Date()
+                //操作阶段
+                var PHASE = {
+                    INIT            : 0, //初始阶段，显示"下拉刷新"
+                    PULLING         : 1, //下拉过程，显示"下拉刷新"
+                    CAN_RELEASE     : 2, //到达临界，可以释放，显示"释放刷新"
+                    LOADING         : 3  //释放，加载过程， 显示"正在加载"
+                };
+
+                var type;
+                var phase = PHASE.INIT;
+
+                var pullDown = document.querySelector("#PullDown");
+                var pullDownOffset = pullDown.offsetHeight;
+
+                var pullUp = document.querySelector("#PullUp");
+                var pullUpOffset = pullUp.offsetHeight;
+
+                var infoBox = $("#InfoBox");
+                var msgBox = $("#MsgBox");
+
+                function stringifyClickMonitor(urls) {
+                    urls = urls || [];
+                    var result = [];
+                    urls.map(function (url) {
+                        result.push(encodeURIComponent(url));
+                    });
+                    return result.join('|');
+                }
+                function parseClickMonitor(stringUrls) {
+                    stringUrls = (stringUrls || '').split('|');
+                    var result = [];
+                    stringUrls.map(function (url) {
+                        result.push(decodeURIComponent(url));
+                    });
+                    return result;
+                }
+
+                var TPL = {
+                    //title + summary
+                    "tid1" : function (data) {
+                        return [
+                            '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                                '<dd class="card-dd">',
+                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                        '<h3 class="card-title">' + data.title + '</h3>',
+                                        '<p class="card-summary">' + data.summary + '</p>',
+                                    data.link ? '</a>' : '',
+                                    '<div class="card-op">',
+                                        '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                        '<span class="card-op-right">',
+                                            (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                        '</span>',
+                                    '</div>',
+                                '</dd>',
+                            '</dl>'
+                        ].join('');
                     },
-                    success: function (feeds) {
-                        var htmls = [];
+                    //title + summary + 1pic
+                    "tid2" : function (data) {
+                        return [
+                            '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                                '<dt class="card-dt">',
+                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                        '<img class="card-img" src="' + data.imgs[0].url + '" alt="' + data.title + '">',
+                                    data.link ? '</a>' : '',
+                                '</dt>',
+                                '<dd class="card-dd">',
+                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                        '<h3 class="card-title">' + data.title + '</h3>',
+                                        '<p class="card-summary">' + data.summary + '</p>',
+                                    data.link ? '</a>' : '',
+                                    '<div class="card-op">',
+                                        '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                        '<span class="card-op-right">',
+                                            (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                        '</span>',
+                                    '</div>',
+                                '</dd>',
+                            '</dl>'
+                        ].join('');
+                    },
+                    //title + 3pic
+                    "tid3": function (data) {
+                        var pics = data.imgs.map(function (image) {
+                            return '<li>' +
+                                        '<span>' +
+                                            '<img alt="' + data.title + '" src="' + image.url + '"/>' +
+                                        '</span>' +
+                                    '</li>';
+                        });
 
-                        if (0 === feeds.status && feeds.data.results && feeds.data.results.length > 0) {
-                            htmls = feeds.data.results.map(function (feed) {
-                                //如果是广告，发送曝光请求
-                                if (feed.isad) {
-                                    feed.view = feed.view || [];
-                                    feed.view.map(function (url) {
-                                        log(url);
+                        return [
+                            '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                                '<dd class="card-dd">',
+                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                        '<h3 class="card-title">' + data.title + '</h3>',
+                                        '<ul class="card-pics">',
+                                            pics.join(''),
+                                        '</ul>',
+                                    data.link ? '</a>' : '',
+                                    '<div class="card-op">',
+                                        '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                        '<span class="card-op-right">',
+                                            (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                        '</span>',
+                                    '</div>',
+                                '</dd>',
+                            '</dl>'
+                        ].join('');
+                    },
+                    //title + 1pic
+                    "tid4": function (data) {
+                        var pics = data.imgs.map(function (image) {
+                            return '<li>' +
+                                        '<span>' +
+                                            '<img alt="' + data.title + '" src="' + image.url + '"/>' +
+                                        '</span>' +
+                                    '</li>';
+                        });
+                        return [
+                            '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                                '<dd class="card-dd">',
+                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                        '<h3 class="card-title">' + data.title + '</h3>',
+                                        '<ul class="card-pics card-pics-full">',
+                                            pics.join(''),
+                                        '</ul>',
+                                    data.link ? '</a>' : '',
+                                    '<div class="card-op">',
+                                        '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                        '<span class="card-op-right">',
+                                            (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                        '</span>',
+                                    '</div>',
+                                '</dd>',
+                            '</dl>'
+                        ].join('');
+                    },
+                    //callout
+                    "tid5": function (data) {
+                        return [
+                            '<a class="recommend-icon"',
+                                ' href="http://www.etao.com/go/act/etao/android.php?spm=1002.1.0.0.dSUImz"',
+                                ' data-ios-native-url="etao://home?src=home"', 
+                                ' data-android-native-url="etao://home?src=home"',
+                                ' data-ios-install-url="https://itunes.apple.com/cn/app/yi-tao-xiang-gou-wu-xian-yi-tao/id451400917?mt=8"',
+                                ' data-android-install-url="http://download.taobaocdn.com/freedom/20457/andriod/701234etaoandroid2.4.9.apk" data-package="com.taobao.etao">', 
+                                    '<img width="320px" src="http://gtms01.alicdn.com/tps/i1/T1OsB9FfVXXXXs.9gr-640-156.jpg"/>',
+                            '</a>'
+                        ].join('');
+                    }
+                };
+
+                var alertTimer;
+                function alert(msg) {
+                    msgBox.html(msg);
+                    alertTimer && clearTimeout(alertTimer);
+                    alertTimer = setTimeout(function () {
+                        msgBox.hide();
+                    }, 2000);
+                    msgBox.show();
+                }
+
+                var infoTimer;
+                function info(msg) {
+                    infoBox.html(msg);
+                    infoTimer && clearTimeout(infoTimer);
+                    infoTimer = setTimeout(function () {
+                        infoBox.removeClass('show');
+                    }, 2000);
+                    infoBox.addClass('show');
+                }
+
+                function changeLikeState(isLike, $el) {
+                    $el.removeClass("user-action-like");
+                    $el.removeClass("user-action-unlike");
+                    $el.addClass("user-action-" + (isLike ? "like" : "unlike"));
+                }
+
+                //挂接喜欢跟拒绝事件
+                $('.list').on('click', '.unlike-button', function () {
+                    sendUserAction(0, $(this).data('link').split('?')[1]);
+                    infoBox.insertBefore($(this).closest(".card-dd"));
+                    changeLikeState(0, $(this).parent());
+                    info("拒绝此类推荐");
+                    return false;
+                });
+                $('.list').on('click', '.like-button', function () {
+                    sendUserAction(1, $(this).data('link').split('?')[1]);
+                    infoBox.insertBefore($(this).closest('.card-dd'));
+                    changeLikeState(1, $(this).parent());
+                    info("喜欢此类推荐");
+                    return false;
+                });
+
+                //绑定点击广告事件
+                $('.list').on('click', '.ad-card .card-link', function () {
+                    //var thiz = this;
+                    var urls = $(this).data('click');
+                    urls && parseClickMonitor(urls).map(function (url) {
+                        alert('send:' + url);
+                        log(url);
+                    });
+                    // //延迟500ms打开链接，保证正常发送点击请求
+                    // setTimeout(function () {
+                    //     alert('open');
+                    //     window.location.href = thiz.href;
+                    // }, 500);
+                    // return false;
+                });
+
+                function padNumber(source, length) {
+                    var pre = "",
+                        negative = (source < 0),
+                        string = String(Math.abs(source));
+                 
+                    if (string.length < length) {
+                        pre = (new Array(length - string.length + 1)).join('0');
+                    }
+                 
+                    return (negative ?  "-" : "") + pre + string;
+                }
+
+                function formatDate(source, pattern) {
+                    if ('string' !== typeof pattern) {
+                        return source.toString();
+                    }
+                 
+                    function replacer(patternPart, result) {
+                        pattern = pattern.replace(patternPart, result);
+                    }
+                     
+                    var pad     = padNumber,
+                        year    = source.getFullYear(),
+                        month   = source.getMonth() + 1,
+                        date2   = source.getDate(),
+                        hours   = source.getHours(),
+                        minutes = source.getMinutes(),
+                        seconds = source.getSeconds();
+                 
+                    replacer(/yyyy/g, pad(year, 4));
+                    replacer(/yy/g, pad(parseInt(year.toString().slice(2), 10), 2));
+                    replacer(/MM/g, pad(month, 2));
+                    replacer(/M/g, month);
+                    replacer(/dd/g, pad(date2, 2));
+                    replacer(/d/g, date2);
+                 
+                    replacer(/HH/g, pad(hours, 2));
+                    replacer(/H/g, hours);
+                    replacer(/hh/g, pad(hours % 12, 2));
+                    replacer(/h/g, hours % 12);
+                    replacer(/mm/g, pad(minutes, 2));
+                    replacer(/m/g, minutes);
+                    replacer(/ss/g, pad(seconds, 2));
+                    replacer(/s/g, seconds);
+                 
+                    return pattern;
+                }
+
+                //可读格式日期
+                function readableDate(time) {
+                    if (!time) {
+                        return '';
+                    }
+                    var now = new Date().getTime(),
+                        ctime = new Date();
+                    ctime.setTime(time);
+                    //小于1分钟，显示刚刚
+                    if (now - time < 60 * 1000) {
+                        return "刚刚";
+                    //小于一天，用时：分显示
+                    } else if (now - time < 24 * 60 * 60 * 1000) {
+                        return formatDate(ctime, "HH:mm");
+                    //大于一天，用日期显示
+                    } else {
+                        return formatDate(ctime, "MM月dd日");
+                    }
+                }
+
+                function log(url, useCache) {
+                    var img = new Image(),
+                        key = '_sina_eye_log' + (+new Date()).toString(36) + "=1";
+
+                    window[key] = img;
+                 
+                    img.onload = img.onerror = img.onabort = function () {
+                        img.onload = img.onerror = img.onabort = null;
+                 
+                        window[key] = null;
+                        img = null;
+                    };
+             
+                    img.src = url + (useCache ? '' : (url.indexOf('?') > 0 ? '&' : '?') + key);
+                }
+                //发送喜欢/拒绝信息
+                function sendUserAction(isLike, params) {
+                    var url = "http://10.210.228.69:8010/user_action",
+                    isLike = isLike ? 1 : 0;
+                    log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike);
+                }
+
+                //获取数据
+                function getFeeds(isClear, callback) {
+                    $.ajax({
+                        type: "GET",
+                        dataType: "jsonp",
+                        url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search + "&clear=" + (isClear ? "true" : "false"),
+                        //dataType: "json",
+                        //url: "feeds.json" + window.location.search,
+                        timeout: 5 * 1000,
+                        data: {
+                            _ts: +new Date()
+                        },
+                        success: function (feeds) {
+                            var htmls = [];
+
+                            if (0 === feeds.status && feeds.data.results && feeds.data.results.length > 0) {
+                                bridge.callHandler('jsNetSuccess', feeds.data.results.length, function(response) {
+                                    log('JS got response', response)
+                                });
+                                htmls = feeds.data.results.map(function (feed) {
+                                    //如果是广告，发送曝光请求
+                                    if (feed.isad) {
+                                        feed.view = feed.view || [];
+                                        feed.view.map(function (url) {
+                                            log(url);
+                                        });
+                                    }
+                                    return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
+                                });
+                                callback(htmls.join(''));
+                            } else {
+                                bridge.callHandler('jsNetError', 0, function(response) {
+                                    log('JS got response', response);
+                                });
+                                alert((feeds.statusInfo && feeds.statusInfo.global) || "没有新内容了，等等再刷看看～");
+                            }
+                        },
+                        error: function () {
+                            bridge.callHandler('jsNetError', 0, function(response) {
+                                log('JS got response', response);
+                            });
+                            callback('');
+                            alert("抱歉，服务器开小差了～");
+                        }
+                    });
+                }
+
+                //监控由oc发回的消息
+                bridge.init(function (message, responseCallback) {
+                    log('JS got a message', message);
+                    var data = { 'Javascript Responds':'Wee!' };
+                    log('JS responding with', data);
+                    responseCallback(data);
+                });
+
+                //注册js可被oc回调的事件
+                bridge.registerHandler('testJavascriptHandler', function(data, responseCallback) {
+                    log('ObjC called testJavascriptHandler with', data);
+                    var responseData = { 'Javascript Says':'Right back atcha!' };
+                    log('JS responding with', responseData);
+                    responseCallback(responseData);
+                });
+
+                getFeeds(1, function (fragment) {
+                    $(".list").append(fragment);
+                    var list = new iScroll("FeedList", {
+                        topOffset: pullDownOffset,
+                        useTransition: true,
+                        onRefresh: function () {
+                            phase = PHASE.INIT;
+                            this.maxScrollY = this.maxScrollY + pullUpOffset;
+                            if (type === PULL_TYPE.DOWN) {
+                                pullDown.innerHTML = "";
+                            } else {
+                                pullUp.innerHTML = "";
+                            }
+                        },
+                        onScrollMove: function () {
+                            //init > pulling && pull down
+                            if (phase === PHASE.INIT && this.y > this.minScrollY) {
+                                type = PULL_TYPE.DOWN;
+                                phase = PHASE.PULLING;
+                                pullDown.innerHTML = '⬇︎ 下拉刷新...';
+                                this.minScrollY = -pullDownOffset;
+                            }
+                            //init > pulling && pull up
+                            if (phase === PHASE.INIT && this.y < this.maxScrollY) {
+                                type = PULL_TYPE.UP;
+                                phase = PHASE.PULLING;
+                                pullUp.innerHTML = '⬇︎ 加载更多...';
+                                this.maxScrollY = this.maxScrollY;
+                            }
+                            //while pull down, pulling > canrelease
+                            if (type === PULL_TYPE.DOWN && phase === PHASE.PULLING && this.y > PULL_OFFSET) {
+                                phase = PHASE.CAN_RELEASE;
+                                pullDown.innerHTML = "⬆︎ 释放刷新...";
+                                this.minScrollY = 0;
+                            }
+                            //while pull up, pulling > canrelease
+                            if (type === PULL_TYPE.UP && phase === PHASE.PULLING && this.y < (this.maxScrollY - pullUpOffset - PULL_OFFSET)) {
+                                phase = PHASE.CAN_RELEASE;
+                                pullUp.innerHTML = "⬆︎ 释放刷新...";
+                                this.maxScrollY = this.maxScrollY - pullUpOffset;
+                            }
+                        },
+                        onScrollEnd: function () {
+                            var me = this;
+                            //can_release > loading
+                            if (phase === PHASE.CAN_RELEASE) {
+                                phase = PHASE.LOADING;
+                                if (type === PULL_TYPE.DOWN) {
+                                    pullDown.innerHTML = "♺ 加载中...";
+                                    getFeeds(0, function (fragment) {
+                                        //insertBefore
+                                        //
+                                        $(".list").children().length <= 0 ? 
+                                            $(fragment).appendTo(".list") :
+                                            $(fragment).insertBefore($('.list').children().first());
+                                        me.refresh();
+                                    });
+                                } else {
+                                    pullUp.innerHTML = "♺ 加载中...";
+                                    getFeeds(0, function (fragment) {
+                                        //append
+                                        $(fragment).appendTo($('.list'));
+                                        me.refresh();
                                     });
                                 }
-                                return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
-                            });
-                            callback(htmls.join(''));
-                        } else {
-                            callback(htmls.join(''));
-                            alert((feeds.statusInfo && feeds.statusInfo.global) || "没有新内容了，等等再刷看看～");
-                        }
-                    },
-                    error: function () {
-                        alert("抱歉，服务器开小差了～");
-                    }
-                });
-            }
-
-            getFeeds(1, function (fragment) {
-                $(".list").append(fragment);
-                var list = new iScroll("FeedList", {
-                    topOffset: pullDownOffset,
-                    useTransition: true,
-                    onRefresh: function () {
-                        phase = PHASE.INIT;
-                        this.maxScrollY = this.maxScrollY + pullUpOffset;
-                        if (type === PULL_TYPE.DOWN) {
-                            pullDown.innerHTML = "";
-                        } else {
-                            pullUp.innerHTML = "";
-                        }
-                    },
-                    onScrollMove: function () {
-                        //init > pulling && pull down
-                        if (phase === PHASE.INIT && this.y > this.minScrollY) {
-                            type = PULL_TYPE.DOWN;
-                            phase = PHASE.PULLING;
-                            pullDown.innerHTML = '⬇︎ 下拉刷新...';
-                            this.minScrollY = -pullDownOffset;
-                        }
-                        //init > pulling && pull up
-                        if (phase === PHASE.INIT && this.y < this.maxScrollY) {
-                            type = PULL_TYPE.UP;
-                            phase = PHASE.PULLING;
-                            pullUp.innerHTML = '⬇︎ 加载更多...';
-                            this.maxScrollY = this.maxScrollY;
-                        }
-                        //while pull down, pulling > canrelease
-                        if (type === PULL_TYPE.DOWN && phase === PHASE.PULLING && this.y > PULL_OFFSET) {
-                            phase = PHASE.CAN_RELEASE;
-                            pullDown.innerHTML = "⬆︎ 释放刷新...";
-                            this.minScrollY = 0;
-                        }
-                        //while pull up, pulling > canrelease
-                        if (type === PULL_TYPE.UP && phase === PHASE.PULLING && this.y < (this.maxScrollY - pullUpOffset - PULL_OFFSET)) {
-                            phase = PHASE.CAN_RELEASE;
-                            pullUp.innerHTML = "⬆︎ 释放刷新...";
-                            this.maxScrollY = this.maxScrollY - pullUpOffset;
-                        }
-                    },
-                    onScrollEnd: function () {
-                        var me = this;
-                        //can_release > loading
-                        if (phase === PHASE.CAN_RELEASE) {
-                            phase = PHASE.LOADING;
-                            if (type === PULL_TYPE.DOWN) {
-                                pullDown.innerHTML = "♺ 加载中...";
-                                getFeeds(0, function (fragment) {
-                                    //insertBefore
-                                    //
-                                    $(".list").children().length <= 0 ? 
-                                        $(fragment).appendTo(".list") :
-                                        $(fragment).insertBefore($('.list').children().first());
-                                    me.refresh();
-                                });
-                            } else {
-                                pullUp.innerHTML = "♺ 加载中...";
-                                getFeeds(0, function (fragment) {
-                                    //append
-                                    $(fragment).appendTo($('.list'));
-                                    me.refresh();
-                                });
+                            } else if (phase === PHASE.PULLING){
+                                me.refresh();
                             }
-                        } else if (phase === PHASE.PULLING){
-                            me.refresh();
                         }
-                    }
+                    });
                 });
             });
         }, false);

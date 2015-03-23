@@ -8,6 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SAFeedsViewController : UIViewController
+@protocol SAFeedsViewControllerDelegate <NSObject>
 
+- (NSString *)appKey;
+- (NSString *)appId;
+- (NSString *)feedsLocation;
+
+@optional
+- (NSString *)sdkVersion;
+- (void)customLink:(NSURL *)url; //外链部分，需要打开新窗口或者做自定义处理
+
+@end
+
+@interface SAFeedsViewController : UIViewController
+@property (nonatomic, assign) id<SAFeedsViewControllerDelegate> delegate;
 @end

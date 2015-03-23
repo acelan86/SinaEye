@@ -12,6 +12,9 @@
 		CF8E69301AB2AA420049488C /* SABrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E692F1AB2AA420049488C /* SABrowserViewController.m */; };
 		CF8E69331AB2ABC60049488C /* SAInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E69321AB2ABC60049488C /* SAInfoProvider.m */; };
 		CF8E69361AB2ABE80049488C /* SAReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8E69351AB2ABE80049488C /* SAReachability.m */; };
+		CFB716601ABFE20D00221F8D /* WebViewJavascriptBridge.js.txt in Resources */ = {isa = PBXBuildFile; fileRef = CFB7165E1ABFE20D00221F8D /* WebViewJavascriptBridge.js.txt */; };
+		CFB716611ABFE20D00221F8D /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB7165F1ABFE20D00221F8D /* WebViewJavascriptBridge.m */; };
+		CFB716621ABFE20D00221F8D /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB7165F1ABFE20D00221F8D /* WebViewJavascriptBridge.m */; };
 		CFDDD6C21AB6DCE700BB4442 /* SAFeedsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFDDD6C11AB6DCE700BB4442 /* SAFeedsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +52,9 @@
 		CF8E69321AB2ABC60049488C /* SAInfoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAInfoProvider.m; sourceTree = "<group>"; };
 		CF8E69341AB2ABE80049488C /* SAReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAReachability.h; sourceTree = "<group>"; };
 		CF8E69351AB2ABE80049488C /* SAReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAReachability.m; sourceTree = "<group>"; };
+		CFB7165D1ABFE20D00221F8D /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
+		CFB7165E1ABFE20D00221F8D /* WebViewJavascriptBridge.js.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WebViewJavascriptBridge.js.txt; sourceTree = "<group>"; };
+		CFB7165F1ABFE20D00221F8D /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		CFDDD6C01AB6DCE700BB4442 /* SAFeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAFeedsViewController.h; sourceTree = "<group>"; };
 		CFDDD6C11AB6DCE700BB4442 /* SAFeedsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAFeedsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,6 +99,7 @@
 		CF8E69131AB2A4E10049488C /* SinaAdSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CFB7165C1ABFE20D00221F8D /* WebViewJavascriptBridge */,
 				CF8E692B1AB2A5B10049488C /* SAFeedsAdView.h */,
 				CF8E692C1AB2A5B10049488C /* SAFeedsAdView.m */,
 				CF8E692E1AB2AA420049488C /* SABrowserViewController.h */,
@@ -121,6 +128,16 @@
 				CF8E69221AB2A4E10049488C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CFB7165C1ABFE20D00221F8D /* WebViewJavascriptBridge */ = {
+			isa = PBXGroup;
+			children = (
+				CFB7165D1ABFE20D00221F8D /* WebViewJavascriptBridge.h */,
+				CFB7165E1ABFE20D00221F8D /* WebViewJavascriptBridge.js.txt */,
+				CFB7165F1ABFE20D00221F8D /* WebViewJavascriptBridge.m */,
+			);
+			path = WebViewJavascriptBridge;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFB716601ABFE20D00221F8D /* WebViewJavascriptBridge.js.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF8E69301AB2AA420049488C /* SABrowserViewController.m in Sources */,
+				CFB716611ABFE20D00221F8D /* WebViewJavascriptBridge.m in Sources */,
 				CF8E69361AB2ABE80049488C /* SAReachability.m in Sources */,
 				CF8E69331AB2ABC60049488C /* SAInfoProvider.m in Sources */,
 				CFDDD6C21AB6DCE700BB4442 /* SAFeedsViewController.m in Sources */,
@@ -223,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFB716621ABFE20D00221F8D /* WebViewJavascriptBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

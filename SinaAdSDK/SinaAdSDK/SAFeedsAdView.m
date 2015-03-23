@@ -7,13 +7,12 @@
 //
 
 #import "SAFeedsAdView.h"
+#import "SAFeedsViewController.h"
 #import "SABrowserViewController.h"
-#import "SAInfoProvider.h"
 
-static NSString *FEEDS_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
 static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
 
-@interface SAFeedsAdView () <SABrowserViewControllerDelegate>
+@interface SAFeedsAdView () <SAFeedsViewControllerDelegate>
 @property (nonatomic, strong) NSString *appkey;
 @property (nonatomic, strong) NSString *apprid;
 
@@ -70,45 +69,25 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
     }
 }
 
-- (NSString *)p_feedsUrl {
-    SAInfoProvider *info = [SAInfoProvider shareInstance];
-    
-    
-    NSString *locationString;
-    if (_location == nil) {
-        locationString = @"0.000,0.000";
-    } else {
-        locationString = [NSString stringWithFormat:@"%f,%f", _location.coordinate.latitude, _location.coordinate.longitude];
-    }
-    
-    NSString *str = [FEEDS_URL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&plat=%@&carrier=%li&os_version=%@&sdk_version=%@&brand=%@&bundleid=%@&devicemodel=%@&geo=%@",
-                     //appkey
-                     _appkey,
-                     //apprid
-                     _apprid,
-                     //设备id
-                     [[info identifier].value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                     //平台
-                     [@"IOS" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                     //网络
-                     (long)[info networkType],
-                     //操作系统版本 @"ios7"
-                     [[info osVersion] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                     //sdk版本
-                     FEEDS_SDK_VERSION,
-                     //品牌
-                     [@"Apple" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                     //bundle id
-                     [[info bundleIdentifier] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                     //设备型号 @"iphone 6p"
-                     [[info deviceType] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                     //地理位置
-                     [locationString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                     //[[info geoLocation] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                     ];
-    return str;
+# pragma mark SAFeedsViewControllerDelegate
+
+- (NSString *)appKey {
+    return _appkey;
+}
+- (NSString *)appId {
+    return _apprid;
+}
+- (NSString *)feedsLocation {
+    return _location ?
+        [NSString stringWithFormat:@"%f,%f", _location.coordinate.latitude, _location.coordinate.longitude] :
+        @"0.000,0.000";
 }
 
+- (void)customLink:(NSURL *)url {
+    SABrowserViewController *browser = [[SABrowserViewController alloc] initWithToolbar];
+    browser.url = url;
+    [_navigation pushViewController:browser animated:YES];
+}
 
 //创建并显示feedsView
 - (void)h_showFeedsView {
@@ -118,18 +97,15 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
     [self p_showIconNormal];
     
     //创建并显示feeds
-    SABrowserViewController *feedsView = [[SABrowserViewController alloc] init];
-    feedsView.delegate = self;
-    //添加url
-    feedsView.url = [[NSURL alloc] initWithString:[self p_feedsUrl]];
-    
+    SAFeedsViewController *feedsViewController = [[SAFeedsViewController alloc] init];
+    feedsViewController.delegate = self;
     //初始化导航
-    _navigation = [[UINavigationController alloc] initWithRootViewController:feedsView];
+    _navigation = [[UINavigationController alloc] initWithRootViewController:feedsViewController];
     
     //添加导航关闭按钮
     UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithImage:[self backButtonImage] style:UIBarButtonItemStylePlain target:self action:@selector(h_close)];
-    feedsView.navigationItem.leftBarButtonItem = closeButton;
-    feedsView.title = @"新浪推荐";
+    feedsViewController.navigationItem.leftBarButtonItem = closeButton;
+    feedsViewController.title = @"新浪推荐";
     
     [_rootViewController presentViewController:_navigation animated:YES completion:nil];
     
@@ -137,27 +113,6 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
         [_delegate feedsPageDidAppear];
     }
     
-}
-
-#pragma  mark SABrowserViewControllerDelegate
-- (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    
-    NSURL *url = [request URL];
-    
-    NSLog(@"request: %@", [url absoluteString]);
-    
-    //如果不是feed页面且不是本地文件
-    if (!([[url absoluteString] rangeOfString:@"/SinaEyeFeedPage/index.html"].location != NSNotFound || [[url absoluteString] rangeOfString:@"file://"].location != NSNotFound)) {
-        
-        NSLog(@"index view : %@, %@", [url host], [url path] );
-        
-        SABrowserViewController *browser = [[SABrowserViewController alloc] initWithToolbar];
-        browser.url = url;
-        
-        [_navigation pushViewController:browser animated:YES];
-        return NO;
-    }
-    return YES;
 }
 
 - (UIImage *)backButtonImage {
