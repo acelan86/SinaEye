@@ -438,25 +438,44 @@
                     infoBox.addClass('show');
                 }
 
-                function changeLikeState(isLike, $el) {
-                    $el.removeClass("user-action-like");
-                    $el.removeClass("user-action-unlike");
-                    $el.addClass("user-action-" + (isLike ? "like" : "unlike"));
-                }
-
                 //挂接喜欢跟拒绝事件
                 $('.list').on('click', '.unlike-button', function () {
-                    sendUserAction(0, $(this).data('link').split('?')[1]);
-                    infoBox.insertBefore($(this).closest(".card-dd"));
-                    changeLikeState(0, $(this).parent());
-                    info("拒绝此类推荐");
+                    var msg = "拒绝此类推荐";
+                    //清空状态
+                    $el.removeClass("user-action-like");
+                    $el.removeClass("user-action-unlike");
+
+                    if ($el.hasClass("user-action-unlike")) {
+                        msg = "取消拒绝此类推荐";
+                        rejectUserAction(0, $el.data('link').split('?')[1]);
+                    } else {
+                        //设置拒绝状态
+                        $el.addClass("user-action-unlike");
+                        sendUserAction(0, $el.data('link').split('?')[1]);
+                    }
+                    //显示信息
+                    infoBox.insertBefore($el.closest(".card-dd"));
+                    info(msg);
                     return false;
                 });
                 $('.list').on('click', '.like-button', function () {
-                    sendUserAction(1, $(this).data('link').split('?')[1]);
-                    infoBox.insertBefore($(this).closest('.card-dd'));
-                    changeLikeState(1, $(this).parent());
-                    info("喜欢此类推荐");
+                    var msg = "喜欢此类推荐",
+                        $el = $(this);
+                    //清空状态
+                    $el.removeClass("user-action-like");
+                    $el.removeClass("user-action-unlike");
+                    //设置动作
+                    if ($el.hasClass('user-action-like')) {
+                        msg = "取消喜欢此类推荐";
+                        rejectUserAction(1, $el.data('link').split('?')[1]);
+                    } else {
+                        //设置喜欢状态
+                        $el.addClass("user-action-like" );
+                        sendUserAction(1, $el.data('link').split('?')[1]);
+                    }
+                    //显示信息
+                    infoBox.insertBefore($el.closest('.card-dd'));
+                    info(msg);
                     return false;
                 });
 
@@ -564,6 +583,12 @@
                     var url = "http://10.210.228.69:8010/user_action",
                     isLike = isLike ? 1 : 0;
                     log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike);
+                }
+                //取消喜欢/拒绝信息
+                function rejectUserAction(isLike, params) {
+                    var url = 'http://10.210.228.69:8010/user_action',
+                    isLike = isLike ? 1 : 0;
+                    log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike); 
                 }
 
                 //获取数据
