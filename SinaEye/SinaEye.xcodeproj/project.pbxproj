@@ -24,7 +24,7 @@
 		CF57027E1AA464CD0037D08D /* SinaEyeResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF57027D1AA464CD0037D08D /* SinaEyeResource.bundle */; };
 		CF5702801AA46B8D0037D08D /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = CF57027F1AA46B8D0037D08D /* background.png */; };
 		CF9DD4051AAEBFC500D709AD /* ScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9DD4041AAEBFC500D709AD /* ScrollViewController.m */; };
-		CFB7165B1ABFE0BB00221F8D /* libSinaAdSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB7165A1ABFE0BB00221F8D /* libSinaAdSDK.a */; };
+		CFB716A51AC25C9500221F8D /* libSinaAdSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB716A41AC25C9500221F8D /* libSinaAdSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,8 +64,7 @@
 		CF8E69391AB2D3170049488C /* SAFeedsAdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAFeedsAdView.h; path = ../../SinaAdSDK/SinaAdSDK/SAFeedsAdView.h; sourceTree = "<group>"; };
 		CF9DD4031AAEBFC500D709AD /* ScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewController.h; sourceTree = "<group>"; };
 		CF9DD4041AAEBFC500D709AD /* ScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewController.m; sourceTree = "<group>"; };
-		CFB7165A1ABFE0BB00221F8D /* libSinaAdSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSinaAdSDK.a; path = "../../../Library/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Debug-iphoneos/libSinaAdSDK.a"; sourceTree = "<group>"; };
-		CFDDD6C31AB6DD6C00BB4442 /* SAFeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAFeedsViewController.h; path = ../../SinaAdSDK/SinaAdSDK/SAFeedsViewController.h; sourceTree = "<group>"; };
+		CFB716A41AC25C9500221F8D /* libSinaAdSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSinaAdSDK.a; path = "../../../Library/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Release-iphoneos/libSinaAdSDK.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFB7165B1ABFE0BB00221F8D /* libSinaAdSDK.a in Frameworks */,
+				CFB716A51AC25C9500221F8D /* libSinaAdSDK.a in Frameworks */,
 				CF57020A1AA411AB0037D08D /* CoreLocation.framework in Frameworks */,
 				CF5701E31AA068EF0037D08D /* AdSupport.framework in Frameworks */,
 				CF5701DF1AA05F470037D08D /* CoreTelephony.framework in Frameworks */,
@@ -95,7 +94,7 @@
 		CF0D88391A7F6A300089BC2A = {
 			isa = PBXGroup;
 			children = (
-				CFB7165A1ABFE0BB00221F8D /* libSinaAdSDK.a */,
+				CFB716A41AC25C9500221F8D /* libSinaAdSDK.a */,
 				CF5702091AA411AB0037D08D /* CoreLocation.framework */,
 				CF5701E21AA068EF0037D08D /* AdSupport.framework */,
 				CF5701DE1AA05F470037D08D /* CoreTelephony.framework */,
@@ -119,7 +118,6 @@
 		CF0D88441A7F6A300089BC2A /* SinaEye */ = {
 			isa = PBXGroup;
 			children = (
-				CFDDD6C31AB6DD6C00BB4442 /* SAFeedsViewController.h */,
 				CF8E69391AB2D3170049488C /* SAFeedsAdView.h */,
 				CF0D88491A7F6A300089BC2A /* AppDelegate.h */,
 				CF0D884A1A7F6A300089BC2A /* AppDelegate.m */,
@@ -408,6 +406,7 @@
 					"$(PROJECT_DIR)SDK/build/Debug-iphoneos",
 					"$(SDKROOT)/usr/lib/system",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Debug-iphoneos",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Release-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -428,6 +427,7 @@
 					"$(PROJECT_DIR)SDK/build/Debug-iphoneos",
 					"$(SDKROOT)/usr/lib/system",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Debug-iphoneos",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/SinaEyeSDK-iOS-bjvejcezfiwkvoapljbwcmdkazjd/Build/Products/Release-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

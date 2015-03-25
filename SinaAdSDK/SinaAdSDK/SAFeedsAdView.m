@@ -11,6 +11,7 @@
 #import "SABrowserViewController.h"
 
 static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
+static const float FEEDS_REFRESH_FREQUENCE = 30; //红点刷新时间
 
 @interface SAFeedsAdView () <SAFeedsViewControllerDelegate>
 @property (nonatomic, strong) NSString *appkey;
@@ -38,7 +39,7 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
         [self addTarget:self action:@selector(h_showFeedsView) forControlEvents:UIControlEventTouchUpInside];
         
         //设置定时器，进行新消息提醒
-        _timer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(p_showIconHasMsg) userInfo:nil repeats:YES];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:FEEDS_REFRESH_FREQUENCE target:self selector:@selector(p_showIconHasMsg) userInfo:nil repeats:YES];
         //先执行一次新消息提醒
         [_timer fire];
     }
@@ -64,7 +65,7 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
     //重新创建30s timer
     _timer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(p_showIconHasMsg) userInfo:nil repeats:YES];
     
-    if ([self respondsToSelector:@selector(feedsPageDidDisappear)]) {
+    if ([_delegate respondsToSelector:@selector(feedsPageDidDisappear)]) {
         [_delegate feedsPageDidDisappear];
     }
 }
@@ -109,7 +110,7 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
     
     [_rootViewController presentViewController:_navigation animated:YES completion:nil];
     
-    if ([self respondsToSelector:@selector(feedsPageDidAppear)]) {
+    if ([_delegate respondsToSelector:@selector(feedsPageDidAppear)]) {
         [_delegate feedsPageDidAppear];
     }
     
@@ -145,6 +146,10 @@ static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
     UIGraphicsEndImageContext();
     
     return backButtonImage;
+}
+
+- (void)dealloc {
+    _rootViewController = nil;
 }
 
 /*

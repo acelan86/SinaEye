@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "SAFeedsViewController.h"
 #import "SAFeedsAdView.h"
 
 @interface ViewController () <SAFeedsAdViewDelegate>
@@ -43,8 +42,8 @@
     [self.view addConstraint:iconHeightConstraint];
 }
 - (IBAction)changeView:(id)sender {
-    SAFeedsViewController *view = [[SAFeedsViewController alloc] init];
-    [self.navigationController pushViewController:view animated:YES];
+//    SAFeedsViewController *view = [[SAFeedsViewController alloc] init];
+//    [self.navigationController pushViewController:view animated:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -53,6 +52,14 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark SAFeedsAdViewDelegate
+- (void)feedsPageDidAppear {
+    NSLog(@"feed appear");
+}
+- (void)feedsPageDidDisappear {
+    NSLog(@"feed disappear");
 }
 
 @end
