@@ -225,6 +225,24 @@
             }
         }
 
+        //修改背景颜色
+        // (function (bgColor) {
+        //     function oppositeColor(color) {
+        //         color = color.replace('#', '');
+        //         var c16,
+        //             c10,
+        //             max16 = 15,
+        //             b = [];
+        //         for (var i = 0; i < color.length; i++) {   
+        //             c16 = parseInt(color.charAt(i), 16); //to 16进制
+        //             c10 = parseInt(max16 - c16, 10);     // 10进制计算
+        //             b.push(c10.toString(16)); // to 16进制
+        //         }
+        //         return '#' + b.join('');
+        //     }
+        //     $('#FeedList .list').css('backgroundColor', bgColor);
+        // })(decodeURIComponent(window.location.search.split('&bgcolor=')[1] || '#fff'));
+
         //js bridge
         function connectWebViewJavascriptBridge(callback) {
             var bridgeTimer;

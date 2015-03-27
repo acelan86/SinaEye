@@ -24,6 +24,18 @@
     _feedsAD = [[SAFeedsAdView alloc] initWithApprid:@"4"
                                               appkey:@"123123"
                                   rootViewController:self];
+//  other usage
+//
+//    _feedsAD = [[SAFeedsAdView alloc] initWithApprid:@"4"
+//                                              appkey:@"123123"
+//                                  rootViewController:self
+//                                      feedsIconStyle:FeedsIconStyleGray];
+//    
+//    _feedsAD = [[SAFeedsAdView alloc] initWithApprid:@"4"
+//                                              appkey:@"123123"
+//                                  rootViewController:self
+//                                      feedsIconStyle:FeedsIconStyleWhite
+//                            feedsListBackgroundColor:@"#ffcc00"];
     //set delegate
     _feedsAD.delegate = self;
     //add to view

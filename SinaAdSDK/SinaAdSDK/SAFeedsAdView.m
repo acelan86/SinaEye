@@ -17,6 +17,11 @@ static const float FEEDS_REFRESH_FREQUENCE = 30; //红点刷新时间
 @property (nonatomic, strong) NSString *appkey;
 @property (nonatomic, strong) NSString *apprid;
 
+//相关样式配置
+@property (nonatomic, strong) NSString *feedsListBackgroundColor; //feed列表背景色
+@property (nonatomic, strong) NSString *iconNormalResourceName; //普通状态下的按钮资源名
+@property (nonatomic, strong) NSString *iconHighlightResourceName; //高亮状态下的按钮资源名
+
 @property (nonatomic, strong) UINavigationController *navigation;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) NSBundle *bundle;
@@ -28,12 +33,38 @@ static const float FEEDS_REFRESH_FREQUENCE = 30; //红点刷新时间
 @implementation SAFeedsAdView
 
 - (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController {
+    return [self initWithApprid:apprid appkey:appkey rootViewController:rootViewController feedsIconStyle:FeedsIconStyleDefault feedsListBackgroundColor:@"#ffffff"];
+}
+
+- (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController feedsIconStyle:(FeedsIconStyle)style {
+    return [self initWithApprid:apprid appkey:appkey rootViewController:rootViewController feedsIconStyle:style feedsListBackgroundColor:@"#ffffff"];
+}
+- (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController feedsIconStyle:(FeedsIconStyle)style feedsListBackgroundColor:(NSString *)color {
     self = [super initWithFrame:CGRectMake(0, 0, 34, 34)];
     if (self) {
         _apprid = apprid;
         _appkey = appkey;
         _rootViewController = rootViewController;
         _bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"SinaEyeResource" ofType:@"bundle"]];
+        
+        switch (style) {
+            case FeedsIconStyleGray:
+                _iconNormalResourceName = @"gray_normal";
+                _iconHighlightResourceName = @"gray_highlight";
+                break;
+            case FeedsIconStyleWhite:
+                _iconNormalResourceName = @"white_normal";
+                _iconHighlightResourceName = @"white_highlight";
+                break;
+            default:
+                _iconNormalResourceName = @"default_normal";
+                _iconHighlightResourceName = @"default_highlight";
+                break;
+            
+        }
+        
+        _feedsListBackgroundColor = color;
+        
         //设置按钮展现和时间
         [self p_showIconNormal];
         [self addTarget:self action:@selector(h_showFeedsView) forControlEvents:UIControlEventTouchUpInside];
@@ -51,12 +82,12 @@ static const float FEEDS_REFRESH_FREQUENCE = 30; //红点刷新时间
 }
 
 - (void)p_showIconHasMsg {
-    NSString *highlightIconPath = [_bundle pathForResource:@"ICON_05" ofType:@"png"];
+    NSString *highlightIconPath = [_bundle pathForResource:_iconHighlightResourceName ofType:@"png"];
     [self setImage:[UIImage imageWithContentsOfFile:highlightIconPath] forState:UIControlStateNormal];
 }
 
 - (void)p_showIconNormal {
-    NSString *normalIconPath = [_bundle pathForResource:@"ICON_03" ofType:@"png"];
+    NSString *normalIconPath = [_bundle pathForResource:_iconNormalResourceName ofType:@"png"];
     [self setImage:[UIImage imageWithContentsOfFile:normalIconPath] forState:UIControlStateNormal];
 }
 
@@ -77,6 +108,9 @@ static const float FEEDS_REFRESH_FREQUENCE = 30; //红点刷新时间
 }
 - (NSString *)appId {
     return _apprid;
+}
+- (NSString *)backgroundColor {
+    return _feedsListBackgroundColor;
 }
 - (NSString *)feedsLocation {
     return _location ?

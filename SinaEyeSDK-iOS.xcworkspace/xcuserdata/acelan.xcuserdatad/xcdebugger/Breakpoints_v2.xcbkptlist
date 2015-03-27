@@ -228,11 +228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SinaAdSDK/SinaAdSDK/SAFeedsAdView.m"
-            timestampString = "448940929.048367"
+            timestampString = "449142716.741968"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "-h_showFeedsView"
             landmarkType = "5">
          </BreakpointContent>
@@ -260,11 +260,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SinaAdSDK/SinaAdSDK/SAFeedsViewController.m"
-            timestampString = "448786484.035546"
+            timestampString = "449140907.212754"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "-webView:shouldStartLoadWithRequest:navigationType:"
             landmarkType = "5">
          </BreakpointContent>
@@ -356,11 +356,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SinaAdSDK/SinaAdSDK/SAFeedsAdView.m"
-            timestampString = "448940929.048367"
+            timestampString = "449142716.741968"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
             landmarkName = "-h_showFeedsView"
             landmarkType = "5">
          </BreakpointContent>
@@ -372,11 +372,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SinaAdSDK/SinaAdSDK/SAFeedsAdView.m"
-            timestampString = "448940953.108818"
+            timestampString = "449142716.741968"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "-h_showFeedsView"
             landmarkType = "5">
          </BreakpointContent>

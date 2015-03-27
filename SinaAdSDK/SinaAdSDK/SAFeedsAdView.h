@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+typedef enum {
+    FeedsIconStyleDefault = 1,
+    FeedsIconStyleGray,
+    FeedsIconStyleWhite
+} FeedsIconStyle;
+
 @protocol SAFeedsAdViewDelegate <NSObject>
 @optional
 - (void)feedsPageDidAppear; //当feeds面板打开
@@ -24,6 +30,10 @@
 
 //初始化feeds ad view
 - (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController;
+
+- (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController feedsIconStyle:(FeedsIconStyle)style;
+
+- (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController feedsIconStyle:(FeedsIconStyle)style feedsListBackgroundColor:(NSString *)color;
 
 //设置location
 - (void)setLocation:(CLLocation *)location;

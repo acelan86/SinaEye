@@ -12,6 +12,7 @@
 
 - (NSString *)appKey;
 - (NSString *)appId;
+- (NSString *)backgroundColor;
 - (NSString *)feedsLocation;
 
 @optional

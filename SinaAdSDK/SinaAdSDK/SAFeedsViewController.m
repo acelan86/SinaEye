@@ -85,7 +85,7 @@ static const NSString *INNER_VERSION = @"1.0.0";
         NSLog(@"load 404:%@", html);
         [_webview loadHTMLString:html baseURL:baseURL];
     } else {
-        NSString *url = [FEEDS_URL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&plat=%@&carrier=%li&os_version=%@&sdk_version=%@&brand=%@&bundleid=%@&devicemodel=%@&geo=%@",
+        NSString *url = [FEEDS_URL stringByAppendingFormat:@"?appkey=%@&apprid=%@&udid=%@&plat=%@&carrier=%li&os_version=%@&sdk_version=%@&brand=%@&bundleid=%@&devicemodel=%@&geo=%@&bgcolor=%@",
              //appkey
              [_delegate appKey],
              //apprid
@@ -107,8 +107,9 @@ static const NSString *INNER_VERSION = @"1.0.0";
              //设备型号 @"iphone 6p"
              [[info deviceType] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
              //地理位置
-             [[_delegate feedsLocation] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+             [[_delegate feedsLocation] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
              //[[info geoLocation] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+             [[_delegate backgroundColor] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
         ];
         NSLog(@"load remote feedpage:%@", url);
         NSURLRequest *req = [[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:url]];
