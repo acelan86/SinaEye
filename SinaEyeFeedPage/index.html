@@ -440,17 +440,19 @@
 
                 //挂接喜欢跟拒绝事件
                 $('.list').on('click', '.unlike-button', function () {
-                    var msg = "拒绝此类推荐";
+                    var msg = "拒绝此类推荐",
+                        $el = $(this),
+                        $opBlock = $el.parent();
                     //清空状态
-                    $el.removeClass("user-action-like");
-                    $el.removeClass("user-action-unlike");
+                    $opBlock.removeClass("user-action-like");
 
-                    if ($el.hasClass("user-action-unlike")) {
+                    if ($opBlock.hasClass("user-action-unlike")) {
+                        $opBlock.removeClass("user-action-unlike");
                         msg = "取消拒绝此类推荐";
                         rejectUserAction(0, $el.data('link').split('?')[1]);
                     } else {
                         //设置拒绝状态
-                        $el.addClass("user-action-unlike");
+                        $opBlock.addClass("user-action-unlike");
                         sendUserAction(0, $el.data('link').split('?')[1]);
                     }
                     //显示信息
@@ -460,17 +462,18 @@
                 });
                 $('.list').on('click', '.like-button', function () {
                     var msg = "喜欢此类推荐",
-                        $el = $(this);
+                        $el = $(this),
+                        $opBlock = $el.parent();
                     //清空状态
-                    $el.removeClass("user-action-like");
-                    $el.removeClass("user-action-unlike");
+                    $opBlock.removeClass("user-action-unlike");
                     //设置动作
-                    if ($el.hasClass('user-action-like')) {
+                    if ($opBlock.hasClass('user-action-like')) {
+                        $opBlock.removeClass("user-action-like");
                         msg = "取消喜欢此类推荐";
                         rejectUserAction(1, $el.data('link').split('?')[1]);
                     } else {
                         //设置喜欢状态
-                        $el.addClass("user-action-like" );
+                        $opBlock.addClass("user-action-like" );
                         sendUserAction(1, $el.data('link').split('?')[1]);
                     }
                     //显示信息
@@ -620,13 +623,13 @@
                                     }
                                     return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
                                 });
-                                callback(htmls.join(''));
                             } else {
                                 bridge.callHandler('jsNetError', 0, function(response) {
                                     log('JS got response', response);
                                 });
                                 alert((feeds.statusInfo && feeds.statusInfo.global) || "没有新内容了，等等再刷看看～");
                             }
+                            callback(htmls.join(''));
                         },
                         error: function () {
                             bridge.callHandler('jsNetError', 0, function(response) {
