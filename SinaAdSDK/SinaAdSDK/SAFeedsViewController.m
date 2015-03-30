@@ -10,7 +10,9 @@
 #import "WebViewJavascriptBridge.h"
 #import "SAInfoProvider.h"
 
-static NSString *FEEDS_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
+//static NSString *FEEDS_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
+static NSString *FEEDS_URL = @"http://d2.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index-10.210.238.197.html";
+
 static const NSString *INNER_VERSION = @"1.0.0";
 
 @interface SAFeedsViewController () <UIWebViewDelegate>
