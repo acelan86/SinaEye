@@ -11,7 +11,7 @@
 
 typedef enum {
     FeedsIconStyleDefault = 1,
-    FeedsIconStyleGray,
+    FeedsIconStyleBlack,
     FeedsIconStyleWhite
 } FeedsIconStyle;
 
@@ -33,7 +33,7 @@ typedef enum {
 
 - (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController feedsIconStyle:(FeedsIconStyle)style;
 
-- (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController feedsIconStyle:(FeedsIconStyle)style feedsListBackgroundColor:(NSString *)color;
+//- (SAFeedsAdView *)initWithApprid:(NSString *)apprid appkey:(NSString *)appkey rootViewController:(UIViewController *)rootViewController feedsIconStyle:(FeedsIconStyle)style feedsListBackgroundColor:(NSString *)color;
 
 //设置location
 - (void)setLocation:(CLLocation *)location;

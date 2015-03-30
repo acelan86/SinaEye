@@ -48,9 +48,9 @@ static const float FEEDS_REFRESH_FREQUENCE = 30; //红点刷新时间
         _bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"SinaEyeResource" ofType:@"bundle"]];
         
         switch (style) {
-            case FeedsIconStyleGray:
-                _iconNormalResourceName = @"gray_normal";
-                _iconHighlightResourceName = @"gray_highlight";
+            case FeedsIconStyleBlack:
+                _iconNormalResourceName = @"black_normal";
+                _iconHighlightResourceName = @"black_highlight";
                 break;
             case FeedsIconStyleWhite:
                 _iconNormalResourceName = @"white_normal";
