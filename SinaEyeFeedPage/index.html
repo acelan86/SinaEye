@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ch">
 <head>
@@ -437,12 +436,14 @@
                 };
 
                 var alertTimer;
-                function alert(msg) {
+                function alert(msg, timeout) {
                     msgBox.html(msg);
                     alertTimer && clearTimeout(alertTimer);
-                    alertTimer = setTimeout(function () {
-                        msgBox.hide();
-                    }, 2000);
+                    if (timeout) {
+                        alertTimer = setTimeout(function () {
+                            msgBox.hide();
+                        }, timeout);
+                    }
                     msgBox.show();
                 }
 
@@ -505,7 +506,7 @@
                     //var thiz = this;
                     var urls = $(this).data('click');
                     urls && parseClickMonitor(urls).map(function (url) {
-                        alert('send:' + url);
+                        alert('send:' + url, 2000);
                         log(url);
                     });
                     // //延迟500ms打开链接，保证正常发送点击请求
@@ -614,6 +615,7 @@
 
                 //获取数据
                 function getFeeds(isClear, callback) {
+                    msgBox.hide();
                     $.ajax({
                         type: "GET",
                         dataType: "jsonp",
@@ -627,25 +629,32 @@
                         success: function (feeds) {
                             var htmls = [];
 
-                            if (0 === feeds.status && feeds.data.results && feeds.data.results.length > 0) {
-                                bridge.callHandler('jsNetSuccess', feeds.data.results.length, function(response) {
-                                    log('JS got response', response)
-                                });
-                                htmls = feeds.data.results.map(function (feed) {
-                                    //如果是广告，发送曝光请求
-                                    if (feed.isad) {
-                                        feed.view = feed.view || [];
-                                        feed.view.map(function (url) {
-                                            log(url);
-                                        });
-                                    }
-                                    return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
-                                });
+                            if (0 === feeds.status) {
+                                if (feeds.data.results && feeds.data.results.length > 0) {
+                                    bridge.callHandler('jsNetSuccess', feeds.data.results.length, function(response) {
+                                        log('JS got response', response)
+                                    });
+                                    htmls = feeds.data.results.map(function (feed) {
+                                        //如果是广告，发送曝光请求
+                                        if (feed.isad) {
+                                            feed.view = feed.view || [];
+                                            feed.view.map(function (url) {
+                                                log(url);
+                                            });
+                                        }
+                                        return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
+                                    });
+                                } else {
+                                    bridge.callHandler('jsNetError', 0, function(response) {
+                                        log('JS got response', response);
+                                    });
+                                    alert("没有新的内容了，等会再试吧～", 2000);
+                                }
                             } else {
                                 bridge.callHandler('jsNetError', 0, function(response) {
                                     log('JS got response', response);
                                 });
-                                alert((feeds.statusInfo && feeds.statusInfo.global) || "没有新内容了，等等再刷看看～");
+                                alert((feeds.statusInfo && feeds.statusInfo.global) || "发生了未知错误");
                             }
                             callback(htmls.join(''));
                         },

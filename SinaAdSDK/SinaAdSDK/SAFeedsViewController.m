@@ -25,10 +25,11 @@ static const NSString *INNER_VERSION = @"1.0.0";
 @implementation SAFeedsViewController
 
 - (void)loadView {
+    
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height + 20)];
+    _webview = [[UIWebView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     [WebViewJavascriptBridge enableLogging];
 
@@ -75,6 +76,8 @@ static const NSString *INNER_VERSION = @"1.0.0";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSLog(@"%f, %f", self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height);
     
     SAInfoProvider *info = [SAInfoProvider shareInstance];
     
@@ -128,7 +131,7 @@ static const NSString *INNER_VERSION = @"1.0.0";
     
     //如果不是feed页面, 且为https或者http协议下的链接
     if (([[url scheme] isEqualToString:@"http"] || [[url scheme] isEqualToString:@"https"])
-        && [[url absoluteString] rangeOfString:@"/SinaEyeFeedPage/index.html"].location == NSNotFound) {
+        && [[url absoluteString] rangeOfString:@"SinaEyeFeedPage/index-10.210.238.197.html"].location == NSNotFound) {
         
         NSLog(@"index view : %@, %@", [url host], [url path] );
         
