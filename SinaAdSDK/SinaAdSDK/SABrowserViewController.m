@@ -42,7 +42,11 @@
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height - (self.hasToolbar == YES ? 44 : 0) + 20)];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height - (self.hasToolbar == YES ? 44 : 0) + 20)];
+    } else {
+        _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height - (self.hasToolbar == YES ? 44 : 0) - 44.0f)];
+    }
     
     [self.view addSubview:_webview];
     
