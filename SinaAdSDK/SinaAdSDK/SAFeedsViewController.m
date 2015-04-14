@@ -29,7 +29,11 @@ static const NSString *INNER_VERSION = @"1.0.0";
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _webview = [[UIWebView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        _webview = [[UIWebView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    } else {
+        _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64.0f)];
+    }
     
     [WebViewJavascriptBridge enableLogging];
 
