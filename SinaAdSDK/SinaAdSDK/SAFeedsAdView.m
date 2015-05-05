@@ -11,7 +11,7 @@
 #import "SABrowserViewController.h"
 
 static const NSString *FEEDS_SDK_VERSION = @"1.0.0";
-static const float FEEDS_REFRESH_FREQUENCE = 30; //红点刷新时间
+static const float FEEDS_REFRESH_FREQUENCE = 300; //红点刷新时间，默认5分钟
 
 @interface SAFeedsAdView () <SAFeedsViewControllerDelegate>
 @property (nonatomic, strong) NSString *appkey;

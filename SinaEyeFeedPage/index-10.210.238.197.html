@@ -8,12 +8,10 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta http-equiv="Expires" content="-1" />
-    <meta http-equiv="pragram" content="no-cache" />
     <!-- iscroll4.js -->
     <script src="./iScroll.js"></script>
     <script src="./zepto.js"></script>
-    <script src="./RedirectToNative.js"></script>
+    <!--<script src="./RedirectToNative.js"></script>-->
     <style>
         html, body{
             padding:0;
@@ -203,6 +201,7 @@
 
     <script>
         var uniqueId = 1;
+        var enterTime = (+new Date()).toString(36);
         function log(message, data) {
             var log = document.getElementById('log')
             var el = document.createElement('div')
@@ -222,6 +221,19 @@
             } else {
                 return '';
             }
+        }
+
+        function hash(s) {
+            var hash = 0,
+                i = 0,
+                w;
+
+            for (; !isNaN(w = s.charCodeAt(i++));) {
+                hash = ((hash << 5) - hash) + w;
+                hash = hash & hash;
+            }
+
+            return Math.abs(hash).toString(36);
         }
 
         //修改背景颜色
@@ -246,26 +258,26 @@
         function connectWebViewJavascriptBridge(callback) {
             var bridgeTimer;
             //暂时只支持ios进行bridge回调
-            if (_UA() === 'ios') {
-                bridgeTimer = setTimeout(function () {
-                    alert("请在sina ad sdk的环境下使用这个页面");
-                }, 2000);
-                if (window.WebViewJavascriptBridge) {
-                    bridgeTimer && clearTimeout(bridgeTimer);
-                    callback(WebViewJavascriptBridge)
-                } else {
-                    document.addEventListener('WebViewJavascriptBridgeReady', function() {
-                        bridgeTimer && clearTimeout(bridgeTimer);
-                        callback(WebViewJavascriptBridge)
-                    }, false)
-                }
-            } else {
+            // if (_UA() === 'ios') {
+            //     // bridgeTimer = setTimeout(function () {
+            //     //     alert("请在sina ad sdk的环境下使用这个页面");
+            //     // }, 2000);
+            //     if (window.WebViewJavascriptBridge) {
+            //         bridgeTimer && clearTimeout(bridgeTimer);
+            //         callback(WebViewJavascriptBridge)
+            //     } else {
+            //         document.addEventListener('WebViewJavascriptBridgeReady', function() {
+            //             bridgeTimer && clearTimeout(bridgeTimer);
+            //             callback(WebViewJavascriptBridge)
+            //         }, false)
+            //     }
+            // } else {
                 callback({
                     callHandler: function () {},
                     init: function () {},
                     registerHandler: function () {}
                 });
-            }
+            //}
         }
 
         document.addEventListener('touchmove', function (e) { 
@@ -325,7 +337,7 @@
                         return [
                             '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                                 '<dd class="card-dd">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<h3 class="card-title">' + data.title + '</h3>',
                                         '<p class="card-summary">' + data.summary + '</p>',
                                     data.link ? '</a>' : '',
@@ -344,12 +356,12 @@
                         return [
                             '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                                 '<dt class="card-dt">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<img class="card-img" src="' + data.imgs[0].url + '" alt="' + data.title + '">',
                                     data.link ? '</a>' : '',
                                 '</dt>',
                                 '<dd class="card-dd">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<h3 class="card-title">' + data.title + '</h3>',
                                         '<p class="card-summary">' + data.summary + '</p>',
                                     data.link ? '</a>' : '',
@@ -376,7 +388,7 @@
                         return [
                             '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                                 '<dd class="card-dd">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<h3 class="card-title">' + data.title + '</h3>',
                                         '<ul class="card-pics">',
                                             pics.join(''),
@@ -404,7 +416,7 @@
                         return [
                             '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                                 '<dd class="card-dd">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<h3 class="card-title">' + data.title + '</h3>',
                                         '<ul class="card-pics card-pics-full">',
                                             pics.join(''),
@@ -502,7 +514,7 @@
                 //绑定点击广告事件
                 $('.list').on('click', '.ad-card .card-link', function () {
                     //var thiz = this;
-                    var urls = $(this).data('click');
+                    var urls = $(this).data('monitor');
                     urls && parseClickMonitor(urls).map(function (url) {
                         alert('send:' + url);
                         log(url);
@@ -621,7 +633,8 @@
                         //url: "feeds.json" + window.location.search,
                         timeout: 5 * 1000,
                         data: {
-                            _ts: +new Date()
+                            _ts: +new Date(),
+                            timestamp: enterTime
                         },
                         success: function (feeds) {
                             var htmls = [];
@@ -677,8 +690,11 @@
                 getFeeds(1, function (fragment) {
                     $(".list").append(fragment);
                     var list = new iScroll("FeedList", {
+                        preventGhostClick: true,
                         topOffset: pullDownOffset,
-                        useTransition: true,
+                        hScrollbar: false,
+                        hScroll: false,
+                        vScrollbar: false,
                         onRefresh: function () {
                             phase = PHASE.INIT;
                             this.maxScrollY = this.maxScrollY + pullUpOffset;
@@ -742,6 +758,7 @@
                             } else if (phase === PHASE.PULLING){
                                 me.refresh();
                             }
+                            return false;
                         }
                     });
                 });

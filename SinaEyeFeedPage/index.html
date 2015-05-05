@@ -8,12 +8,10 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta http-equiv="Expires" content="-1" />
-    <meta http-equiv="pragram" content="no-cache" />
     <!-- iscroll4.js -->
     <script src="./iScroll.js"></script>
     <script src="./zepto.js"></script>
-    <script src="./RedirectToNative.js"></script>
+    <!--<script src="./RedirectToNative.js"></script>-->
     <style>
         html, body{
             padding:0;
@@ -202,7 +200,10 @@
     <div id="MsgBox" class="msg-box"></div>
 
     <script>
+        var CONFIG_FEED_URL = 'http://amp.ad.sina.com.cn/bigeyeserver/contentAd/contentAd!contentWithAd.action';
+        var CONFIG_USER_ACTION_URL = 'http://eye.ad.sina.com.cn/user_action';
         var uniqueId = 1;
+        var enterTime = (+new Date()).toString(36);
         function log(message, data) {
             var log = document.getElementById('log')
             var el = document.createElement('div')
@@ -222,6 +223,19 @@
             } else {
                 return '';
             }
+        }
+
+        function hash(s) {
+            var hash = 0,
+                i = 0,
+                w;
+
+            for (; !isNaN(w = s.charCodeAt(i++));) {
+                hash = ((hash << 5) - hash) + w;
+                hash = hash & hash;
+            }
+
+            return Math.abs(hash).toString(36);
         }
 
         //修改背景颜色
@@ -246,26 +260,26 @@
         function connectWebViewJavascriptBridge(callback) {
             var bridgeTimer;
             //暂时只支持ios进行bridge回调
-            if (_UA() === 'ios') {
-                bridgeTimer = setTimeout(function () {
-                    alert("请在sina ad sdk的环境下使用这个页面");
-                }, 2000);
-                if (window.WebViewJavascriptBridge) {
-                    bridgeTimer && clearTimeout(bridgeTimer);
-                    callback(WebViewJavascriptBridge)
-                } else {
-                    document.addEventListener('WebViewJavascriptBridgeReady', function() {
-                        bridgeTimer && clearTimeout(bridgeTimer);
-                        callback(WebViewJavascriptBridge)
-                    }, false)
-                }
-            } else {
+            // if (_UA() === 'ios') {
+            //     // bridgeTimer = setTimeout(function () {
+            //     //     alert("请在sina ad sdk的环境下使用这个页面");
+            //     // }, 2000);
+            //     if (window.WebViewJavascriptBridge) {
+            //         bridgeTimer && clearTimeout(bridgeTimer);
+            //         callback(WebViewJavascriptBridge)
+            //     } else {
+            //         document.addEventListener('WebViewJavascriptBridgeReady', function() {
+            //             bridgeTimer && clearTimeout(bridgeTimer);
+            //             callback(WebViewJavascriptBridge)
+            //         }, false)
+            //     }
+            // } else {
                 callback({
                     callHandler: function () {},
                     init: function () {},
                     registerHandler: function () {}
                 });
-            }
+            //}
         }
 
         document.addEventListener('touchmove', function (e) { 
@@ -325,7 +339,7 @@
                         return [
                             '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                                 '<dd class="card-dd">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<h3 class="card-title">' + data.title + '</h3>',
                                         '<p class="card-summary">' + data.summary + '</p>',
                                     data.link ? '</a>' : '',
@@ -344,12 +358,12 @@
                         return [
                             '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                                 '<dt class="card-dt">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<img class="card-img" src="' + data.imgs[0].url + '" alt="' + data.title + '">',
                                     data.link ? '</a>' : '',
                                 '</dt>',
                                 '<dd class="card-dd">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<h3 class="card-title">' + data.title + '</h3>',
                                         '<p class="card-summary">' + data.summary + '</p>',
                                     data.link ? '</a>' : '',
@@ -376,7 +390,7 @@
                         return [
                             '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                                 '<dd class="card-dd">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<h3 class="card-title">' + data.title + '</h3>',
                                         '<ul class="card-pics">',
                                             pics.join(''),
@@ -404,7 +418,7 @@
                         return [
                             '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
                                 '<dd class="card-dd">',
-                                    data.link ? '<a class="card-link" data-click="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                    data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
                                         '<h3 class="card-title">' + data.title + '</h3>',
                                         '<ul class="card-pics card-pics-full">',
                                             pics.join(''),
@@ -436,14 +450,12 @@
                 };
 
                 var alertTimer;
-                function alert(msg, timeout) {
+                function alert(msg) {
                     msgBox.html(msg);
                     alertTimer && clearTimeout(alertTimer);
-                    if (timeout) {
-                        alertTimer = setTimeout(function () {
-                            msgBox.hide();
-                        }, timeout);
-                    }
+                    alertTimer = setTimeout(function () {
+                        msgBox.hide();
+                    }, 2000);
                     msgBox.show();
                 }
 
@@ -504,9 +516,9 @@
                 //绑定点击广告事件
                 $('.list').on('click', '.ad-card .card-link', function () {
                     //var thiz = this;
-                    var urls = $(this).data('click');
+                    var urls = $(this).data('monitor');
                     urls && parseClickMonitor(urls).map(function (url) {
-                        alert('send:' + url, 2000);
+                        alert('send:' + url);
                         log(url);
                     });
                     // //延迟500ms打开链接，保证正常发送点击请求
@@ -602,59 +614,52 @@
                 }
                 //发送喜欢/拒绝信息
                 function sendUserAction(isLike, params) {
-                    var url = "http://10.210.228.69:8010/user_action",
+                    var url = CONFIG_USER_ACTION_URL,
                     isLike = isLike ? 1 : 0;
                     log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike);
                 }
                 //取消喜欢/拒绝信息
                 function rejectUserAction(isLike, params) {
-                    var url = 'http://10.210.228.69:8010/user_action',
+                    var url = CONFIG_USER_ACTION_URL,
                     isLike = isLike ? 1 : 0;
                     log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike); 
                 }
 
                 //获取数据
                 function getFeeds(isClear, callback) {
-                    msgBox.hide();
                     $.ajax({
                         type: "GET",
                         dataType: "jsonp",
-                        url: "http://10.79.96.53:8890/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search + "&clear=" + (isClear ? "true" : "false"),
+                        url: CONFIG_FEED_URL + window.location.search + "&clear=" + (isClear ? "true" : "false"),
                         //dataType: "json",
                         //url: "feeds.json" + window.location.search,
                         timeout: 5 * 1000,
                         data: {
-                            _ts: +new Date()
+                            _ts: +new Date(),
+                            timestamp: enterTime
                         },
                         success: function (feeds) {
                             var htmls = [];
 
-                            if (0 === feeds.status) {
-                                if (feeds.data.results && feeds.data.results.length > 0) {
-                                    bridge.callHandler('jsNetSuccess', feeds.data.results.length, function(response) {
-                                        log('JS got response', response)
-                                    });
-                                    htmls = feeds.data.results.map(function (feed) {
-                                        //如果是广告，发送曝光请求
-                                        if (feed.isad) {
-                                            feed.view = feed.view || [];
-                                            feed.view.map(function (url) {
-                                                log(url);
-                                            });
-                                        }
-                                        return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
-                                    });
-                                } else {
-                                    bridge.callHandler('jsNetError', 0, function(response) {
-                                        log('JS got response', response);
-                                    });
-                                    alert("没有新的内容了，等会再试吧～", 2000);
-                                }
+                            if (0 === feeds.status && feeds.data.results && feeds.data.results.length > 0) {
+                                bridge.callHandler('jsNetSuccess', feeds.data.results.length, function(response) {
+                                    log('JS got response', response)
+                                });
+                                htmls = feeds.data.results.map(function (feed) {
+                                    //如果是广告，发送曝光请求
+                                    if (feed.isad) {
+                                        feed.view = feed.view || [];
+                                        feed.view.map(function (url) {
+                                            log(url);
+                                        });
+                                    }
+                                    return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
+                                });
                             } else {
                                 bridge.callHandler('jsNetError', 0, function(response) {
                                     log('JS got response', response);
                                 });
-                                alert((feeds.statusInfo && feeds.statusInfo.global) || "发生了未知错误");
+                                alert((feeds.statusInfo && feeds.statusInfo.global) || "没有新内容了，等等再刷看看～");
                             }
                             callback(htmls.join(''));
                         },
@@ -687,8 +692,11 @@
                 getFeeds(1, function (fragment) {
                     $(".list").append(fragment);
                     var list = new iScroll("FeedList", {
+                        preventGhostClick: true,
                         topOffset: pullDownOffset,
-                        useTransition: true,
+                        hScrollbar: false,
+                        hScroll: false,
+                        vScrollbar: false,
                         onRefresh: function () {
                             phase = PHASE.INIT;
                             this.maxScrollY = this.maxScrollY + pullUpOffset;
@@ -752,6 +760,7 @@
                             } else if (phase === PHASE.PULLING){
                                 me.refresh();
                             }
+                            return false;
                         }
                     });
                 });

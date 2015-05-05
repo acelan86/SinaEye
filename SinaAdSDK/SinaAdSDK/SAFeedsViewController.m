@@ -10,9 +10,9 @@
 #import "WebViewJavascriptBridge.h"
 #import "SAInfoProvider.h"
 
-//static NSString *FEEDS_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
-static NSString *FEEDS_URL = @"http://d2.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index-10.210.238.197.html";
-
+static NSString *FEEDS_URL = @"http://d1.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index.html";
+//static NSString *FEEDS_URL = @"http://d2.sina.com.cn/litong/zhitou/sinaads/demo/SinaEyeFeedPage/index-10.210.238.197.html";
+//static NSString *FEEDS_URL = @"http://d1.sina.com.cn/d1images/test.html";
 static const NSString *INNER_VERSION = @"1.0.0";
 
 @interface SAFeedsViewController () <UIWebViewDelegate>
@@ -135,7 +135,7 @@ static const NSString *INNER_VERSION = @"1.0.0";
     
     //如果不是feed页面, 且为https或者http协议下的链接
     if (([[url scheme] isEqualToString:@"http"] || [[url scheme] isEqualToString:@"https"])
-        && [[url absoluteString] rangeOfString:@"SinaEyeFeedPage/index-10.210.238.197.html"].location == NSNotFound) {
+        && [[url absoluteString] rangeOfString:@"SinaEyeFeedPage/index.html"].location == NSNotFound) {
         
         NSLog(@"index view : %@, %@", [url host], [url path] );
         

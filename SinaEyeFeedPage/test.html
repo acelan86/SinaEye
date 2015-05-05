@@ -1,0 +1,714 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title> 新浪资讯 </title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <script src="./zepto.js"></script>
+    <style type="text/css">
+        html, body{
+            padding:0;
+            margin:0;
+            background-color: #efefef;
+            font-family: 'XinGothic-SinaWeibo','Microsoft YaHei',helvetica,arial,sans-serif;
+        }
+        .list{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow-y: scroll;
+        }
+        .latest,
+        .more {
+            position: relative;
+            background-color: #efefef;
+            color:#aaa;
+        }
+        .latest div, .more div {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+            text-align: center;
+            font-size: 18px;
+            line-height: 80px;
+        }
+        .more div {
+            top: 0;
+            bottom: auto;
+        }
+        dl,dt,dd,ul,li,h3,h4,p{
+            margin:0;
+            padding:0;
+        }
+        li{
+            list-style: none;
+        }
+        .list{
+            background-color: #fff;
+        }
+        .list a{
+            display:block;
+        }
+        .list a:link,
+        .list a:visited,
+        .list a:hover{
+            text-decoration: none;
+        }
+        .scroller{
+            padding:0;
+            position:absolute;
+            width:100%;
+            -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+        }
+        .pull-indecator{
+            height: 50px;
+            line-height: 50px;
+            color:#aaa;
+            text-align: center;
+        }
+
+        /* card */
+        .card{
+            overflow:hidden;
+            clear: both;
+            border-bottom: 1px solid #ececec;
+            position:relative;
+        }
+        .card-dt{
+            float:left;
+        }
+        .card-img{
+            width:80px;
+            height:60px;
+            border:none;
+            margin:10px;
+        }
+        .card-dd{
+            overflow:hidden;
+            margin:10px;
+        }
+        .card-title{
+            color: #2f2f2f;
+            line-height: 21px;
+            font-size: 15px;
+            font-weight: 600;
+            overflow:hidden;
+            height:21px;
+        }
+        .card-summary{
+            color: #8b8b8b;
+            font-size: 12px;
+            font-weight: normal;
+            overflow: hidden;
+            line-height: 21px;
+            height:21px;
+        }
+        .card-op{
+            overflow:hidden;
+            position:relative;
+            clear:both;
+        }
+        .card-op-left,
+        .card-op-right{
+            color:#999;
+            font-size:10px;
+            float:left;
+            display:block;
+        }
+        .card-op-right{
+            float:right;
+        }
+        .card-op-left{
+            line-height: 18px;
+        }
+        .ad-mark{
+            background-color: #f0f0f0;
+            padding:0px 4px;
+            display: inline-block;
+        }
+        .card-pics{
+            overflow:hidden;
+            padding:8px 0px;
+        }
+        .card-pics li{
+            float: left;
+            width: 33%;
+            text-align: center;
+        }
+        .card-pics li img{
+            width: 94px;
+            height: 70px;
+        }
+        .card-pics-full li{
+            width:100%;
+        }
+        .card-pics-full li img{
+            width: 300px;
+            height: 250px;
+        }
+        .like-button,
+        .unlike-button{
+            background: url(icon.png) no-repeat 0px 0px;
+            width: 16px;
+            background-size: 16px auto;
+            color: #999;
+            display: inline-block;
+            margin:2px;
+            height: 16px;
+        }
+        .unlike-button{
+            background-position: 0px -32px;
+        }
+        .user-action-like .like-button{
+            background-position: 0px -16px;
+        }
+        .user-action-unlike .unlike-button{
+            background-position: 0px -48px;
+        }
+        .like-button{
+            margin-right:20px;
+        }
+        .info-box{
+            line-height:40px;
+            font-size:16px;
+            background-color: #000;
+            color:#fff;
+            position:absolute;
+            bottom:0px;
+            width:100%;
+            display:none;
+            text-align: center;
+            z-index: 10;
+            opacity: .7;
+        }
+        .show{
+            display:block;
+        }
+        .msg-box{
+            line-height:40px;
+            font-size:16px;
+            color: #8a6d3b;
+            background-color: #fcf8e3;
+            border-bottom:1px solid #faebcc;
+            position:fixed;
+            top:0px;
+            width:100%;
+            display:none;
+            text-align: center;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="list"></div>
+    <div id="InfoBox" class="info-box"></div>
+    <div id="MsgBox" class="msg-box"></div>
+    <script type="text/javascript" src="dragloader.js"></script>
+    <script type="text/javascript">
+        var uniqueId = 1;
+        var enterTime = (+new Date()).toString(36);
+
+        function _UA() {
+            var ua = navigator.userAgent;
+            // ios
+            if (!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+                return 'ios';
+            } else if (!!ua.match(/Android/i)) {
+                return 'android';
+            } else {
+                return '';
+            }
+        }
+
+        function hash(s) {
+            var hash = 0,
+                i = 0,
+                w;
+
+            for (; !isNaN(w = s.charCodeAt(i++));) {
+                hash = ((hash << 5) - hash) + w;
+                hash = hash & hash;
+            }
+
+            return Math.abs(hash).toString(36);
+        }
+
+        //修改背景颜色
+        // (function (bgColor) {
+        //     function oppositeColor(color) {
+        //         color = color.replace('#', '');
+        //         var c16,
+        //             c10,
+        //             max16 = 15,
+        //             b = [];
+        //         for (var i = 0; i < color.length; i++) {   
+        //             c16 = parseInt(color.charAt(i), 16); //to 16进制
+        //             c10 = parseInt(max16 - c16, 10);     // 10进制计算
+        //             b.push(c10.toString(16)); // to 16进制
+        //         }
+        //         return '#' + b.join('');
+        //     }
+        //     $('#FeedList .list').css('backgroundColor', bgColor);
+        // })(decodeURIComponent(window.location.search.split('&bgcolor=')[1] || '#fff'));
+
+        //js bridge
+        function connectWebViewJavascriptBridge(callback) {
+            var bridgeTimer;
+            //暂时只支持ios进行bridge回调
+            // if (_UA() === 'ios') {
+            //     // bridgeTimer = setTimeout(function () {
+            //     //     alert("请在sina ad sdk的环境下使用这个页面");
+            //     // }, 2000);
+            //     if (window.WebViewJavascriptBridge) {
+            //         bridgeTimer && clearTimeout(bridgeTimer);
+            //         callback(WebViewJavascriptBridge)
+            //     } else {
+            //         document.addEventListener('WebViewJavascriptBridgeReady', function() {
+            //             bridgeTimer && clearTimeout(bridgeTimer);
+            //             callback(WebViewJavascriptBridge)
+            //         }, false)
+            //     }
+            // } else {
+                callback({
+                    callHandler: function () {},
+                    init: function () {},
+                    registerHandler: function () {}
+                });
+            //}
+        }
+
+        var infoBox = $("#InfoBox");
+        var msgBox = $("#MsgBox");
+
+        function stringifyClickMonitor(urls) {
+            urls = urls || [];
+            var result = [];
+            urls.map(function (url) {
+                result.push(encodeURIComponent(url));
+            });
+            return result.join('|');
+        }
+        function parseClickMonitor(stringUrls) {
+            stringUrls = (stringUrls || '').split('|');
+            var result = [];
+            stringUrls.map(function (url) {
+                result.push(decodeURIComponent(url));
+            });
+            return result;
+        }
+
+        var TPL = {
+            //title + summary
+            "tid1" : function (data) {
+                return [
+                    '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                        '<dd class="card-dd">',
+                            data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                '<h3 class="card-title">' + data.title + '</h3>',
+                                '<p class="card-summary">' + data.summary + '</p>',
+                            data.link ? '</a>' : '',
+                            '<div class="card-op">',
+                                '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                '<span class="card-op-right">',
+                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                '</span>',
+                            '</div>',
+                        '</dd>',
+                    '</dl>'
+                ].join('');
+            },
+            //title + summary + 1pic
+            "tid2" : function (data) {
+                return [
+                    '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                        '<dt class="card-dt">',
+                            data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                '<img class="card-img" src="' + data.imgs[0].url + '" alt="' + data.title + '">',
+                            data.link ? '</a>' : '',
+                        '</dt>',
+                        '<dd class="card-dd">',
+                            data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                '<h3 class="card-title">' + data.title + '</h3>',
+                                '<p class="card-summary">' + data.summary + '</p>',
+                            data.link ? '</a>' : '',
+                            '<div class="card-op">',
+                                '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                '<span class="card-op-right">',
+                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                '</span>',
+                            '</div>',
+                        '</dd>',
+                    '</dl>'
+                ].join('');
+            },
+            //title + 3pic
+            "tid3": function (data) {
+                var pics = data.imgs.map(function (image) {
+                    return '<li>' +
+                                '<span>' +
+                                    '<img alt="' + data.title + '" src="' + image.url + '"/>' +
+                                '</span>' +
+                            '</li>';
+                });
+
+                return [
+                    '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                        '<dd class="card-dd">',
+                            data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                '<h3 class="card-title">' + data.title + '</h3>',
+                                '<ul class="card-pics">',
+                                    pics.join(''),
+                                '</ul>',
+                            data.link ? '</a>' : '',
+                            '<div class="card-op">',
+                                '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                '<span class="card-op-right">',
+                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                '</span>',
+                            '</div>',
+                        '</dd>',
+                    '</dl>'
+                ].join('');
+            },
+            //title + 1pic
+            "tid4": function (data) {
+                var pics = data.imgs.map(function (image) {
+                    return '<li>' +
+                                '<span>' +
+                                    '<img alt="' + data.title + '" src="' + image.url + '"/>' +
+                                '</span>' +
+                            '</li>';
+                });
+                return [
+                    '<dl class="card' + (data.isad ? ' ad-card' : '') + '">',
+                        '<dd class="card-dd">',
+                            data.link ? '<a class="card-link" data-monitor="' + stringifyClickMonitor(data.click) + '" href="' + data.link + '" target="_blank">' : '',
+                                '<h3 class="card-title">' + data.title + '</h3>',
+                                '<ul class="card-pics card-pics-full">',
+                                    pics.join(''),
+                                '</ul>',
+                            data.link ? '</a>' : '',
+                            '<div class="card-op">',
+                                '<span class="card-op-left">' + (data.isad ? '<span class="ad-mark">赞助</span>' : readableDate(data.ctime)) + '</span>',
+                                '<span class="card-op-right">',
+                                    (data.link && !data.isad ? ('<span class="like-button" data-link="' + data.link + '"></span>' + '<span class="unlike-button" data-link="' + data.link + '"></span>') : ''),
+                                '</span>',
+                            '</div>',
+                        '</dd>',
+                    '</dl>'
+                ].join('');
+            },
+            //callout
+            "tid5": function (data) {
+                return [
+                    '<a class="recommend-icon"',
+                        ' href="http://www.etao.com/go/act/etao/android.php?spm=1002.1.0.0.dSUImz"',
+                        ' data-ios-native-url="etao://home?src=home"', 
+                        ' data-android-native-url="etao://home?src=home"',
+                        ' data-ios-install-url="https://itunes.apple.com/cn/app/yi-tao-xiang-gou-wu-xian-yi-tao/id451400917?mt=8"',
+                        ' data-android-install-url="http://download.taobaocdn.com/freedom/20457/andriod/701234etaoandroid2.4.9.apk" data-package="com.taobao.etao">', 
+                            '<img width="320px" src="http://gtms01.alicdn.com/tps/i1/T1OsB9FfVXXXXs.9gr-640-156.jpg"/>',
+                    '</a>'
+                ].join('');
+            }
+        };
+
+        var alertTimer;
+        function alert(msg) {
+            msgBox.html(msg);
+            alertTimer && clearTimeout(alertTimer);
+            alertTimer = setTimeout(function () {
+                msgBox.hide();
+            }, 2000);
+            msgBox.show();
+        }
+
+        var infoTimer;
+        function info(msg) {
+            infoBox.html(msg);
+            infoTimer && clearTimeout(infoTimer);
+            infoTimer = setTimeout(function () {
+                infoBox.removeClass('show');
+            }, 2000);
+            infoBox.addClass('show');
+        }
+
+        //挂接喜欢跟拒绝事件
+        $('.list').on('click', '.unlike-button', function () {
+            var msg = "拒绝此类推荐",
+                $el = $(this),
+                $opBlock = $el.parent();
+            //清空状态
+            $opBlock.removeClass("user-action-like");
+
+            if ($opBlock.hasClass("user-action-unlike")) {
+                $opBlock.removeClass("user-action-unlike");
+                msg = "取消拒绝此类推荐";
+                rejectUserAction(0, $el.data('link').split('?')[1]);
+            } else {
+                //设置拒绝状态
+                $opBlock.addClass("user-action-unlike");
+                sendUserAction(0, $el.data('link').split('?')[1]);
+            }
+            //显示信息
+            infoBox.insertBefore($el.closest(".card-dd"));
+            info(msg);
+            return false;
+        });
+        $('.list').on('click', '.like-button', function () {
+            var msg = "喜欢此类推荐",
+                $el = $(this),
+                $opBlock = $el.parent();
+            //清空状态
+            $opBlock.removeClass("user-action-unlike");
+            //设置动作
+            if ($opBlock.hasClass('user-action-like')) {
+                $opBlock.removeClass("user-action-like");
+                msg = "取消喜欢此类推荐";
+                rejectUserAction(1, $el.data('link').split('?')[1]);
+            } else {
+                //设置喜欢状态
+                $opBlock.addClass("user-action-like" );
+                sendUserAction(1, $el.data('link').split('?')[1]);
+            }
+            //显示信息
+            infoBox.insertBefore($el.closest('.card-dd'));
+            info(msg);
+            return false;
+        });
+
+        //绑定点击广告事件
+        $('.list').on('click', '.ad-card .card-link', function () {
+            //var thiz = this;
+            var urls = $(this).data('monitor');
+            urls && parseClickMonitor(urls).map(function (url) {
+                alert('send:' + url);
+                log(url);
+            });
+            // //延迟500ms打开链接，保证正常发送点击请求
+            // setTimeout(function () {
+            //     alert('open');
+            //     window.location.href = thiz.href;
+            // }, 500);
+            // return false;
+        });
+
+        function padNumber(source, length) {
+            var pre = "",
+                negative = (source < 0),
+                string = String(Math.abs(source));
+         
+            if (string.length < length) {
+                pre = (new Array(length - string.length + 1)).join('0');
+            }
+         
+            return (negative ?  "-" : "") + pre + string;
+        }
+
+        function formatDate(source, pattern) {
+            if ('string' !== typeof pattern) {
+                return source.toString();
+            }
+         
+            function replacer(patternPart, result) {
+                pattern = pattern.replace(patternPart, result);
+            }
+             
+            var pad     = padNumber,
+                year    = source.getFullYear(),
+                month   = source.getMonth() + 1,
+                date2   = source.getDate(),
+                hours   = source.getHours(),
+                minutes = source.getMinutes(),
+                seconds = source.getSeconds();
+         
+            replacer(/yyyy/g, pad(year, 4));
+            replacer(/yy/g, pad(parseInt(year.toString().slice(2), 10), 2));
+            replacer(/MM/g, pad(month, 2));
+            replacer(/M/g, month);
+            replacer(/dd/g, pad(date2, 2));
+            replacer(/d/g, date2);
+         
+            replacer(/HH/g, pad(hours, 2));
+            replacer(/H/g, hours);
+            replacer(/hh/g, pad(hours % 12, 2));
+            replacer(/h/g, hours % 12);
+            replacer(/mm/g, pad(minutes, 2));
+            replacer(/m/g, minutes);
+            replacer(/ss/g, pad(seconds, 2));
+            replacer(/s/g, seconds);
+         
+            return pattern;
+        }
+
+        //可读格式日期
+        function readableDate(time) {
+            if (!time) {
+                return '';
+            }
+            var now = new Date().getTime(),
+                ctime = new Date();
+            ctime.setTime(time);
+            //小于1分钟，显示刚刚
+            if (now - time < 60 * 1000) {
+                return "刚刚";
+            //小于一天，用时：分显示
+            } else if (now - time < 24 * 60 * 60 * 1000) {
+                return formatDate(ctime, "HH:mm");
+            //大于一天，用日期显示
+            } else {
+                return formatDate(ctime, "MM月dd日");
+            }
+        }
+
+        function log(url, useCache) {
+            var img = new Image(),
+                key = '_sina_eye_log' + (+new Date()).toString(36) + "=1";
+
+            window[key] = img;
+         
+            img.onload = img.onerror = img.onabort = function () {
+                img.onload = img.onerror = img.onabort = null;
+         
+                window[key] = null;
+                img = null;
+            };
+     
+            img.src = url + (useCache ? '' : (url.indexOf('?') > 0 ? '&' : '?') + key);
+        }
+        //发送喜欢/拒绝信息
+        function sendUserAction(isLike, params) {
+            var url = "http://10.210.228.69:8010/user_action",
+            isLike = isLike ? 1 : 0;
+            log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike);
+        }
+        //取消喜欢/拒绝信息
+        function rejectUserAction(isLike, params) {
+            var url = 'http://10.210.228.69:8010/user_action',
+            isLike = isLike ? 1 : 0;
+            log(url + '?' + (params ? (params + '&') : '') + 'action=' + isLike); 
+        }
+
+    
+        connectWebViewJavascriptBridge(function (bridge) {
+            //获取数据
+            function getFeeds(isClear, callback) {
+                // callback(
+                //     '<div style="height:40px">xxxx</div><div style="height:40px">xxxx</div><div style="height:40px">xxxx</div><div style="height:40px">xxxx</div><div style="height:40px">xxxx</div><div style="height:40px">xxxx</div><div style="height:40px">xxxx</div><div style="height:40px">xxxx</div><div style="height:40px">xxxx</div><div style="height:40px">xxxx</div>'
+                // );
+                $.ajax({
+                    type: "GET",
+                    dataType: "jsonp",
+                    url: "http://10.210.238.197:8080/bigeyeserver/contentAd/contentAd!contentWithAd.action" + window.location.search + "&clear=" + (isClear ? "true" : "false"),
+                    //dataType: "json",
+                    //url: "feeds.json" + window.location.search,
+                    timeout: 5 * 1000,
+                    data: {
+                        _ts: +new Date(),
+                        timestamp: enterTime
+                    },
+                    success: function (feeds) {
+                        var htmls = [];
+
+                        if (0 === feeds.status && feeds.data.results && feeds.data.results.length > 0) {
+                            bridge.callHandler('jsNetSuccess', feeds.data.results.length, function(response) {
+                                log('JS got response', response)
+                            });
+                            htmls = feeds.data.results.map(function (feed) {
+                                //如果是广告，发送曝光请求
+                                if (feed.isad) {
+                                    feed.view = feed.view || [];
+                                    feed.view.map(function (url) {
+                                        log(url);
+                                    });
+                                }
+                                return TPL["tid" + feed.templateid] && TPL["tid" + feed.templateid](feed);
+                            });
+                        } else {
+                            bridge.callHandler('jsNetError', 0, function(response) {
+                                log('JS got response', response);
+                            });
+                            alert((feeds.statusInfo && feeds.statusInfo.global) || "没有新内容了，等等再刷看看～");
+                        }
+                        callback(htmls.join(''));
+                    },
+                    error: function () {
+                        bridge.callHandler('jsNetError', 0, function(response) {
+                            log('JS got response', response);
+                        });
+                        callback('');
+                        alert("抱歉，服务器开小差了～");
+                    }
+                });
+            }
+
+            //监控由oc发回的消息
+            bridge.init(function (message, responseCallback) {
+                log('JS got a message', message);
+                var data = { 'Javascript Responds':'Wee!' };
+                log('JS responding with', data);
+                responseCallback(data);
+            });
+
+            //注册js可被oc回调的事件
+            bridge.registerHandler('testJavascriptHandler', function(data, responseCallback) {
+                log('ObjC called testJavascriptHandler with', data);
+                var responseData = { 'Javascript Says':'Right back atcha!' };
+                log('JS responding with', responseData);
+                responseCallback(responseData);
+            });
+            getFeeds(1, function (fragment) {
+                $('.list').html(fragment);
+
+                var dragger = new DragLoader(document.getElementsByClassName('list')[0], {
+                    dragDownRegionCls: 'latest',
+                    dragUpRegionCls: 'more',
+                    dragDownHelper: function(status) {
+                        if (status == 'default') {
+                            return '<div>向下拉加载最新</div>';
+                        } else if (status == 'prepare') {
+                            return '<div>释放刷新</div>';
+                        } else if (status == 'load') {
+                            return '<div>加载中...</div>';
+                        }
+                    },
+                    dragUpHelper: function(status) {
+                        if (status == 'default') {
+                            return '<div>向上拉加载更多</div>';
+                        } else if (status == 'prepare') {
+                            return '<div>释放刷新</div>';
+                        } else if (status == 'load') {
+                            return '<div>加载中...</div>';
+                        }
+                    }
+                });
+                dragger.on('dragDownLoad', function() {
+                    getFeeds(0, function (fragment) {
+                        //insertBefore
+                        //
+                        $(".list").children().length <= 0 ? 
+                            $(fragment).appendTo(".list") :
+                            $(fragment).insertBefore($('.list').children().first());
+                        dragger.reset();
+                    });
+                });
+                dragger.on('dragUpLoad', function() {
+                    getFeeds(0, function (fragment) {
+                        //append
+                        $(fragment).appendTo($('.list'));
+                        dragger.reset();
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
